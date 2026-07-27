@@ -26,10 +26,11 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      i18n: {
-        defaultLocale: 'pt',
-        locales: { pt: 'pt-BR', en: 'en' },
-      },
+      // Sem a opção `i18n`: ela pressupõe o idioma padrão na raiz e, com
+      // prefixDefaultLocale, colapsava /pt/ em / — que é justamente a página de
+      // redirect marcada como noindex. As alternâncias hreflang já vão no <head>
+      // de cada página, que é forma igualmente válida de declará-las.
+      filter: (page) => new URL(page).pathname !== '/',
     }),
   ],
   build: {
