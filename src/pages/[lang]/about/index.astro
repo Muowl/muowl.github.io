@@ -8,33 +8,60 @@ export const getStaticPaths = langPaths;
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-// TODO(muowl): trocar por uma bio de verdade. O texto abaixo só afirma o que dá
-// para conferir nos repositórios — nada inventado sobre trajetória ou trabalho.
+// Texto adaptado do perfil em github.com/Muowl — palavras do próprio autor.
 const bio =
   lang === 'pt'
     ? [
-        'Sou muowl. Faço temas de editor e ferramentas pequenas, com atenção desproporcional a cor, tipografia e contraste.',
-        'Meu trabalho mais visível é o <strong>Carmilla</strong>: um tema escuro de identidade vinho/boudoir, com paleta documentada token a token, alvos de contraste WCAG definidos antes do código e nenhum hex herdado de outro tema.',
-        'Tudo que faço é aberto. Se algo aqui te for útil, pode usar.',
+        'Sou <strong>Felipe Lazzarini</strong>, desenvolvedor full stack. Trabalho com soluções voltadas a negócio desde 2020, com ênfase em performance, usabilidade e entrega prática.',
+        'No dia a dia construo aplicações web, sites institucionais e ferramentas internas. Fora dele, faço temas de editor — é onde a atenção a cor, tipografia e contraste vira o trabalho inteiro em vez de um detalhe.',
+        'Os temas daqui são abertos de ponta a ponta: paleta documentada token a token, alvos de contraste definidos antes do código e nenhum hex herdado de outro tema.',
       ]
     : [
-        "I'm muowl. I make editor themes and small tools, with disproportionate attention to colour, type and contrast.",
-        'My most visible work is <strong>Carmilla</strong>: a dark theme with a wine/boudoir identity, a palette documented token by token, WCAG contrast targets set before any code, and not a single hex inherited from another theme.',
-        'Everything I make is open. If something here is useful to you, take it.',
+        "I'm <strong>Felipe Lazzarini</strong>, a full stack developer. I've worked on business-oriented solutions since 2020, with an emphasis on performance, usability and practical delivery.",
+        'By day I build web applications, business websites and internal tools. Outside that, I make editor themes — where attention to colour, type and contrast becomes the whole job instead of a detail.',
+        'The themes here are open end to end: a palette documented token by token, contrast targets set before any code, and not a single hex inherited from another theme.',
       ];
+
+const stack = {
+  frontend: ['TypeScript', 'React', 'Next.js', 'Astro'],
+  backend: ['PHP', 'Laravel', 'Node.js', 'WordPress'],
+  data: ['MySQL', 'PostgreSQL', 'SQLite'],
+  also: ['Python', 'Java', 'C#'],
+};
+
+const stackLabels: Record<string, { pt: string; en: string }> = {
+  frontend: { pt: 'Frontend', en: 'Frontend' },
+  backend: { pt: 'Backend', en: 'Backend' },
+  data: { pt: 'Dados', en: 'Data' },
+  also: { pt: 'Também', en: 'Also' },
+};
 
 const links = [
   { label: 'GitHub', href: 'https://github.com/Muowl', text: 'github.com/Muowl' },
+  {
+    label: 'LinkedIn',
+    href: 'https://linkedin.com/in/felipe-lazzarini-4829513b4',
+    text: 'felipe-lazzarini',
+  },
+  {
+    label: 'E-mail',
+    href: 'mailto:felipe.cunha@archbyte.com.br',
+    text: 'felipe.cunha@archbyte.com.br',
+  },
   {
     label: 'VS Code Marketplace',
     href: 'https://marketplace.visualstudio.com/publishers/muowl',
     text: 'marketplace/muowl',
   },
-  { label: 'E-mail', href: 'mailto:felipe.mumei@gmail.com', text: 'felipe.mumei@gmail.com' },
 ];
+
+const openTo = lang === 'pt' ? 'Aberto a oportunidades' : 'Open to opportunities';
 ---
 
-<Base title={`${t('about.title')} — muowl`} description={bio[0].replace(/<[^>]+>/g, '')}>
+<Base
+  title={`${t('about.title')} — muowl`}
+  description={bio[0].replace(/<[^>]+>/g, '')}
+>
   <div class="wrap">
     <div class="section-head" style="margin-top:2rem">
       <div class="section-num">❦</div>
@@ -44,9 +71,26 @@ const links = [
 
     <div class="prose">
       {bio.map((para) => <p set:html={para} />)}
+      <p class="open-to"><span class="pip" aria-hidden="true"></span>{openTo}</p>
     </div>
 
-    <h2 class="contact-title">{t('about.contact')}</h2>
+    <h2 class="block-title">Stack</h2>
+    <div class="stack">
+      {
+        Object.entries(stack).map(([key, items]) => (
+          <div class="stack-row">
+            <span class="stack-label">{stackLabels[key][lang]}</span>
+            <div class="chips">
+              {items.map((i) => (
+                <span>{i}</span>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <h2 class="block-title">{t('about.contact')}</h2>
     <ul class="links">
       {
         links.map((l) => (
@@ -76,11 +120,64 @@ const links = [
     font-weight: 600;
   }
 
-  .contact-title {
+  .open-to {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.82rem !important;
+    color: var(--absinthe) !important;
+    border: 1px solid rgba(var(--carmine-rgb), 0.22);
+    background: rgba(var(--velvet-rgb), 0.45);
+    border-radius: 999px;
+    padding: 0.35rem 0.95rem;
+    margin-top: 0.4rem;
+  }
+  .pip {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--absinthe);
+    box-shadow: 0 0 0 3px rgba(122, 224, 166, 0.18);
+  }
+
+  .block-title {
     margin: 3.5rem 0 1.2rem 66px;
     font-family: var(--font-display);
     font-size: 1.6rem;
     font-weight: 500;
+  }
+
+  .stack {
+    margin-left: 66px;
+    display: grid;
+    gap: 0.9rem;
+    max-width: 720px;
+  }
+  .stack-row {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .stack-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ash-mauve);
+    min-width: 6rem;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .chips span {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: rgba(var(--pearl-rgb), 0.8);
+    border: 1px solid rgba(var(--carmine-rgb), 0.18);
+    border-radius: 999px;
+    padding: 0.22rem 0.65rem;
   }
 
   .links {
@@ -109,6 +206,7 @@ const links = [
     font-size: 0.9rem;
     color: var(--carmine);
     text-decoration: none;
+    word-break: break-all;
   }
   .links a:hover {
     text-decoration: underline;
@@ -117,12 +215,16 @@ const links = [
   @media (max-width: 680px) {
     .prose,
     .links,
-    .contact-title {
+    .stack,
+    .block-title {
       margin-left: 0;
     }
     .links li {
       flex-direction: column;
       gap: 0.2rem;
+    }
+    .stack-label {
+      min-width: auto;
     }
   }
 </style>
