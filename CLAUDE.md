@@ -35,6 +35,12 @@ swatch grids, token maps and flavor cards all derive from them. A colour changes
 in exactly one place. Adding a hardcoded hex re-creates the drift problem this
 structure was built to solve.
 
+**Social cards too.** `npm run og` renders `public/og/*.png` at 1200×630 from the
+same palette data, using system Chrome via `playwright-core`. Re-run it when a
+palette or a tagline changes. A theme without its own card falls back to
+`og/default.png` — the theme page checks the file exists at build time rather
+than emitting a link to a 404.
+
 **Contrast ratios are computed, never typed.** `src/lib/contrast.ts` implements
 WCAG relative luminance; the Papilio page measures every token against its own
 background at build time. If a palette changes, the published ratios follow.

@@ -2,6 +2,8 @@
 import Base from '../../../layouts/Base.astro';
 import CarmillaShowcase from '../../../components/CarmillaShowcase.astro';
 import PapilioShowcase from '../../../components/PapilioShowcase.astro';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { languages, localePath, useTranslations, type Lang } from '../../../i18n/ui';
 import { themes, themeBySlug } from '../../../data/themes';
 
@@ -14,12 +16,18 @@ export function getStaticPaths() {
 const { lang, slug } = Astro.params as { lang: Lang; slug: string };
 const t = useTranslations(lang);
 const theme = themeBySlug(slug)!;
+
+// Um tema sem card próprio cai no genérico em vez de apontar para um 404 — um
+// link compartilhado sem imagem é ruim, mas com a imagem do tema errado é pior.
+const ogImage = existsSync(join(process.cwd(), 'public', 'og', `${slug}.png`))
+  ? `/og/${slug}.png`
+  : '/og/default.png';
 ---
 
 <Base
   title={`${theme.name} — ${theme.tagline[lang]}`}
   description={theme.summary[lang]}
-  ogImage={`/og/${theme.slug}.png`}
+  ogImage={ogImage}
 >
   <div class="wrap">
     <header class="theme-hero">
