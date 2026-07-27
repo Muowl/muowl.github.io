@@ -1,0 +1,735 @@
+---
+/**
+ * Showcase do Carmilla, portado de docs/index.html do repo do tema.
+ *
+ * Diferença estrutural: nenhum hex é escrito aqui. Swatches, token map e flavor
+ * cards saem de `lib/palette`, que lê o TOML. Os textos vêm do idioma da rota,
+ * em vez de ficarem os dois na página escondidos por CSS.
+ */
+import { tokens, flavors, type FlavorId } from '../lib/palette';
+import { getLangFromUrl, useTranslations, type Lang } from '../i18n/ui';
+
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const base = tokens('base');
+const amethyst = tokens('amethyst');
+const flavorList = flavors();
+
+/** Junta os dois flavors por token para saber o que muda de hex e de nome. */
+const rows = base.map((tk, i) => ({
+  ...tk,
+  altHex: amethyst[i].hex,
+  altName: amethyst[i].name,
+  changes: amethyst[i].hex !== tk.hex,
+}));
+
+const tx =
+  lang === 'pt'
+    ? {
+        c1: '// Carmilla — paleta autoral, accents quentes sobre vinho',
+        c2: '// Comentários em ash-mauve dialogam com o boudoir do fundo.',
+        whisper: '} sussurra ao ouvido de ${',
+        era1: '"🕯️ Antiga das antigas"',
+        era2: '"🌙 Imortal madura"',
+        era3: '"🩸 Recém-virada"',
+        coffin: '"❌ ainda repousa no caixão"',
+      }
+    : {
+        c1: '// Carmilla — an original palette, warm accents over wine',
+        c2: '// Comments in ash-mauve converse with the boudoir background.',
+        whisper: '} whispers to ${',
+        era1: '"🕯️ Ancient of ancients"',
+        era2: '"🌙 A mature immortal"',
+        era3: '"🩸 Newly turned"',
+        coffin: '"❌ still resting in the coffin"',
+      };
+
+const code = `<span class="c">${tx.c1}</span>
+<span class="c">${tx.c2}</span>
+
+<span class="k">import</span> { <span class="t">Slayer</span> } <span class="k">from</span> <span class="s">"./hunters"</span><span class="punc">;</span>
+
+<span class="k">class</span> <span class="t">Countess</span> <span class="k">extends</span> <span class="t">Immortal</span> <span class="punc">{</span>
+    <span class="k">private readonly</span> <span class="p">name</span><span class="punc">:</span> <span class="t">string</span><span class="punc">;</span>
+    <span class="k">private</span> <span class="p">centuriesLived</span><span class="punc">:</span> <span class="t">number</span><span class="punc">;</span>
+
+    <span class="f">constructor</span><span class="punc">(</span><span class="p">name</span><span class="punc">:</span> <span class="t">string</span><span class="punc">,</span> <span class="p">age</span><span class="punc">:</span> <span class="t">number</span><span class="punc">)</span> <span class="punc">{</span>
+        <span class="k">super</span><span class="punc">()</span><span class="punc">;</span>
+        <span class="i">this</span><span class="punc">.</span><span class="p">name</span> <span class="punc">=</span> <span class="p">name</span><span class="punc">;</span>
+        <span class="i">this</span><span class="punc">.</span><span class="p">centuriesLived</span> <span class="punc">=</span> <span class="p">age</span><span class="punc">;</span>
+    <span class="punc">}</span>
+
+    <span class="f">whisper</span><span class="punc">(</span><span class="p">guest</span><span class="punc">:</span> <span class="t">string</span><span class="punc">)</span><span class="punc">:</span> <span class="t">string</span> <span class="punc">{</span>
+        <span class="i">this</span><span class="punc">.</span><span class="p">centuriesLived</span> <span class="punc">+=</span> <span class="n">0.01</span><span class="punc">;</span>
+        <span class="k">return</span> <span class="s">\`🥀 \${</span><span class="i">this</span><span class="punc">.</span><span class="p">name</span><span class="s">${tx.whisper}</span><span class="p">guest</span><span class="s">}\`</span><span class="punc">;</span>
+    <span class="punc">}</span>
+
+    <span class="f">getEra</span><span class="punc">()</span><span class="punc">:</span> <span class="t">string</span> <span class="punc">{</span><div class="current-line">        <span class="k">if</span> <span class="punc">(</span><span class="i">this</span><span class="punc">.</span><span class="p">centuriesLived</span> <span class="punc">&gt;</span> <span class="n">5</span><span class="punc">)</span> <span class="k">return</span> <span class="s">${tx.era1}</span><span class="punc">;</span></div>        <span class="k">if</span> <span class="punc">(</span><span class="i">this</span><span class="punc">.</span><span class="p">centuriesLived</span> <span class="punc">&gt;</span> <span class="n">1</span><span class="punc">)</span> <span class="k">return</span> <span class="s">${tx.era2}</span><span class="punc">;</span>
+        <span class="k">return</span> <span class="s">${tx.era3}</span><span class="punc">;</span>
+    <span class="punc">}</span>
+<span class="punc">}</span>
+
+<span class="k">const</span> <span class="p">carmilla</span> <span class="punc">=</span> <span class="k">new</span> <span class="t">Countess</span><span class="punc">(</span><span class="s">"Mircalla Karnstein"</span><span class="punc">,</span> <span class="n">3</span><span class="punc">)</span><span class="punc">;</span>
+<span class="k">const</span> <span class="p">awake</span><span class="punc">:</span> <span class="t">boolean</span> <span class="punc">=</span> <span class="n">true</span><span class="punc">;</span>
+<span class="k">if</span> <span class="punc">(</span><span class="p">awake</span><span class="punc">)</span> <span class="p">console</span><span class="punc">.</span><span class="f">log</span><span class="punc">(</span><span class="p">carmilla</span><span class="punc">.</span><span class="f">getEra</span><span class="punc">()</span><span class="punc">)</span><span class="punc">;</span>
+<span class="k">else</span> <span class="p">console</span><span class="punc">.</span><span class="err">error</span><span class="punc">(</span><span class="s">${tx.coffin}</span><span class="punc">)</span><span class="punc">;</span>`;
+
+const gutter = Array.from({ length: 29 }, (_, i) => {
+  const n = i + 1;
+  const cls = [5, 6].includes(n)
+    ? 'modified'
+    : n === 21
+      ? 'active'
+      : n >= 25
+        ? 'added'
+        : '';
+  return { n, cls };
+});
+
+const flavorsLead =
+  lang === 'pt'
+    ? 'Um flavor troca o accent de assinatura e re-temperatura os fundos neutros; as cores de conteúdo — Pearl, os tons de sintaxe, os comentários em Ash Mauve — permanecem intocadas. O <strong>Amethyst</strong> nasceu de uma inspiração orquídea <code>#7A4186</code>: o matiz foi mantido exato (OKLCH ≈ 320°) e elevado até a legibilidade — ≈ 5.2:1 (AA) sobre seu Boudoir — enquanto os fundos vinho giram de 303° para 286° com saturação e luminosidade idênticas. Escolha um flavor abaixo e veja a página inteira mudar de luz.'
+    : 'A flavor swaps the signature accent and re-temperatures the neutral backgrounds; the content colours — Pearl, the syntax hues, the Ash-Mauve comments — stay untouched. <strong>Amethyst</strong> was born from an orchid inspiration, <code>#7A4186</code>: its hue was kept exact (OKLCH ≈ 320°) and lifted into legibility — ≈ 5.2:1 (AA) on its Boudoir — while the wine backgrounds rotate from 303° to 286° at identical saturation and lightness. Pick a flavor below and watch the whole page change its light.';
+---
+
+<!-- ============== PALETA ============== -->
+<section>
+  <div class="section-head">
+    <div class="section-num">I.</div>
+    <h2 class="section-title">{t('theme.palette.title')}</h2>
+  </div>
+  <p class="section-subtitle">{t('theme.palette.subtitle')}</p>
+
+  <div class="palette">
+    {
+      rows.map((tk) => (
+        <div class="swatch">
+          <div class="swatch-color" style={`background: var(--${tk.key})`}>
+            <span class="swatch-hex" class:list={[{ scrim: !tk.dark }]}>
+              {
+                tk.changes ? (
+                  <>
+                    <span class="fl-base">{tk.hex}</span>
+                    <span class="fl-amethyst">{tk.altHex}</span>
+                  </>
+                ) : (
+                  tk.hex
+                )
+              }
+            </span>
+          </div>
+          <div class="swatch-meta">
+            <div class="swatch-name" style={tk.surface ? undefined : `color: var(--${tk.key})`}>
+              {
+                tk.name !== tk.altName ? (
+                  <>
+                    <span class="fl-base">{tk.name}</span>
+                    <span class="fl-amethyst">{tk.altName}</span>
+                  </>
+                ) : (
+                  tk.name
+                )
+              }
+            </div>
+            <div class="swatch-role" set:html={tk.role[lang]} />
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<!-- ============== EDITOR ============== -->
+<section>
+  <div class="section-head">
+    <div class="section-num">II.</div>
+    <h2 class="section-title">{t('theme.editor.title')}</h2>
+  </div>
+  <p class="section-subtitle">{t('theme.editor.subtitle')}</p>
+
+  <div class="editor">
+    <div class="editor-titlebar">
+      <span class="traffic r"></span>
+      <span class="traffic y"></span>
+      <span class="traffic g"></span>
+      <span class="file">carmilla / <strong>countess.ts</strong></span>
+    </div>
+    <div class="editor-tabs">
+      <div class="editor-tab active"><span class="dot"></span> countess.ts</div>
+      <div class="editor-tab">palette.css</div>
+      <div class="editor-tab">README.md</div>
+    </div>
+    <div class="editor-body">
+      <div class="gutter">
+        {gutter.map((g) => <div class:list={['ln', g.cls]}>{g.n}</div>)}
+      </div>
+      <div class="code-area">
+        <pre set:html={code} />
+      </div>
+    </div>
+    <div class="editor-statusbar">
+      <span class="branch">⎇ main</span>
+      <span>↑ 2 ↓ 0</span>
+      <span style="color:var(--pomegranate);">● 0 errors</span>
+      <span style="color:var(--peach-velvet);">▲ 1 warning</span>
+      <div class="right">
+        <span>Ln <strong>21</strong>, Col <strong>9</strong></span>
+        <span>Spaces: <strong>4</strong></span>
+        <span>UTF-8</span>
+        <span><strong>TypeScript</strong></span>
+        <span
+          >🥀 <strong style="color:var(--carmine);"
+            >Carmilla<span class="fl-amethyst"> Amethyst</span></strong
+          ></span
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== ANATOMIA ============== -->
+<section>
+  <div class="section-head">
+    <div class="section-num">III.</div>
+    <h2 class="section-title">{t('theme.anatomy.title')}</h2>
+  </div>
+  <p class="section-subtitle">{t('theme.anatomy.subtitle')}</p>
+
+  <div class="token-map">
+    <div class="token-row">
+      <span class="token-dot" style="background:var(--carmine)"></span>
+      <span class="token-name">keyword</span>
+      <span class="token-sample"
+        ><span style="color:var(--carmine)">const</span> x <span style="color:var(--carmine)"
+          >=</span
+        > <span style="color:var(--champagne)">"…"</span></span
+      >
+    </div>
+    <div class="token-row">
+      <span class="token-dot" style="background:var(--wisteria)"></span>
+      <span class="token-name">variable.lang</span>
+      <span class="token-sample"
+        ><span style="color:var(--wisteria);font-style:italic">this</span>.name</span
+      >
+    </div>
+    <div class="token-row">
+      <span class="token-dot" style="background:var(--verdigris)"></span>
+      <span class="token-name">entity.type</span>
+      <span class="token-sample">: <span style="color:var(--verdigris)">string</span></span>
+    </div>
+    <div class="token-row">
+      <span class="token-dot" style="background:var(--absinthe)"></span>
+      <span class="token-name">entity.function</span>
+      <span class="token-sample"><span style="color:var(--absinthe)">log</span>()</span>
+    </div>
+    <div class="token-row">
+      <span class="token-dot" style="background:var(--champagne)"></span>
+      <span class="token-name">string</span>
+      <span class="token-sample"><span style="color:var(--champagne)">"Carmilla"</span></span>
+    </div>
+    <div class="token-row">
+      <span class="token-dot" style="background:var(--peach-velvet)"></span>
+      <span class="token-name">constant.numeric</span>
+      <span class="token-sample"><span style="color:var(--peach-velvet)">42</span></span>
+    </div>
+    <div class="token-row">
+      <span class="token-dot" style="background:var(--pomegranate)"></span>
+      <span class="token-name">invalid</span>
+      <span class="token-sample"><span style="color:var(--pomegranate)">undefined_var</span></span>
+    </div>
+    <div class="token-row">
+      <span class="token-dot" style="background:var(--ash-mauve)"></span>
+      <span class="token-name">comment</span>
+      <span class="token-sample"
+        ><span style="color:var(--ash-mauve);font-style:italic">// ash mauve</span></span
+      >
+    </div>
+    <div class="token-row">
+      <span class="token-dot" style="background:var(--pearl)"></span>
+      <span class="token-name">variable</span>
+      <span class="token-sample"><span style="color:var(--pearl)">guest</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FLAVORS ============== -->
+<section>
+  <div class="section-head">
+    <div class="section-num">IV.</div>
+    <h2 class="section-title">{t('theme.flavors.title')}</h2>
+  </div>
+  <p class="section-subtitle">{t('theme.flavors.subtitle')}</p>
+
+  <p class="lead-text" set:html={flavorsLead} />
+
+  <div class="flavors-grid">
+    {
+      flavorList.map((f) => (
+        <button type="button" class="flavor-card" data-set-flavor={f.id}>
+          <div class="flavor-top">
+            <span class="flavor-name">{f.name}</span>
+            <span class="flavor-state">{t('theme.flavors.active')}</span>
+          </div>
+          <div class="strip" aria-hidden="true">
+            {f.strip.map((hex) => (
+              <span style={`background:${hex}`} />
+            ))}
+          </div>
+          <div class="flavor-mood">
+            {f.mood[lang]}{' '}
+            <span class="flavor-hex" style={`color:${f.accent}`}>
+              {f.accent}
+            </span>
+          </div>
+        </button>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  // Troca o flavor da página inteira e guarda a escolha. O Base.astro reaplica
+  // antes da primeira pintura nas próximas navegações.
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll<HTMLElement>('[data-set-flavor]');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const CRYPT: Record<string, string> = { base: '#16101A', amethyst: '#18101A' };
+
+  function applyFlavor(flavor: string) {
+    root.dataset.flavor = flavor;
+    try {
+      localStorage.setItem('carmilla-flavor', flavor);
+    } catch {}
+    if (themeMeta) themeMeta.setAttribute('content', CRYPT[flavor] ?? CRYPT.base);
+    buttons.forEach((b) => {
+      const on = b.dataset.setFlavor === flavor;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+  }
+
+  buttons.forEach((b) =>
+    b.addEventListener('click', () => applyFlavor(b.dataset.setFlavor ?? 'base')),
+  );
+
+  applyFlavor(root.dataset.flavor ?? 'base');
+</script>
+
+<style>
+  /* Conteúdo alternado por flavor */
+  :global([data-flavor='base']) .fl-amethyst {
+    display: none;
+  }
+  :global([data-flavor='amethyst']) .fl-base {
+    display: none;
+  }
+
+  /* ============== PALETA ============== */
+  .palette {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .swatch {
+    background: var(--velvet);
+    border-radius: 1.2rem;
+    overflow: hidden;
+    border: 1px solid rgba(var(--carmine-rgb), 0.12);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
+  }
+
+  .swatch:hover {
+    transform: translateY(-4px);
+    border-color: rgba(var(--carmine-rgb), 0.45);
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(var(--carmine-rgb), 0.15);
+  }
+
+  .swatch-color {
+    height: 140px;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 1rem;
+  }
+
+  .swatch-hex {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    backdrop-filter: blur(8px);
+    background: rgba(var(--crypt-rgb), 0.55);
+    color: var(--pearl);
+    border: 1px solid rgba(var(--pearl-rgb), 0.18);
+    letter-spacing: 0.5px;
+  }
+  /* Sobre um token claro o chip precisa de fundo mais opaco para não sumir. */
+  .swatch-hex.scrim {
+    background: rgba(var(--crypt-rgb), 0.7);
+  }
+
+  .swatch-meta {
+    padding: 1rem 1.1rem 1.2rem;
+  }
+
+  .swatch-name {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.01em;
+  }
+
+  .swatch-role {
+    font-size: 0.78rem;
+    color: var(--ash-mauve);
+    line-height: 1.4;
+  }
+  .swatch-role :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--carmine);
+  }
+
+  /* ============== EDITOR ============== */
+  .editor {
+    background: var(--boudoir);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow:
+      0 50px 100px -20px rgba(0, 0, 0, 0.7),
+      0 30px 60px -30px rgba(0, 0, 0, 0.8),
+      0 0 0 1px rgba(var(--carmine-rgb), 0.18),
+      inset 0 1px 0 rgba(var(--pearl-rgb), 0.04);
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    margin-top: 1rem;
+  }
+
+  .editor-titlebar {
+    background: var(--crypt);
+    padding: 0.65rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid rgba(var(--carmine-rgb), 0.1);
+  }
+
+  .traffic {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .traffic.r {
+    background: #ff5f57;
+  }
+  .traffic.y {
+    background: #febc2e;
+  }
+  .traffic.g {
+    background: #28c840;
+  }
+
+  .editor-titlebar .file {
+    margin-left: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--ash-mauve);
+  }
+  .editor-titlebar .file strong {
+    color: var(--pearl);
+    font-weight: 500;
+  }
+
+  .editor-tabs {
+    background: var(--tabstrip);
+    display: flex;
+    border-bottom: 1px solid rgba(var(--carmine-rgb), 0.08);
+    padding-left: 0.5rem;
+  }
+
+  .editor-tab {
+    padding: 0.7rem 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--ash-mauve);
+    border-right: 1px solid rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .editor-tab.active {
+    background: var(--boudoir);
+    color: var(--pearl);
+    border-top: 2px solid var(--carmine);
+    padding-top: calc(0.7rem - 2px);
+  }
+
+  .editor-tab .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--wisteria);
+  }
+
+  .editor-body {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    min-height: 480px;
+  }
+
+  .gutter {
+    background: var(--crypt);
+    padding: 1.2rem 0;
+    text-align: right;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: rgba(var(--ash-mauve-rgb), 0.5);
+    user-select: none;
+    line-height: 1.65;
+  }
+
+  .gutter .ln {
+    padding: 0 0.7rem;
+    position: relative;
+  }
+  .gutter .ln.modified::before,
+  .gutter .ln.added::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+  }
+  .gutter .ln.modified::before {
+    background: var(--wisteria);
+  }
+  .gutter .ln.added::before {
+    background: var(--absinthe);
+  }
+  .gutter .ln.active {
+    color: var(--peach-velvet);
+  }
+
+  .code-area {
+    padding: 1.2rem 1.2rem 1.2rem 0.5rem;
+    overflow-x: auto;
+    position: relative;
+  }
+
+  pre {
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: var(--pearl);
+    tab-size: 4;
+    position: relative;
+  }
+
+  pre :global(.current-line) {
+    background: rgba(var(--selection-rgb), 0.55);
+    display: block;
+    margin: 0 -1.2rem 0 -0.5rem;
+    padding: 0 1.2rem 0 0.5rem;
+    border-left: 2px solid var(--carmine);
+    padding-left: calc(0.5rem - 2px);
+  }
+
+  pre :global(.c) {
+    color: var(--ash-mauve);
+    font-style: italic;
+  }
+  pre :global(.k) {
+    color: var(--carmine);
+  }
+  pre :global(.i) {
+    color: var(--wisteria);
+    font-style: italic;
+  }
+  pre :global(.t) {
+    color: var(--verdigris);
+  }
+  pre :global(.f) {
+    color: var(--absinthe);
+  }
+  pre :global(.s) {
+    color: var(--champagne);
+  }
+  pre :global(.n) {
+    color: var(--peach-velvet);
+  }
+  pre :global(.err) {
+    color: var(--pomegranate);
+  }
+  pre :global(.p) {
+    color: var(--pearl);
+  }
+  pre :global(.punc) {
+    color: rgba(var(--pearl-rgb), 0.65);
+  }
+
+  .editor-statusbar {
+    background: var(--velvet);
+    padding: 0.35rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--pearl);
+    border-top: 1px solid rgba(var(--carmine-rgb), 0.12);
+  }
+  .editor-statusbar .branch {
+    color: var(--carmine);
+  }
+  .editor-statusbar .right {
+    margin-left: auto;
+    display: flex;
+    gap: 1.2rem;
+    color: var(--ash-mauve);
+  }
+  .editor-statusbar .right span strong {
+    color: var(--pearl);
+    font-weight: 500;
+  }
+
+  /* ============== TOKEN MAP ============== */
+  .token-map {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.6rem;
+    background: var(--velvet);
+    padding: 1.5rem;
+    border-radius: 1.2rem;
+    border: 1px solid rgba(var(--carmine-rgb), 0.1);
+  }
+  .token-row {
+    display: grid;
+    grid-template-columns: 14px 110px 1fr;
+    gap: 0.8rem;
+    align-items: center;
+    padding: 0.5rem 0.7rem;
+    border-radius: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    transition: background 0.2s;
+  }
+  .token-row:hover {
+    background: rgba(var(--carmine-rgb), 0.06);
+  }
+  .token-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+  }
+  .token-name {
+    color: var(--ash-mauve);
+  }
+  .token-sample {
+    color: var(--pearl);
+  }
+
+  /* ============== FLAVOR CARDS ============== */
+  .flavors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 1.2rem;
+  }
+  .flavor-card {
+    text-align: left;
+    cursor: pointer;
+    background: var(--velvet);
+    border: 1px solid rgba(var(--carmine-rgb), 0.12);
+    border-radius: 1.2rem;
+    padding: 1.4rem 1.5rem 1.3rem;
+    font-family: var(--font-body);
+    color: var(--pearl);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .flavor-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(var(--carmine-rgb), 0.45);
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7);
+  }
+  .flavor-card.active {
+    border-color: rgba(var(--carmine-rgb), 0.65);
+    box-shadow: 0 0 0 1px rgba(var(--carmine-rgb), 0.35), 0 20px 40px -20px rgba(0, 0, 0, 0.7);
+  }
+  .flavor-card .flavor-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.8rem;
+  }
+  .flavor-card .flavor-name {
+    font-family: var(--font-display);
+    font-size: 1.55rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .flavor-card .flavor-state {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--carmine);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .flavor-card.active .flavor-state {
+    opacity: 1;
+  }
+  .flavor-card .strip {
+    display: flex;
+    height: 36px;
+    border-radius: 9px;
+    overflow: hidden;
+    margin: 0.95rem 0 0.8rem;
+    border: 1px solid rgba(var(--pearl-rgb), 0.1);
+  }
+  .flavor-card .strip span {
+    flex: 1;
+  }
+  .flavor-card .flavor-mood {
+    font-size: 0.85rem;
+    color: var(--ash-mauve);
+    line-height: 1.55;
+  }
+  .flavor-card .flavor-hex {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+  }
+
+  @media (max-width: 680px) {
+    .palette {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.8rem;
+    }
+    .swatch-color {
+      height: 100px;
+    }
+    .editor-body {
+      grid-template-columns: 32px 1fr;
+    }
+    .gutter .ln {
+      padding: 0 0.4rem;
+      font-size: 0.7rem;
+    }
+    pre {
+      font-size: 0.72rem;
+    }
+    .editor-statusbar {
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      font-size: 0.65rem;
+    }
+  }
+</style>

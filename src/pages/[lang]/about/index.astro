@@ -1,0 +1,128 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { langPaths } from '../../../i18n/paths';
+import { useTranslations, getLangFromUrl, type Lang } from '../../../i18n/ui';
+
+export const getStaticPaths = langPaths;
+
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+// TODO(muowl): trocar por uma bio de verdade. O texto abaixo só afirma o que dá
+// para conferir nos repositórios — nada inventado sobre trajetória ou trabalho.
+const bio =
+  lang === 'pt'
+    ? [
+        'Sou muowl. Faço temas de editor e ferramentas pequenas, com atenção desproporcional a cor, tipografia e contraste.',
+        'Meu trabalho mais visível é o <strong>Carmilla</strong>: um tema escuro de identidade vinho/boudoir, com paleta documentada token a token, alvos de contraste WCAG definidos antes do código e nenhum hex herdado de outro tema.',
+        'Tudo que faço é aberto. Se algo aqui te for útil, pode usar.',
+      ]
+    : [
+        "I'm muowl. I make editor themes and small tools, with disproportionate attention to colour, type and contrast.",
+        'My most visible work is <strong>Carmilla</strong>: a dark theme with a wine/boudoir identity, a palette documented token by token, WCAG contrast targets set before any code, and not a single hex inherited from another theme.',
+        'Everything I make is open. If something here is useful to you, take it.',
+      ];
+
+const links = [
+  { label: 'GitHub', href: 'https://github.com/Muowl', text: 'github.com/Muowl' },
+  {
+    label: 'VS Code Marketplace',
+    href: 'https://marketplace.visualstudio.com/publishers/muowl',
+    text: 'marketplace/muowl',
+  },
+  { label: 'E-mail', href: 'mailto:felipe.mumei@gmail.com', text: 'felipe.mumei@gmail.com' },
+];
+---
+
+<Base title={`${t('about.title')} — muowl`} description={bio[0].replace(/<[^>]+>/g, '')}>
+  <div class="wrap">
+    <div class="section-head" style="margin-top:2rem">
+      <div class="section-num">❦</div>
+      <h1 class="section-title">{t('about.title')}</h1>
+    </div>
+    <p class="section-subtitle">{t('about.subtitle')}</p>
+
+    <div class="prose">
+      {bio.map((para) => <p set:html={para} />)}
+    </div>
+
+    <h2 class="contact-title">{t('about.contact')}</h2>
+    <ul class="links">
+      {
+        links.map((l) => (
+          <li>
+            <span class="label">{l.label}</span>
+            <a href={l.href}>{l.text}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .prose {
+    margin-left: 66px;
+    max-width: 68ch;
+  }
+  .prose p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(var(--pearl-rgb), 0.82);
+    margin-bottom: 1.2rem;
+  }
+  .prose :global(strong) {
+    color: var(--carmine);
+    font-weight: 600;
+  }
+
+  .contact-title {
+    margin: 3.5rem 0 1.2rem 66px;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 500;
+  }
+
+  .links {
+    list-style: none;
+    margin-left: 66px;
+    display: grid;
+    gap: 0.7rem;
+    max-width: 620px;
+  }
+  .links li {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid rgba(var(--carmine-rgb), 0.12);
+  }
+  .links .label {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ash-mauve);
+    min-width: 11rem;
+  }
+  .links a {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--carmine);
+    text-decoration: none;
+  }
+  .links a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 680px) {
+    .prose,
+    .links,
+    .contact-title {
+      margin-left: 0;
+    }
+    .links li {
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+  }
+</style>

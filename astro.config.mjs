@@ -1,0 +1,38 @@
+// @ts-check
+import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
+
+// O domínio final é muowl.dev. Antes do cutover o deploy de revisão roda com
+// SITE_URL=https://muowl.github.io para que canonical/OG/sitemap apontem para
+// onde o site realmente está naquele momento.
+const site = process.env.SITE_URL ?? 'https://muowl.dev';
+
+// https://astro.build/config
+export default defineConfig({
+  site,
+  trailingSlash: 'always',
+  i18n: {
+    locales: ['pt', 'en'],
+    defaultLocale: 'pt',
+    routing: {
+      // Ambos os idiomas têm URL própria (/pt/…, /en/…) — é isso que torna as
+      // duas versões indexáveis, ao contrário do toggle por localStorage.
+      prefixDefaultLocale: true,
+      // O redirect automático do Astro insere um meta-refresh de 2 s e ignora o
+      // idioma do visitante. `src/pages/index.astro` faz melhor: redireciona na
+      // hora e manda quem não fala português direto para /en/.
+      redirectToDefaultLocale: false,
+    },
+  },
+  integrations: [
+    sitemap({
+      i18n: {
+        defaultLocale: 'pt',
+        locales: { pt: 'pt-BR', en: 'en' },
+      },
+    }),
+  ],
+  build: {
+    inlineStylesheets: 'always',
+  },
+});

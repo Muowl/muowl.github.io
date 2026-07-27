@@ -1,0 +1,111 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { langPaths } from '../../../i18n/paths';
+import { useTranslations, getLangFromUrl, type Lang } from '../../../i18n/ui';
+import { projects } from '../../../data/projects';
+
+export const getStaticPaths = langPaths;
+
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const ordered = [...projects].sort((a, b) => b.year - a.year);
+---
+
+<Base title={`${t('projects.title')} — muowl`} description={t('projects.lead')}>
+  <div class="wrap">
+    <div class="section-head" style="margin-top:2rem">
+      <div class="section-num">❦</div>
+      <h1 class="section-title">{t('projects.title')}</h1>
+    </div>
+    <p class="section-subtitle">{t('projects.subtitle')}</p>
+    <p class="lead-text">{t('projects.lead')}</p>
+
+    <ul class="project-list">
+      {
+        ordered.map((p) => (
+          <li>
+            <a href={p.url}>
+              <div class="row">
+                <h2>{p.name}</h2>
+                <span class="year">{p.year}</span>
+              </div>
+              <p>{p.summary[lang]}</p>
+              <div class="stack">
+                {p.stack.map((s) => (
+                  <span>{s}</span>
+                ))}
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Base>
+
+<style>
+  .project-list {
+    list-style: none;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .project-list a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: var(--velvet);
+    border: 1px solid rgba(var(--carmine-rgb), 0.12);
+    border-radius: 1.2rem;
+    padding: 1.4rem 1.6rem 1.5rem;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .project-list a:hover {
+    transform: translateY(-3px);
+    border-color: rgba(var(--carmine-rgb), 0.45);
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7);
+  }
+
+  .row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  h2 {
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--carmine);
+  }
+
+  .year {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--ash-mauve);
+  }
+
+  p {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: rgba(var(--pearl-rgb), 0.75);
+    margin-top: 0.6rem;
+    max-width: 70ch;
+  }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1.1rem;
+  }
+  .stack span {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ash-mauve);
+    border: 1px solid rgba(var(--carmine-rgb), 0.18);
+    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+  }
+</style>

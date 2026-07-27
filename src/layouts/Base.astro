@@ -1,0 +1,461 @@
+---
+import { paletteCss, themeColor } from '../lib/palette';
+import {
+  getLangFromUrl,
+  stripLang,
+  localePath,
+  localeTag,
+  useTranslations,
+  type Lang,
+} from '../i18n/ui';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Caminho da imagem social relativo à raiz. */
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const { title, description, ogImage = '/og/default.png', noindex = false } = Astro.props;
+
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const bare = stripLang(Astro.url.pathname);
+
+const site = Astro.site ?? new URL('https://muowl.dev');
+const canonical = new URL(Astro.url.pathname, site);
+const ogUrl = new URL(ogImage, site);
+
+const nav = [
+  { key: 'nav.home', path: '/' },
+  { key: 'nav.themes', path: '/themes/' },
+  { key: 'nav.projects', path: '/projects/' },
+  { key: 'nav.about', path: '/about/' },
+] as const;
+---
+
+<html lang={localeTag[lang]} data-flavor="base">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content={themeColor('base')} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <link rel="canonical" href={canonical.href} />
+    <link rel="alternate" hreflang="pt-BR" href={new URL(localePath('pt', bare), site).href} />
+    <link rel="alternate" hreflang="en" href={new URL(localePath('en', bare), site).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL(localePath('en', bare), site).href} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogUrl.href} />
+    <meta property="og:locale" content={lang === 'pt' ? 'pt_BR' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl.href} />
+
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style is:global set:html={paletteCss()}></style>
+
+    {/* Aplica o flavor salvo antes da primeira pintura, para não piscar. */}
+    <script is:inline>
+      (function () {
+        try {
+          var f = localStorage.getItem('carmilla-flavor');
+          if (f === 'amethyst') {
+            document.documentElement.dataset.flavor = f;
+            var m = document.querySelector('meta[name="theme-color"]');
+            if (m) m.setAttribute('content', '#18101A');
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <a class="skip" href="#content">{t('nav.skip')}</a>
+
+    <header class="site-head">
+      <a class="brand" href={localePath(lang, '/')}>
+        <span class="brand-mark">❦</span>
+        <span class="brand-name">muowl</span>
+      </a>
+
+      <nav class="site-nav" aria-label={t('nav.home')}>
+        {
+          nav.map((item) => {
+            const href = localePath(lang, item.path);
+            const current = bare === item.path || (item.path !== '/' && bare.startsWith(item.path));
+            return (
+              <a href={href} aria-current={current ? 'page' : undefined}>
+                {t(item.key)}
+              </a>
+            );
+          })
+        }
+      </nav>
+
+      <div class="lang-switch" role="group" aria-label={t('lang.label')}>
+        <a href={localePath('pt', bare)} aria-current={lang === 'pt' ? 'true' : undefined}>PT</a>
+        <a href={localePath('en', bare)} aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
+      </div>
+    </header>
+
+    <main id="content">
+      <slot />
+    </main>
+
+    <footer class="site-foot">
+      <div class="ornament" aria-hidden="true">❦</div>
+      <p class="foot-meta">
+        {t('footer.built')} ·
+        <a href="https://github.com/Muowl">github.com/Muowl</a>
+      </p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--crypt);
+    font-family: var(--font-body);
+    color: var(--pearl);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  :root {
+    --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', monospace;
+  }
+
+  /* Grão sutil — atmosfera de filme antigo */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    mix-blend-mode: overlay;
+  }
+
+  /* Glow ambiente */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 0%, rgba(var(--carmine-rgb), 0.1), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 100%, rgba(var(--wisteria-rgb), 0.08), transparent 60%);
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .skip {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 300;
+    background: var(--carmine);
+    color: var(--crypt);
+    padding: 0.7rem 1.2rem;
+    border-radius: 0 0 0.6rem 0;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .skip:focus {
+    left: 0;
+  }
+
+  /* ============== HEADER ============== */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0.9rem clamp(1rem, 4vw, 2.5rem);
+    background: rgba(var(--crypt-rgb), 0.78);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(var(--carmine-rgb), 0.14);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    text-decoration: none;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--pearl);
+  }
+  .brand-mark {
+    color: var(--carmine);
+    font-size: 1rem;
+  }
+  .brand:hover .brand-name {
+    color: var(--carmine);
+  }
+  .brand-name {
+    transition: color 0.2s;
+  }
+
+  .site-nav {
+    display: flex;
+    gap: 1.4rem;
+    margin-left: auto;
+    flex-wrap: wrap;
+  }
+  .site-nav a {
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--ash-mauve);
+    padding: 0.2rem 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .site-nav a:hover {
+    color: var(--pearl);
+  }
+  .site-nav a[aria-current='page'] {
+    color: var(--pearl);
+    border-bottom-color: var(--carmine);
+  }
+
+  .lang-switch {
+    display: flex;
+    gap: 0.15rem;
+    padding: 0.2rem;
+    border-radius: 999px;
+    background: rgba(var(--velvet-rgb), 0.72);
+    border: 1px solid rgba(var(--carmine-rgb), 0.18);
+  }
+  .lang-switch a {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--ash-mauve);
+    text-decoration: none;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    transition: color 0.2s, background 0.2s;
+  }
+  .lang-switch a:hover {
+    color: var(--pearl);
+  }
+  .lang-switch a[aria-current='true'] {
+    background: var(--carmine);
+    color: var(--crypt);
+  }
+
+  /* ============== ESTRUTURA ============== */
+  main {
+    flex: 1;
+  }
+
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  .ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem auto;
+    color: var(--carmine);
+    font-size: 1.2rem;
+  }
+  .ornament::before,
+  .ornament::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--carmine), transparent);
+  }
+
+  section {
+    margin-top: 6rem;
+  }
+
+  .section-head {
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+  }
+
+  .section-num {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--carmine);
+    min-width: 50px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-weight: 500;
+    color: var(--pearl);
+    letter-spacing: -0.01em;
+  }
+
+  .section-subtitle {
+    margin-left: 66px;
+    color: var(--ash-mauve);
+    font-style: italic;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    margin-top: -0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .lead-text {
+    margin-left: 66px;
+    max-width: 760px;
+    color: rgba(var(--pearl-rgb), 0.75);
+    font-size: 0.98rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  /* ============== BOTÕES ============== */
+  .btn {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 0.95rem 1.9rem;
+    border-radius: 999px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .btn-primary {
+    background: var(--carmine);
+    color: var(--crypt);
+    box-shadow: 0 8px 30px -8px rgba(var(--carmine-rgb), 0.5);
+  }
+  .btn-primary:hover {
+    background: var(--carmine-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 38px -8px rgba(var(--carmine-rgb), 0.65);
+  }
+
+  .btn-ghost {
+    color: var(--pearl);
+    background: rgba(var(--velvet-rgb), 0.35);
+    border: 1px solid rgba(var(--carmine-rgb), 0.4);
+  }
+  .btn-ghost:hover {
+    border-color: var(--carmine);
+    background: rgba(var(--velvet-rgb), 0.7);
+    transform: translateY(-2px);
+  }
+
+  @media (min-width: 1500px) {
+    .btn {
+      font-size: 1.12rem;
+      padding: 1.05rem 2.3rem;
+    }
+  }
+
+  /* ============== FOOTER ============== */
+  .site-foot {
+    padding: 2rem 1.5rem 3rem;
+    text-align: center;
+    border-top: 1px solid rgba(var(--carmine-rgb), 0.15);
+  }
+  .foot-meta {
+    color: var(--ash-mauve);
+    font-size: 0.85rem;
+  }
+  .foot-meta a {
+    color: var(--carmine);
+    text-decoration: none;
+  }
+  .foot-meta a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 680px) {
+    .site-head {
+      flex-wrap: wrap;
+      gap: 0.8rem 1rem;
+    }
+    .site-nav {
+      order: 3;
+      width: 100%;
+      margin-left: 0;
+      gap: 1rem;
+    }
+    .wrap {
+      padding: 2rem 1rem 4rem;
+    }
+    section {
+      margin-top: 4rem;
+    }
+    .section-title {
+      font-size: 1.8rem;
+    }
+    .section-subtitle,
+    .lead-text {
+      margin-left: 0;
+    }
+    .section-head {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .section-num {
+      min-width: auto;
+    }
+  }
+</style>

@@ -1,0 +1,35 @@
+---
+import Base from '../../../layouts/Base.astro';
+import ThemeCard from '../../../components/ThemeCard.astro';
+import { langPaths } from '../../../i18n/paths';
+import { useTranslations, getLangFromUrl, type Lang } from '../../../i18n/ui';
+import { themes } from '../../../data/themes';
+
+export const getStaticPaths = langPaths;
+
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Base title={`${t('themes.title')} — muowl`} description={t('themes.lead')}>
+  <div class="wrap">
+    <div class="section-head" style="margin-top:2rem">
+      <div class="section-num">❦</div>
+      <h1 class="section-title">{t('themes.title')}</h1>
+    </div>
+    <p class="section-subtitle">{t('themes.subtitle')}</p>
+    <p class="lead-text">{t('themes.lead')}</p>
+
+    <div class="card-grid">
+      {themes.map((theme) => <ThemeCard theme={theme} lang={lang} />)}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.2rem;
+  }
+</style>

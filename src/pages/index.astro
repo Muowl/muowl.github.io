@@ -1,0 +1,42 @@
+---
+/**
+ * Raiz do site. Existe porque o i18n do Astro exige uma rota `/` para ancorar o
+ * redirect ao idioma padrão. O conteúdo abaixo é a rede de segurança: manda quem
+ * não fala português para /en/ e oferece os dois links caso o JS não rode.
+ */
+export const prerender = true;
+---
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>muowl</title>
+    <link rel="canonical" href="https://muowl.dev/pt/" />
+    <meta http-equiv="refresh" content="0; url=/pt/" />
+    <script is:inline>
+      (function () {
+        var pt = (navigator.language || 'pt').toLowerCase().startsWith('pt');
+        location.replace(pt ? '/pt/' : '/en/');
+      })();
+    </script>
+    <style>
+      body {
+        background: #16101a;
+        color: #f5eada;
+        font-family: system-ui, sans-serif;
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        gap: 1rem;
+      }
+      a {
+        color: #ff5fa2;
+      }
+    </style>
+  </head>
+  <body>
+    <p><a href="/pt/">Português</a> · <a href="/en/">English</a></p>
+  </body>
+</html>
