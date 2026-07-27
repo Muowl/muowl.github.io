@@ -63,9 +63,10 @@ export const themes: ThemeEntry[] = [
     },
     repo: 'https://github.com/Muowl/papilio-theme',
     marketplace: 'https://marketplace.visualstudio.com/items?itemName=muowl.papilio-theme',
-    // openVsx: só depois de publicado lá. Confira sempre pela API
+    // Antes de adicionar um openVsx, confirme pela API
     // (https://open-vsx.org/api/muowl/<slug>): a página devolve 200 mesmo para
     // extensão inexistente, porque é uma SPA — dá falso positivo.
+    openVsx: 'https://open-vsx.org/extension/muowl/papilio-theme',
     tokenCount: papilioSwatches().length,
     flavorCount: 1,
     strip: [
