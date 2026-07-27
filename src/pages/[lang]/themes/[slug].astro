@@ -2,6 +2,7 @@
 import Base from '../../../layouts/Base.astro';
 import CarmillaShowcase from '../../../components/CarmillaShowcase.astro';
 import PapilioShowcase from '../../../components/PapilioShowcase.astro';
+import { siteVarsCss as papilioSiteVars, BG as papilioBg } from '../../../lib/papilio';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { languages, localePath, useTranslations, type Lang } from '../../../i18n/ui';
@@ -22,12 +23,19 @@ const theme = themeBySlug(slug)!;
 const ogImage = existsSync(join(process.cwd(), 'public', 'og', `${slug}.png`))
   ? `/og/${slug}.png`
   : '/og/default.png';
+
+// A página de um tema é pintada por ele. O Carmilla já é a paleta do site, então
+// só os outros precisam reescrever as variáveis.
+const paletteOverride = slug === 'papilio' ? papilioSiteVars(':root') : undefined;
+const themeColorOverride = slug === 'papilio' ? papilioBg : undefined;
 ---
 
 <Base
   title={`${theme.name} — ${theme.tagline[lang]}`}
   description={theme.summary[lang]}
   ogImage={ogImage}
+  paletteOverride={paletteOverride}
+  themeColorOverride={themeColorOverride}
 >
   <div class="wrap">
     <header class="theme-hero">

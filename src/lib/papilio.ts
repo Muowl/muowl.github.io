@@ -12,6 +12,7 @@
 import { load } from 'js-yaml';
 import raw from '../data/papilio.palette.yaml?raw';
 import { contrastRatio, formatRatio, wcagLevel, type WcagLevel } from './contrast';
+import { rgbTriplet } from './palette';
 
 interface PapilioFile {
   meta: {
@@ -178,4 +179,49 @@ export function papilioCss(selector = '.papilio'): string {
     .map(([k, v]) => `--pp-${k}: ${v};`)
     .join('\n    ');
   return `${selector} {\n    ${vars}\n}`;
+}
+
+/** Clareia um hex puxando cada canal para o branco — só para o estado hover. */
+function lighten(hex: string, amount: number): string {
+  const n = parseInt(hex.replace('#', ''), 16);
+  const ch = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((c) =>
+    Math.round(c + (255 - c) * amount),
+  );
+  return '#' + ch.map((c) => c.toString(16).padStart(2, '0')).join('');
+}
+
+/**
+ * Reescreve as variáveis do site com as cores do Papilio, para que a página do
+ * tema seja pintada pelo próprio tema. O site inteiro usa os nomes da paleta do
+ * Carmilla como vocabulário de superfície; aqui cada um recebe o equivalente
+ * papiliano, então header, cards e rodapé acompanham sem nenhuma regra nova.
+ */
+export function siteVarsCss(selector: string): string {
+  const p = file.palette;
+  const pairs: [string, string][] = [
+    ['crypt', p.bg0],
+    ['crypt-rgb', rgbTriplet(p.bg0)],
+    ['tabstrip', p.bg1],
+    ['boudoir', p.bg1],
+    ['velvet', p.bg2],
+    ['velvet-rgb', rgbTriplet(p.bg2)],
+    ['selection', p.selection],
+    ['selection-rgb', rgbTriplet(p.selection)],
+    ['pearl', p.fg0],
+    ['pearl-rgb', rgbTriplet(p.fg0)],
+    ['carmine', p.crimson],
+    ['carmine-rgb', rgbTriplet(p.crimson)],
+    ['carmine-hover', lighten(p.crimson, 0.22)],
+    ['wisteria', p.plum],
+    ['wisteria-rgb', rgbTriplet(p.plum)],
+    ['verdigris', p.ghost],
+    ['absinthe', p.success],
+    ['champagne', p.gold],
+    ['peach-velvet', p.ember],
+    ['pomegranate', p.error],
+    ['ash-mauve', p.muted],
+    ['ash-mauve-rgb', rgbTriplet(p.muted)],
+    ['mauve', p.muted],
+  ];
+  return `${selector} {\n    ${pairs.map(([k, v]) => `--${k}: ${v};`).join('\n    ')}\n}`;
 }

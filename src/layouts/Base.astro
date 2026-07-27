@@ -15,9 +15,24 @@ interface Props {
   /** Caminho da imagem social relativo à raiz. */
   ogImage?: string;
   noindex?: boolean;
+  /**
+   * CSS que reescreve as variáveis da paleta para esta página — é como a página
+   * de um tema passa a ser pintada pelo próprio tema. Entra depois do bloco
+   * padrão, então vence por ordem de origem.
+   */
+  paletteOverride?: string;
+  /** Cor da barra do navegador, quando a página troca de paleta. */
+  themeColorOverride?: string;
 }
 
-const { title, description, ogImage = '/og/default.png', noindex = false } = Astro.props;
+const {
+  title,
+  description,
+  ogImage = '/og/default.png',
+  noindex = false,
+  paletteOverride,
+  themeColorOverride,
+} = Astro.props;
 
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -39,7 +54,7 @@ const nav = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content={themeColor('base')} />
+    <meta name="theme-color" content={themeColorOverride ?? themeColor('base')} />
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
@@ -71,20 +86,27 @@ const nav = [
     />
 
     <style is:global set:html={paletteCss()}></style>
+    {/* Depois do bloco padrão de propósito: é a ordem que faz o override vencer. */}
+    {paletteOverride && <style is:global set:html={paletteOverride}></style>}
 
-    {/* Aplica o flavor salvo antes da primeira pintura, para não piscar. */}
-    <script is:inline>
-      (function () {
-        try {
-          var f = localStorage.getItem('carmilla-flavor');
-          if (f === 'amethyst') {
-            document.documentElement.dataset.flavor = f;
-            var m = document.querySelector('meta[name="theme-color"]');
-            if (m) m.setAttribute('content', '#18101A');
-          }
-        } catch (e) {}
-      })();
-    </script>
+    {
+      /* Aplica o flavor salvo antes da primeira pintura, para não piscar.
+         Numa página que troca de paleta o flavor do Carmilla não se aplica. */
+      !paletteOverride && (
+        <script is:inline>
+          {`(function () {
+          try {
+            var f = localStorage.getItem('carmilla-flavor');
+            if (f === 'amethyst') {
+              document.documentElement.dataset.flavor = f;
+              var m = document.querySelector('meta[name="theme-color"]');
+              if (m) m.setAttribute('content', '#18101A');
+            }
+          } catch (e) {}
+        })();`}
+        </script>
+      )
+    }
   </head>
 
   <body>
