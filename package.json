@@ -16,5 +16,8 @@
     "@astrojs/sitemap": "^3.7.3",
     "astro": "^7.1.4",
     "smol-toml": "^1.7.1"
+  },
+  "devDependencies": {
+    "@emnapi/runtime": "^1.11.3"
   }
 }

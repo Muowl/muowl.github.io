@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, passthroughImageService } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 // O domínio final é muowl.dev. Antes do cutover o deploy de revisão roda com
@@ -35,5 +35,10 @@ export default defineConfig({
   ],
   build: {
     inlineStylesheets: 'always',
+  },
+  // Nenhuma imagem passa por astro:assets — as que existem são arquivos estáticos
+  // em public/. O passthrough evita carregar o sharp à toa no build.
+  image: {
+    service: passthroughImageService(),
   },
 });

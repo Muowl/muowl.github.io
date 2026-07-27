@@ -63,6 +63,17 @@ languages are indexable. Rules:
 - The custom domain is configured in the repo's Pages settings. If a `CNAME` file
   is ever added to `public/`, it must agree with that setting.
 
+## Why `@emnapi/runtime` is a devDependency
+
+Nothing in this site imports it. It is declared because npm on Windows resolves
+the lockfile without the `@emnapi/*` entries that `@img/sharp-libvips-linux-*`
+needs, and the Linux runner's `npm ci` then fails with `EUSAGE — Missing:
+@emnapi/runtime`. Declaring it keeps the lock complete on every platform.
+
+Do not "clean it up". `--omit=optional` is *not* an alternative: it also drops
+the esbuild and Astro compiler platform binaries, which are required — the build
+dies with `MODULE_NOT_FOUND`.
+
 ## Conventions
 
 - Commit messages in **Portuguese**, sentence-style subject. Solo repo, commits go
