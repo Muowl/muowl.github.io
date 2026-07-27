@@ -62,6 +62,8 @@ export const themes: ThemeEntry[] = [
       en: 'A dark theme built from a character’s colours: raw anchors pulled from the art, then adjusted one by one until they pass contrast on screen.',
     },
     repo: 'https://github.com/Muowl/papilio-theme',
+    marketplace: 'https://marketplace.visualstudio.com/items?itemName=muowl.papilio-theme',
+    openVsx: 'https://open-vsx.org/extension/muowl/papilio-theme',
     tokenCount: papilioSwatches().length,
     flavorCount: 1,
     strip: [
@@ -73,7 +75,7 @@ export const themes: ThemeEntry[] = [
       papilioPalette.gold,
     ],
     accent: papilioPalette.crimson.toUpperCase(),
-    published: false,
+    published: true,
     disclaimer: {
       pt: 'Projeto de fã, sem vínculo com a HoYoverse. Inspirado na paleta da Hu Tao (Genshin Impact); todas as marcas pertencem aos seus donos.',
       en: 'A fan-made project, unaffiliated with HoYoverse. Inspired by Hu Tao’s palette (Genshin Impact); all trademarks belong to their owners.',
