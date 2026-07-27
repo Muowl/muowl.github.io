@@ -30,7 +30,11 @@ export default defineConfig({
       // prefixDefaultLocale, colapsava /pt/ em / — que é justamente a página de
       // redirect marcada como noindex. As alternâncias hreflang já vão no <head>
       // de cada página, que é forma igualmente válida de declará-las.
-      filter: (page) => new URL(page).pathname !== '/',
+      //
+      // Só entram rotas sob um idioma. Tudo que fica fora (/ e /themes/<slug>/)
+      // é página de redirect marcada como noindex — pedir indexação delas seria
+      // contradizer a própria meta tag.
+      filter: (page) => /^\/(pt|en)\//.test(new URL(page).pathname),
     }),
   ],
   build: {

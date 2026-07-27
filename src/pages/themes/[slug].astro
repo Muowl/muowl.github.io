@@ -1,0 +1,49 @@
+---
+/**
+ * URL neutra de idioma para cada tema: /themes/<slug>/.
+ *
+ * É o endereço que vai em links externos — Marketplace, README, carmilla.toml —
+ * porque não escolhe idioma por nós e não muda se a estrutura interna mudar. O
+ * README do Marketplace, em particular, só é atualizado quando a extensão é
+ * republicada, então esse link precisa envelhecer bem.
+ */
+import { themes } from '../../data/themes';
+
+export function getStaticPaths() {
+  return themes.map((theme) => ({ params: { slug: theme.slug }, props: { theme } }));
+}
+
+const { theme } = Astro.props;
+const pt = `/pt/themes/${theme.slug}/`;
+const en = `/en/themes/${theme.slug}/`;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>{theme.name}</title>
+    <link rel="canonical" href={`https://muowl.dev${en}`} />
+    <meta http-equiv="refresh" content={`0; url=${en}`} />
+    <script is:inline define:vars={{ pt, en }}>
+      location.replace((navigator.language || 'en').toLowerCase().startsWith('pt') ? pt : en);
+    </script>
+    <style>
+      body {
+        background: #16101a;
+        color: #f5eada;
+        font-family: system-ui, sans-serif;
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+      }
+      a {
+        color: #ff5fa2;
+      }
+    </style>
+  </head>
+  <body>
+    <p><a href={pt}>Português</a> · <a href={en}>English</a></p>
+  </body>
+</html>
