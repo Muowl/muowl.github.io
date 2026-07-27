@@ -1,6 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import CarmillaShowcase from '../../../components/CarmillaShowcase.astro';
+import PapilioShowcase from '../../../components/PapilioShowcase.astro';
 import { languages, localePath, useTranslations, type Lang } from '../../../i18n/ui';
 import { themes, themeBySlug } from '../../../data/themes';
 
@@ -28,6 +29,7 @@ const theme = themeBySlug(slug)!;
             ? `Tema escuro · Paleta autoral · v${theme.version}`
             : `Dark theme · Original palette · v${theme.version}`
         }
+        {!theme.published && <span class="wip">{t('theme.wip')}</span>}
       </div>
       <h1>{theme.name}</h1>
       <div class="subtitle">{theme.tagline[lang]}</div>
@@ -64,9 +66,20 @@ const theme = themeBySlug(slug)!;
           {t('theme.github')}
         </a>
       </div>
+
+      {!theme.published && <p class="wip-note">{t('theme.wip.note')}</p>}
     </header>
 
     {slug === 'carmilla' && <CarmillaShowcase />}
+    {slug === 'papilio' && <PapilioShowcase />}
+
+    {
+      theme.disclaimer && (
+        <p class="disclaimer">
+          <strong>⚠</strong> {theme.disclaimer[lang]}
+        </p>
+      )
+    }
 
     <p class="back">
       <a href={localePath(lang, '/themes/')}>← {t('theme.back')}</a>
@@ -127,6 +140,41 @@ const theme = themeBySlug(slug)!;
     flex-wrap: wrap;
     gap: 1.2rem;
     margin-top: 2.5rem;
+  }
+
+  .wip {
+    display: inline-block;
+    margin-left: 0.8rem;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(var(--carmine-rgb), 0.15);
+    border: 1px solid rgba(var(--carmine-rgb), 0.4);
+    color: var(--carmine);
+    letter-spacing: 0.14em;
+  }
+
+  .wip-note {
+    margin: 1.6rem auto 0;
+    max-width: 46ch;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--ash-mauve);
+  }
+
+  .disclaimer {
+    margin: 4rem auto 0;
+    max-width: 70ch;
+    padding: 1rem 1.3rem;
+    border-radius: 0.8rem;
+    background: rgba(var(--velvet-rgb), 0.5);
+    border: 1px solid rgba(var(--carmine-rgb), 0.18);
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--ash-mauve);
+  }
+  .disclaimer strong {
+    color: var(--champagne);
+    margin-right: 0.3rem;
   }
 
   .back {

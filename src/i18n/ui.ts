@@ -66,6 +66,17 @@ export const ui = {
     'theme.flavors.subtitle': 'o mesmo tema, sob outra luz',
     'theme.flavors.active': 'ativo',
     'theme.back': 'Todos os temas',
+    'theme.wip': 'em construção',
+    'theme.wip.note':
+      'Ainda não publicado no Marketplace. A paleta já está fechada e o código é aberto — dá para instalar do fonte.',
+    'theme.anchors.title': 'Da personagem à tela',
+    'theme.anchors.subtitle': 'a cor bruta e a cor que sobreviveu ao contraste',
+    'theme.anchors.lead':
+      'As âncoras são as cores tiradas direto da arte. Quase nenhuma passa em contraste sobre o fundo do editor — então cada uma foi ajustada até passar, preservando o matiz. As razões abaixo são calculadas sobre o fundo, não copiadas de anotação.',
+    'theme.anchors.raw': 'âncora',
+    'theme.anchors.adjusted': 'token',
+    'theme.roles.title': 'Papéis',
+    'theme.roles.subtitle': 'o que cada token colore no código',
 
     'projects.title': 'Projetos',
     'projects.subtitle': 'o que anda em construção',
@@ -125,6 +136,17 @@ export const ui = {
     'theme.flavors.subtitle': 'the same theme in a different light',
     'theme.flavors.active': 'active',
     'theme.back': 'All themes',
+    'theme.wip': 'work in progress',
+    'theme.wip.note':
+      'Not on the Marketplace yet. The palette is settled and the code is open — you can install it from source.',
+    'theme.anchors.title': 'From the character to the screen',
+    'theme.anchors.subtitle': 'the raw colour and the one that survived contrast',
+    'theme.anchors.lead':
+      'The anchors are colours taken straight from the art. Almost none of them pass contrast over the editor background — so each was lifted until it did, keeping its hue. The ratios below are computed against that background, not copied from a note.',
+    'theme.anchors.raw': 'anchor',
+    'theme.anchors.adjusted': 'token',
+    'theme.roles.title': 'Roles',
+    'theme.roles.subtitle': 'what each token colours in code',
 
     'projects.title': 'Projects',
     'projects.subtitle': 'what is being built',

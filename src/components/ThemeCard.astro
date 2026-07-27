@@ -19,14 +19,27 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
   <div class="body">
     <div class="top">
       <h3>{theme.name}</h3>
-      <span class="version">v{theme.version}</span>
+      <span class="version">
+        {!theme.published && <span class="wip">{t('theme.wip')}</span>}
+        v{theme.version}
+      </span>
     </div>
     <p class="tagline">{theme.tagline[lang]}</p>
     <p class="summary">{theme.summary[lang]}</p>
     <div class="facts">
       <span>{theme.tokenCount} {t('themes.tokens')}</span>
-      <span class="dot" aria-hidden="true">·</span>
-      <span>{theme.flavorCount} {t('themes.flavors')}</span>
+      {
+        theme.flavorCount > 1 && (
+          <>
+            <span class="dot" aria-hidden="true">
+              ·
+            </span>
+            <span>
+              {theme.flavorCount} {t('themes.flavors')}
+            </span>
+          </>
+        )
+      }
     </div>
   </div>
 </a>
@@ -78,6 +91,20 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
     font-family: var(--font-mono);
     font-size: 0.72rem;
     color: var(--ash-mauve);
+    white-space: nowrap;
+  }
+
+  .wip {
+    display: inline-block;
+    margin-right: 0.45rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(var(--carmine-rgb), 0.15);
+    border: 1px solid rgba(var(--carmine-rgb), 0.4);
+    color: var(--carmine);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
   .tagline {

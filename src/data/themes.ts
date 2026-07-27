@@ -4,6 +4,7 @@
  * detalhe fica em `src/pages/[lang]/themes/<slug>.astro`.
  */
 import { flavors, tokens } from '../lib/palette';
+import { palette as papilioPalette, swatches as papilioSwatches } from '../lib/papilio';
 
 export interface ThemeEntry {
   slug: string;
@@ -20,7 +21,10 @@ export interface ThemeEntry {
   /** Amostra de cores do card da listagem. */
   strip: string[];
   accent: string;
+  /** `false` esconde os botões de instalar e liga o selo de "em construção". */
   published: boolean;
+  /** Aviso legal obrigatório na página, quando o tema é fan-made. */
+  disclaimer?: { pt: string; en: string };
 }
 
 export const themes: ThemeEntry[] = [
@@ -44,6 +48,36 @@ export const themes: ThemeEntry[] = [
     strip: flavors()[0].strip,
     accent: flavors()[0].accent,
     published: true,
+  },
+  {
+    slug: 'papilio',
+    name: 'Papilio',
+    version: '0.1.0',
+    tagline: {
+      pt: 'marrom-avermelhado, carmesim e ouro antigo',
+      en: 'deep red-brown, crimson and antique gold',
+    },
+    summary: {
+      pt: 'Tema escuro construído a partir das cores de uma personagem: âncoras brutas extraídas da arte, depois ajustadas uma a uma até passarem em contraste na tela.',
+      en: 'A dark theme built from a character’s colours: raw anchors pulled from the art, then adjusted one by one until they pass contrast on screen.',
+    },
+    repo: 'https://github.com/Muowl/papilio-theme',
+    tokenCount: papilioSwatches().length,
+    flavorCount: 1,
+    strip: [
+      papilioPalette.bg0,
+      papilioPalette.bg1,
+      papilioPalette.bg2,
+      papilioPalette.selection,
+      papilioPalette.crimson,
+      papilioPalette.gold,
+    ],
+    accent: papilioPalette.crimson.toUpperCase(),
+    published: false,
+    disclaimer: {
+      pt: 'Projeto de fã, sem vínculo com a HoYoverse. Inspirado na paleta da Hu Tao (Genshin Impact); todas as marcas pertencem aos seus donos.',
+      en: 'A fan-made project, unaffiliated with HoYoverse. Inspired by Hu Tao’s palette (Genshin Impact); all trademarks belong to their owners.',
+    },
   },
 ];
 

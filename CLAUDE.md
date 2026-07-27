@@ -13,19 +13,31 @@ theme (palette, VS Code port, changelog); this repo only presents it.
 
 ## The palette rule — read this before touching any colour
 
-**Never write a hex literal in this repo.** The palette lives in
-`Muowl/carmilla` as `palette/carmilla.toml`, and `src/data/carmilla.palette.toml`
-is a byte-identical copy of it, refreshed by:
+**Never write a hex literal in this repo.** Each theme's palette lives in that
+theme's own repo, and `src/data/` holds byte-identical copies refreshed by:
 
 ```sh
-npm run sync:palette           # busca de main e reescreve a cópia
-npm run sync:palette -- --check   # falha se estiver desatualizada (roda no CI)
+npm run sync:palette              # busca todas e reescreve as cópias
+npm run sync:palette -- --check   # falha se alguma estiver desatualizada (roda no CI)
 ```
 
-`src/lib/palette.ts` parses that TOML and is the only source of colour in the
-site: CSS custom properties, swatch grid, token map and flavor cards all derive
-from it. The whole point of this repo's structure is that a colour changes in one
-place. Adding a hardcoded hex re-creates the drift problem it was built to solve.
+| Tema     | Fonte                                       | Cópia                            | Loader              |
+| -------- | ------------------------------------------- | -------------------------------- | ------------------- |
+| Carmilla | `Muowl/carmilla` → `palette/carmilla.toml`  | `src/data/carmilla.palette.toml` | `src/lib/palette.ts` |
+| Papilio  | `Muowl/papilio-theme` → `palette/papilio.yaml` | `src/data/papilio.palette.yaml` | `src/lib/papilio.ts` |
+
+The format is each theme repo's choice — TOML and YAML both, parsed by
+`smol-toml` and `js-yaml`. Do not convert one to the other to "standardise":
+those files are read by the themes' own generators, which would break.
+
+These loaders are the only source of colour in the site: CSS custom properties,
+swatch grids, token maps and flavor cards all derive from them. A colour changes
+in exactly one place. Adding a hardcoded hex re-creates the drift problem this
+structure was built to solve.
+
+**Contrast ratios are computed, never typed.** `src/lib/contrast.ts` implements
+WCAG relative luminance; the Papilio page measures every token against its own
+background at build time. If a palette changes, the published ratios follow.
 
 Two colour values are deliberately *not* in the TOML, and are documented where
 they live in `src/lib/palette.ts`: `TABSTRIP` (chrome of the editor mockup, not a

@@ -15,9 +15,11 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
     "astro": "^7.1.4",
+    "js-yaml": "^5.2.2",
     "smol-toml": "^1.7.1"
   },
   "devDependencies": {
-    "@emnapi/runtime": "^1.11.3"
+    "@emnapi/runtime": "^1.11.3",
+    "@types/js-yaml": "^4.0.9"
   }
 }
