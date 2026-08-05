@@ -4,7 +4,11 @@
  * detalhe fica em `src/pages/[lang]/themes/<slug>.astro`.
  */
 import { flavors, tokens } from '../lib/palette';
-import { palette as papilioPalette, swatches as papilioSwatches } from '../lib/papilio';
+import {
+  flavors as papilioFlavors,
+  palette as papilioPalette,
+  swatches as papilioSwatches,
+} from '../lib/papilio';
 
 export interface ThemeEntry {
   slug: string;
@@ -52,14 +56,14 @@ export const themes: ThemeEntry[] = [
   {
     slug: 'papilio',
     name: 'Papilio',
-    version: '0.1.0',
+    version: '0.2.0',
     tagline: {
       pt: 'marrom-avermelhado, carmesim e ouro antigo',
       en: 'deep red-brown, crimson and antique gold',
     },
     summary: {
-      pt: 'Tema escuro construído a partir das cores de uma personagem: âncoras brutas extraídas da arte, depois ajustadas uma a uma até passarem em contraste na tela.',
-      en: 'A dark theme built from a character’s colours: raw anchors pulled from the art, then adjusted one by one until they pass contrast on screen.',
+      pt: 'Tema escuro a partir das cores de uma personagem: âncoras da arte, escada de luminosidade para daltonismo, e a variante Blood Blossom com mais sangue. Três gates (contraste, daltonismo, tokens) e export Base24.',
+      en: 'A dark theme from a character’s colours: art anchors, a lightness ladder for colour blindness, and the Blood Blossom variant with more blood. Three gates (contrast, CVD, tokens) and a Base24 export.',
     },
     repo: 'https://github.com/Muowl/papilio-theme',
     marketplace: 'https://marketplace.visualstudio.com/items?itemName=muowl.papilio-theme',
@@ -68,7 +72,7 @@ export const themes: ThemeEntry[] = [
     // extensão inexistente, porque é uma SPA — dá falso positivo.
     openVsx: 'https://open-vsx.org/extension/muowl/papilio-theme',
     tokenCount: papilioSwatches().length,
-    flavorCount: 1,
+    flavorCount: papilioFlavors().length,
     strip: [
       papilioPalette.bg0,
       papilioPalette.bg1,

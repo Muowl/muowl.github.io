@@ -25,11 +25,11 @@ export const projects: ProjectEntry[] = [
   {
     name: 'papilio-theme',
     summary: {
-      pt: 'Tema construído a partir das cores de uma personagem: âncoras extraídas da arte, paleta em YAML e um gerador que checa contraste antes de emitir o tema.',
-      en: 'A theme built from a character’s colours: anchors pulled from the art, a YAML palette, and a generator that checks contrast before emitting the theme.',
+      pt: 'Tema a partir de âncoras de personagem: paleta em YAML, variante Blood Blossom, export Base24 e três gates de build (contraste WCAG, daltonismo e tokenização real).',
+      en: 'A theme from character anchors: YAML palette, Blood Blossom variant, Base24 export, and three build gates (WCAG contrast, colour blindness and real tokenisation).',
     },
     url: 'https://github.com/Muowl/papilio-theme',
-    stack: ['TypeScript', 'YAML', 'VS Code'],
+    stack: ['TypeScript', 'YAML', 'VS Code', 'Base24'],
     year: 2026,
   },
 ];

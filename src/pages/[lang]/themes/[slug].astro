@@ -2,7 +2,11 @@
 import Base from '../../../layouts/Base.astro';
 import CarmillaShowcase from '../../../components/CarmillaShowcase.astro';
 import PapilioShowcase from '../../../components/PapilioShowcase.astro';
-import { siteVarsCss as papilioSiteVars, BG as papilioBg } from '../../../lib/papilio';
+import {
+  siteVarsCss as papilioSiteVars,
+  BG as papilioBg,
+  flavors as papilioFlavors,
+} from '../../../lib/papilio';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { languages, localePath, useTranslations, type Lang } from '../../../i18n/ui';
@@ -25,9 +29,14 @@ const ogImage = existsSync(join(process.cwd(), 'public', 'og', `${slug}.png`))
   : '/og/default.png';
 
 // A página de um tema é pintada por ele. O Carmilla já é a paleta do site, então
-// só os outros precisam reescrever as variáveis.
+// só os outros precisam reescrever as variáveis. O CSS do Papilio já emite os
+// dois flavors; o script abaixo reaplica o escolhido antes da primeira pintura.
 const paletteOverride = slug === 'papilio' ? papilioSiteVars(':root') : undefined;
 const themeColorOverride = slug === 'papilio' ? papilioBg : undefined;
+const papilioThemeColors =
+  slug === 'papilio'
+    ? Object.fromEntries(papilioFlavors().map((f) => [f.id, f.bg]))
+    : null;
 ---
 
 <Base
@@ -37,6 +46,22 @@ const themeColorOverride = slug === 'papilio' ? papilioBg : undefined;
   paletteOverride={paletteOverride}
   themeColorOverride={themeColorOverride}
 >
+  {
+    papilioThemeColors && (
+      <script is:inline define:vars={{ papilioThemeColors }}>
+        {`(function () {
+          try {
+            var f = localStorage.getItem('papilio-flavor');
+            if (f && papilioThemeColors[f]) {
+              document.documentElement.dataset.flavor = f;
+              var m = document.querySelector('meta[name="theme-color"]');
+              if (m) m.setAttribute('content', papilioThemeColors[f]);
+            }
+          } catch (e) {}
+        })();`}
+      </script>
+    )
+  }
   <div class="wrap">
     <header class="theme-hero">
       <div class="eyebrow">

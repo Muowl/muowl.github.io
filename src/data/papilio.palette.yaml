@@ -56,10 +56,19 @@ palette:
   fg1: "#a39187"        # L 0.67 — texto secundário, operadores, pontuação
   muted: "#897987"      # L 0.59 — comentários. Migrou do marrom-avermelhado para o
                         # mauve das sombras do cabelo: sai do aglomerado quente e
-                        # deixa de colidir com crimson sob protanopia (2.9 → 8.6)
+                        # deixa de colidir com crimson sob protanopia (2.9 → 8.6 na
+                        # época; 7.1 com o crimson clareado — piso 6.5 no check_cvd)
 
   # Cores de identidade
-  crimson: "#df494d"    # L 0.62 — a cor-assinatura (olhos / pontas do cabelo)
+  crimson: "#ea5356"    # L 0.65 — a cor-assinatura (olhos / pontas do cabelo).
+                        # Subiu de L 0.62 (#df494d): era o token mais apertado do
+                        # tema, 4.54:1 contra bg0 — 0.04 acima do piso, sem margem.
+                        # Matiz (h 23) e croma (C 0.186) intactos, só a L mudou.
+                        # O teto é a separação de `fg1` sob protanopia: tag e
+                        # pontuação encostam em <div>, e acima de L ~0.66 essa
+                        # distância cai abaixo de ΔE 10 (e o canal vermelho satura
+                        # em ff, arrastando o matiz). L 0.65 pega +13% de contraste
+                        # antes desse joelho
   dusk: "#6d84c4"       # L 0.62 — índigo do céu noturno; ATRIBUTOS além do ANSI blue
   plum: "#c796d3"       # L 0.74 — violeta do laço do chapéu e das sombras ameixa
   ember: "#f0a068"      # L 0.77 — laranja-brasa (pyro)
@@ -84,7 +93,7 @@ palette:
                         # Escurecido: separa de gold e ember, e fica mais discreto
 
   # Diversos
-  cursor: "#df494d"     # acompanha crimson
+  cursor: "#ea5356"     # acompanha crimson — cópia manual, manter em sincronia
 
 # ------------------------------------------------------------
 # ROLES: mapeamento semântico. Valores referenciam nomes da paleta.
@@ -104,6 +113,12 @@ roles:
     comment: muted
     operator: fg1
     punctuation: fg1
+    # Tag em crimson é decisão fechada (2026-07): candidatos "mais calmos"
+    # (terracota #dd7a68, argila #d08b76) foram medidos e o par tag ×
+    # pontuação caiu para ΔE 4.6 e 2.7 sob protanopia — dessaturar o
+    # vermelho o empurra exatamente para o cinza-quente de fg1. Quem quiser
+    # menos vermelho no markup é público da variante saturada/sóbria, não
+    # deste role. Ver pares nomeados em scripts/check_cvd.ts.
     tag: crimson          # tags HTML/JSX
     # Atributo em dusk, não em gold. Gold e ember ocupavam o mesmo ponto para
     # quem tem daltonismo vermelho-verde (ΔE 0.6), e <Componente atributo=…>
@@ -126,6 +141,12 @@ roles:
   ui:
     accent: crimson       # badges, foco, statusbar highlights
     link: ghost
+    # Caracteres casados no quick open e no suggest. Era accent (crimson),
+    # que ficava 4.35:1 sobre bg2 — abaixo do piso, e clarear o crimson de
+    # novo custaria daltonismo. Ember passa folgado em todos os fundos de
+    # lista e é a brasa pyro: o realce vira faísca, e o crimson continua
+    # escasso como manda o guia.
+    list-highlight: ember
     terminal-bg: bg0      # terminal usa a tela do editor: bg1 derrubava o ANSI red para 4.32:1
 
   # Os 16 slots ANSI. Só as 8 bases são decididas aqui: o gerador deriva

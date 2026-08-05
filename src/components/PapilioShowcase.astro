@@ -6,16 +6,62 @@
  * vêm do YAML e do cálculo WCAG. As seções ficam dentro de `.papilio`, que carrega
  * as variáveis do tema e o próprio fundo: mostrar as cores sobre o boudoir do
  * Carmilla mentiria justamente sobre o contraste que a página afirma medir.
+ *
+ * A variante Blood Blossom é um overlay: o switcher troca `data-flavor` no
+ * `<html>` e as variáveis `--pp-*` / do site reescrevem a página inteira.
  */
-import { swatches, anchorPairs, syntaxRoles, papilioCss, BG } from '../lib/papilio';
+import {
+  swatches,
+  anchorPairs,
+  syntaxRoles,
+  flavors,
+  papilioCss,
+} from '../lib/papilio';
 import { getLangFromUrl, useTranslations, type Lang } from '../i18n/ui';
 
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const tokens = swatches();
-const pairs = anchorPairs();
-const roles = syntaxRoles();
+const tokensBase = swatches('base');
+const tokensBlood = swatches('blood-blossom');
+const pairsBase = anchorPairs('base');
+const pairsBlood = anchorPairs('blood-blossom');
+const rolesBase = syntaxRoles('base');
+const rolesBlood = syntaxRoles('blood-blossom');
+const flavorList = flavors();
+
+/** Junta base e Blood Blossom por token para o switcher alternar hex/razão. */
+const tokenRows = tokensBase.map((tk, i) => ({
+  key: tk.key,
+  label: tk.label,
+  base: { hex: tk.hex, ratio: tk.ratio, level: tk.level },
+  blood: {
+    hex: tokensBlood[i].hex,
+    ratio: tokensBlood[i].ratio,
+    level: tokensBlood[i].level,
+  },
+  changes: tokensBlood[i].hex !== tk.hex,
+}));
+
+const pairRows = pairsBase.map((p, i) => ({
+  note: p.note,
+  base: p,
+  blood: pairsBlood[i],
+}));
+
+const roleRows = rolesBase.map((r, i) => ({
+  role: r.role,
+  token: r.token,
+  baseHex: r.hex,
+  bloodHex: rolesBlood[i].hex,
+}));
+
+const flavorsLead =
+  lang === 'pt'
+    ? 'A variante é um <strong>overlay</strong>: só os tokens que mudam. Roles, escada de luminosidade e âncoras vêm da base — as decisões semânticas continuam num lugar só. <strong>Blood Blossom</strong> sobe o croma com a mesma L (o que protege daltonismo) e afunda os fundos em vinho. Escolha abaixo e veja a página inteira mudar de luz.'
+    : 'The variant is an <strong>overlay</strong>: only the tokens that change. Roles, the lightness ladder and anchors come from the base — semantic decisions stay in one place. <strong>Blood Blossom</strong> raises chroma at the same L (what protects colour blindness) and sinks the backgrounds into wine. Pick below and watch the whole page change its light.';
+
+const themeColors = Object.fromEntries(flavorList.map((f) => [f.id, f.bg]));
 ---
 
 <style is:global set:html={papilioCss()}></style>
@@ -26,22 +72,44 @@ const roles = syntaxRoles();
     <div class="section-num">I.</div>
     <h2 class="section-title">{t('theme.palette.title')}</h2>
   </div>
-  <p class="section-subtitle">{tokens.length} tokens</p>
+  <p class="section-subtitle">{tokenRows.length} tokens</p>
 
   <div class="papilio panel">
     <div class="grid">
       {
-        tokens.map((tk) => (
+        tokenRows.map((tk) => (
           <div class="swatch">
-            <div class="chip" style={`background:${tk.hex}`} />
+            <div class="chip" style={`background:var(--pp-${tk.key})`} />
             <div class="meta">
               <div class="name">
                 {tk.key}
-                {tk.ratio && (
-                  <span class:list={['ratio', tk.level === 'fail' ? 'bad' : 'ok']}>{tk.ratio}</span>
+                {tk.base.ratio && (
+                  <>
+                    <span
+                      class:list={[
+                        'ratio',
+                        'fl-base',
+                        tk.base.level === 'fail' ? 'bad' : 'ok',
+                      ]}
+                    >
+                      {tk.base.ratio}
+                    </span>
+                    <span
+                      class:list={[
+                        'ratio',
+                        'fl-blood-blossom',
+                        tk.blood.level === 'fail' ? 'bad' : 'ok',
+                      ]}
+                    >
+                      {tk.blood.ratio}
+                    </span>
+                  </>
                 )}
               </div>
-              <div class="hex">{tk.hex}</div>
+              <div class="hex">
+                <span class="fl-base">{tk.base.hex}</span>
+                <span class="fl-blood-blossom">{tk.blood.hex}</span>
+              </div>
               <div class="role">{tk.label[lang]}</div>
             </div>
           </div>
@@ -63,28 +131,54 @@ const roles = syntaxRoles();
   <div class="papilio panel">
     <div class="pairs">
       {
-        pairs.map((p) => (
+        pairRows.map((row) => (
           <div class="pair">
             <div class="side">
               <span class="side-label">{t('theme.anchors.raw')}</span>
-              <span class="dot" style={`background:${p.anchor.hex}`} />
-              <span class="side-hex">{p.anchor.hex}</span>
-              <span class:list={['ratio', p.anchor.level === 'fail' ? 'bad' : 'ok']}>
-                {p.anchor.ratio}
+              <span class="dot" style={`background:${row.base.anchor.hex}`} />
+              <span class="side-hex">{row.base.anchor.hex}</span>
+              <span
+                class:list={['ratio', 'fl-base', row.base.anchor.level === 'fail' ? 'bad' : 'ok']}
+              >
+                {row.base.anchor.ratio}
               </span>
-              <span class="side-key">{p.anchor.key}</span>
+              <span
+                class:list={[
+                  'ratio',
+                  'fl-blood-blossom',
+                  row.blood.anchor.level === 'fail' ? 'bad' : 'ok',
+                ]}
+              >
+                {row.blood.anchor.ratio}
+              </span>
+              <span class="side-key">{row.base.anchor.key}</span>
             </div>
             <div class="arrow" aria-hidden="true">→</div>
             <div class="side">
               <span class="side-label">{t('theme.anchors.adjusted')}</span>
-              <span class="dot" style={`background:${p.token.hex}`} />
-              <span class="side-hex">{p.token.hex}</span>
-              <span class:list={['ratio', p.token.level === 'fail' ? 'bad' : 'ok']}>
-                {p.token.ratio}
+              <span
+                class="dot"
+                style={`background:var(--pp-${row.base.token.key})`}
+              />
+              <span class="side-hex fl-base">{row.base.token.hex}</span>
+              <span class="side-hex fl-blood-blossom">{row.blood.token.hex}</span>
+              <span
+                class:list={['ratio', 'fl-base', row.base.token.level === 'fail' ? 'bad' : 'ok']}
+              >
+                {row.base.token.ratio}
               </span>
-              <span class="side-key">{p.token.key}</span>
+              <span
+                class:list={[
+                  'ratio',
+                  'fl-blood-blossom',
+                  row.blood.token.level === 'fail' ? 'bad' : 'ok',
+                ]}
+              >
+                {row.blood.token.ratio}
+              </span>
+              <span class="side-key">{row.base.token.key}</span>
             </div>
-            <p class="note">{p.note[lang]}</p>
+            <p class="note">{row.note[lang]}</p>
           </div>
         ))
       }
@@ -103,10 +197,10 @@ const roles = syntaxRoles();
   <div class="papilio panel">
     <div class="roles">
       {
-        roles.map((r) => (
+        roleRows.map((r) => (
           <div class="role-row">
-            <span class="role-dot" style={`background:${r.hex}`} />
-            <span class="role-name" style={`color:${r.hex}`}>
+            <span class="role-dot" style={`background:var(--pp-${r.token})`} />
+            <span class="role-name" style={`color:var(--pp-${r.token})`}>
               {r.role}
             </span>
             <span class="role-token">{r.token}</span>
@@ -117,7 +211,83 @@ const roles = syntaxRoles();
   </div>
 </section>
 
+<!-- ============== FLAVORS ============== -->
+<section>
+  <div class="section-head">
+    <div class="section-num">IV.</div>
+    <h2 class="section-title">{t('theme.flavors.title')}</h2>
+  </div>
+  <p class="section-subtitle">{t('theme.flavors.subtitle')}</p>
+
+  <p class="lead-text" set:html={flavorsLead} />
+
+  <div class="flavors-grid">
+    {
+      flavorList.map((f) => (
+        <button type="button" class="flavor-card" data-set-flavor={f.id}>
+          <div class="flavor-top">
+            <span class="flavor-name">{f.name}</span>
+            <span class="flavor-state">{t('theme.flavors.active')}</span>
+          </div>
+          <div class="strip" aria-hidden="true">
+            {f.strip.map((hex) => (
+              <span style={`background:${hex}`} />
+            ))}
+          </div>
+          <div class="flavor-mood">
+            {f.mood[lang]}{' '}
+            <span class="flavor-hex" style={`color:${f.accent}`}>
+              {f.accent}
+            </span>
+          </div>
+        </button>
+      ))
+    }
+  </div>
+</section>
+
+<script define:vars={{ themeColors }}>
+  // Troca o flavor da página inteira e guarda a escolha.
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll('[data-set-flavor]');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  const STORAGE_KEY = 'papilio-flavor';
+
+  function applyFlavor(flavor) {
+    root.dataset.flavor = flavor;
+    try {
+      localStorage.setItem(STORAGE_KEY, flavor);
+    } catch {}
+    if (themeMeta) themeMeta.setAttribute('content', themeColors[flavor] ?? themeColors.base);
+    buttons.forEach((b) => {
+      const on = b.dataset.setFlavor === flavor;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', String(on));
+    });
+  }
+
+  buttons.forEach((b) =>
+    b.addEventListener('click', () => applyFlavor(b.dataset.setFlavor ?? 'base')),
+  );
+
+  let initial = 'base';
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved && themeColors[saved]) initial = saved;
+  } catch {}
+  applyFlavor(initial);
+</script>
+
 <style>
+  /* Conteúdo alternado por flavor — o switcher só mexe em data-flavor no <html>. */
+  :global([data-flavor='base']) .fl-blood-blossom,
+  :global(:root:not([data-flavor])) .fl-blood-blossom {
+    display: none;
+  }
+  :global([data-flavor='blood-blossom']) .fl-base {
+    display: none;
+  }
+
   /* Um degrau acima do fundo: a página inteira já é o bg0 do Papilio, então o
      painel precisa se destacar dela em vez de repeti-la. */
   .panel {
@@ -289,6 +459,87 @@ const roles = syntaxRoles();
   .role-token {
     font-size: 0.68rem;
     color: var(--pp-muted);
+  }
+
+  /* ---------- flavors ---------- */
+  .flavors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .flavor-card {
+    display: block;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    background: var(--velvet);
+    border: 1px solid rgba(var(--carmine-rgb), 0.12);
+    border-radius: 1.2rem;
+    padding: 1.1rem 1.2rem 1.2rem;
+    color: inherit;
+    font: inherit;
+    transition:
+      transform 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+  .flavor-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(var(--carmine-rgb), 0.4);
+  }
+  .flavor-card.active {
+    border-color: rgba(var(--carmine-rgb), 0.55);
+    box-shadow: 0 16px 36px -20px rgba(0, 0, 0, 0.7);
+  }
+
+  .flavor-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.6rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .flavor-name {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+  }
+
+  .flavor-state {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ash-mauve);
+    opacity: 0;
+  }
+  .flavor-card.active .flavor-state {
+    opacity: 1;
+    color: var(--carmine);
+  }
+
+  .strip {
+    display: flex;
+    height: 12px;
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 0.85rem;
+  }
+  .strip span {
+    flex: 1;
+  }
+
+  .flavor-mood {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: rgba(var(--pearl-rgb), 0.72);
+  }
+
+  .flavor-hex {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
   }
 
   @media (max-width: 680px) {

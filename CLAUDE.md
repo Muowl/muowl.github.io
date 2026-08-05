@@ -25,6 +25,7 @@ npm run sync:palette -- --check   # falha se alguma estiver desatualizada (roda 
 | -------- | ------------------------------------------- | -------------------------------- | ------------------- |
 | Carmilla | `Muowl/carmilla` → `palette/carmilla.toml`  | `src/data/carmilla.palette.toml` | `src/lib/palette.ts` |
 | Papilio  | `Muowl/papilio-theme` → `palette/papilio.yaml` | `src/data/papilio.palette.yaml` | `src/lib/papilio.ts` |
+| Papilio Blood Blossom | `…/palette/papilio-blood-blossom.yaml` (overlay) | `src/data/papilio-blood-blossom.palette.yaml` | mesclado em `papilio.ts` |
 
 The format is each theme repo's choice — TOML and YAML both, parsed by
 `smol-toml` and `js-yaml`. Do not convert one to the other to "standardise":

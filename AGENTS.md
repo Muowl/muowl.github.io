@@ -3,4 +3,5 @@
 As instruções deste repositório vivem em [`CLAUDE.md`](CLAUDE.md).
 
 Antes de mexer em qualquer cor, leia a seção **"The palette rule"** — nenhum hex
-é escrito à mão aqui; tudo vem de `src/data/carmilla.palette.toml`.
+é escrito à mão aqui; tudo vem das cópias em `src/data/` (Carmilla TOML, Papilio
+YAML + overlay Blood Blossom).

@@ -24,6 +24,12 @@ const SOURCES = [
     url: 'https://raw.githubusercontent.com/Muowl/papilio-theme/main/palette/papilio.yaml',
     target: '../src/data/papilio.palette.yaml',
   },
+  // Overlay da variante: só os tokens que mudam. O loader mescla com a base.
+  {
+    theme: 'papilio-blood-blossom',
+    url: 'https://raw.githubusercontent.com/Muowl/papilio-theme/main/palette/papilio-blood-blossom.yaml',
+    target: '../src/data/papilio-blood-blossom.palette.yaml',
+  },
 ];
 
 const checkOnly = process.argv.includes('--check');
