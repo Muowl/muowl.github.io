@@ -6,6 +6,7 @@
  */
 import { paletteCss, themeColor } from '../lib/palette';
 import { ui } from '../i18n/ui';
+import Favicons from '../components/Favicons.astro';
 ---
 
 <html lang="en">
@@ -15,7 +16,7 @@ import { ui } from '../i18n/ui';
     <meta name="theme-color" content={themeColor('base')} />
     <meta name="robots" content="noindex" />
     <title>404 — muowl</title>
-    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <Favicons />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

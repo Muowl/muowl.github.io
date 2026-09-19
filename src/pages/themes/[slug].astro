@@ -9,6 +9,7 @@
  */
 import { themes } from '../../data/themes';
 import { studioCss } from '../../lib/studio';
+import Favicons from '../../components/Favicons.astro';
 
 export function getStaticPaths() {
   return themes.map((theme) => ({ params: { slug: theme.slug }, props: { theme } }));
@@ -25,6 +26,7 @@ const en = `/en/themes/${theme.slug}/`;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
     <title>{theme.name}</title>
+    <Favicons />
     <link rel="canonical" href={`https://muowl.dev${en}`} />
     <meta http-equiv="refresh" content={`0; url=${en}`} />
     <script is:inline define:vars={{ pt, en }}>

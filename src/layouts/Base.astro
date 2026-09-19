@@ -2,6 +2,7 @@
 import { paletteCss, themeColor } from '../lib/palette';
 import { studio, studioCss } from '../lib/studio';
 import Owl from '../components/Owl.astro';
+import Favicons from '../components/Favicons.astro';
 import {
   getLangFromUrl,
   stripLang,
@@ -78,8 +79,7 @@ const nav = [
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogUrl.href} />
 
-    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/icon.png" />
+    <Favicons />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

@@ -25,15 +25,16 @@ const pt = lang === 'pt';
 </section>
 <style>
   .kicker { font: .72rem var(--font-mono); letter-spacing: .12em; color: var(--ash-mauve); }
-  h2 { font: 500 clamp(2rem, 4vw, 3.2rem)/1.1 var(--font-display); margin: 1rem 0 1.5rem; }
-  p { color: var(--ash-mauve); margin-top: 1rem; max-width: 55ch; }
+  h2 { font: 600 clamp(2.25rem, 4.5vw, 3.5rem)/1.12 var(--font-display); letter-spacing: -.025em; text-wrap: balance; margin: 1rem 0 1.5rem; }
+  p { color: var(--ash-mauve); font-size: 1.0625rem; line-height: 1.8; text-wrap: pretty; margin-top: 1rem; max-width: 55ch; }
   .cinder-preview, .notes { display: grid; grid-template-columns: 1fr 1.3fr; gap: 4rem; align-items: center; }
   .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-top: 2rem; }
   .swatch { border: 1px solid var(--selection); border-radius: 6px; overflow: hidden; padding-bottom: 1rem; }
   .swatch span { display: block; height: 90px; margin-bottom: .8rem; }
-  .swatch strong, .swatch code { display: block; margin: .2rem 1rem; font-size: .78rem; }
-  .swatch code { color: var(--ash-mauve); }
+  .swatch strong, .swatch code { display: block; margin: .3rem 1rem; font-size: .9375rem; line-height: 1.5; }
+  .swatch strong { font-weight: 500; }
+  .swatch code { color: var(--ash-mauve); font-family: var(--font-mono); font-size: .8rem; }
   dl div { display: flex; justify-content: space-between; gap: 1rem; padding: 1.2rem 0; border-bottom: 1px solid var(--selection); }
-  dd { font: 1.5rem var(--font-mono); color: var(--carmine); }
+  dd { font: 1.5rem var(--font-mono); font-variant-numeric: tabular-nums; color: var(--carmine); }
   @media(max-width: 800px) { .cinder-preview, .notes { grid-template-columns: 1fr; gap: 2rem; } .swatches { grid-template-columns: repeat(2, 1fr); } }
 </style>

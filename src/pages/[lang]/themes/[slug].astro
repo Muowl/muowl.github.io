@@ -64,7 +64,7 @@ const papilioThemeColors =
       </script>
     )
   }
-  <div class="wrap">
+  <div class="wrap theme-detail">
     <header class="theme-hero">
       <div class="eyebrow">
         {
@@ -76,7 +76,6 @@ const papilioThemeColors =
       </div>
       <h1>{theme.name}</h1>
       <div class="subtitle">{theme.tagline[lang]}</div>
-      <div class="ornament" aria-hidden="true">❦</div>
       <p class="lead">{theme.summary[lang]}</p>
       <div class="cta">
         {
@@ -134,13 +133,15 @@ const papilioThemeColors =
 <style>
   .theme-hero {
     text-align: center;
-    padding: 3rem 1rem 4rem;
+    padding: clamp(2rem, 6vw, 5rem) 0 3rem;
   }
 
   .theme-hero .eyebrow {
-    font-size: 0.72rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
     font-weight: 500;
-    letter-spacing: 0.42em;
+    letter-spacing: 0.12em;
+    line-height: 1.8;
     text-transform: uppercase;
     color: var(--ash-mauve);
     margin-bottom: 1.5rem;
@@ -148,33 +149,34 @@ const papilioThemeColors =
 
   .theme-hero h1 {
     font-family: var(--font-display);
-    font-size: clamp(4rem, 12vw, 8.5rem);
-    font-weight: 500;
-    line-height: 0.95;
-    letter-spacing: -0.02em;
-    background: linear-gradient(180deg, var(--pearl) 0%, var(--carmine) 60%, var(--wisteria) 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    margin-bottom: 1rem;
-    text-shadow: 0 0 80px rgba(var(--carmine-rgb), 0.15);
+    font-size: clamp(4.5rem, 13vw, 10rem);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    color: var(--pearl);
+    margin-bottom: 1.2rem;
+    text-wrap: balance;
   }
 
   .theme-hero .subtitle {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+    font-family: var(--font-body);
+    font-size: clamp(1.05rem, 2.1vw, 1.4rem);
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
     color: var(--wisteria);
-    margin-bottom: 2rem;
-    opacity: 0.92;
+    margin: 0 auto 1.5rem;
+    max-width: 40ch;
   }
 
   .theme-hero .lead {
-    font-size: 1.05rem;
-    max-width: 620px;
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    max-width: 58ch;
     margin: 0 auto;
-    color: rgba(var(--pearl-rgb), 0.78);
-    line-height: 1.7;
+    color: rgba(var(--pearl-rgb), 0.86);
+    line-height: 1.8;
+    text-wrap: pretty;
   }
 
   .theme-hero .cta {
@@ -233,4 +235,31 @@ const papilioThemeColors =
   .back a:hover {
     color: var(--carmine);
   }
+
+  /* Ritmo comum às vitrines; os exemplos de código mantêm sua tipografia. */
+  .theme-detail :global(.section-title) {
+    font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  .theme-detail :global(.section-head) { margin-bottom: 1.25rem; }
+  .theme-detail :global(.section-num) {
+    font: 500 .8rem/1.5 var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .theme-detail :global(.section-subtitle) {
+    font: 400 1rem/1.65 var(--font-body);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    text-wrap: pretty;
+  }
+  .theme-detail :global(.lead-text) {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    max-width: 65ch;
+    text-wrap: pretty;
+  }
+  .theme-detail :global(.btn) { font-size: .9rem; line-height: 1.5; }
 </style>

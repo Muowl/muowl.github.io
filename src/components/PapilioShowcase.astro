@@ -302,7 +302,7 @@ const themeColors = Object.fromEntries(flavorList.map((f) => [f.id, f.bg]));
   /* ---------- swatches ---------- */
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
     gap: 0.9rem;
   }
 
@@ -329,30 +329,32 @@ const themeColors = Object.fromEntries(flavorList.map((f) => [f.id, f.bg]));
 
   .name {
     font-family: var(--font-mono);
-    font-size: 0.82rem;
+    font-size: 0.875rem;
     color: var(--pp-fg0);
     display: flex;
     align-items: baseline;
+    flex-wrap: wrap;
     gap: 0.5rem;
   }
 
   .hex {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: var(--pp-fg1);
     margin-top: 0.1rem;
   }
 
   .role {
-    font-size: 0.72rem;
+    font-size: 0.875rem;
     color: var(--pp-muted);
     margin-top: 0.2rem;
-    line-height: 1.35;
+    line-height: 1.65;
   }
 
   .ratio {
     font-family: var(--font-mono);
-    font-size: 0.64rem;
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
     padding: 0.05rem 0.4rem;
     border-radius: 999px;
     white-space: nowrap;
@@ -423,9 +425,9 @@ const themeColors = Object.fromEntries(flavorList.map((f) => [f.id, f.bg]));
 
   .note {
     grid-column: 1 / -1;
-    font-size: 0.78rem;
+    font-size: 0.9375rem;
     color: var(--pp-muted);
-    line-height: 1.5;
+    line-height: 1.7;
     margin-top: 0.1rem;
   }
 
@@ -464,7 +466,7 @@ const themeColors = Object.fromEntries(flavorList.map((f) => [f.id, f.bg]));
   /* ---------- flavors ---------- */
   .flavors-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
     gap: 1rem;
     margin-top: 1.5rem;
   }
@@ -504,7 +506,8 @@ const themeColors = Object.fromEntries(flavorList.map((f) => [f.id, f.bg]));
 
   .flavor-name {
     font-family: var(--font-display);
-    font-size: 1.35rem;
+    font-size: 1.9rem;
+    line-height: 1.2;
     font-weight: 600;
   }
 
@@ -532,8 +535,8 @@ const themeColors = Object.fromEntries(flavorList.map((f) => [f.id, f.bg]));
   }
 
   .flavor-mood {
-    font-size: 0.82rem;
-    line-height: 1.5;
+    font-size: 0.9375rem;
+    line-height: 1.7;
     color: rgba(var(--pearl-rgb), 0.72);
   }
 
