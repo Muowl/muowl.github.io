@@ -5,6 +5,7 @@
  * não fala português para /en/ e oferece os dois links caso o JS não rode.
  */
 export const prerender = true;
+import { studioCss } from '../lib/studio';
 ---
 
 <html lang="pt-BR">
@@ -21,10 +22,11 @@ export const prerender = true;
         location.replace(pt ? '/pt/' : '/en/');
       })();
     </script>
+    <style is:global set:html={studioCss()} />
     <style>
       body {
-        background: #16101a;
-        color: #f5eada;
+        background: var(--crypt);
+        color: var(--pearl);
         font-family: system-ui, sans-serif;
         display: grid;
         place-items: center;
@@ -32,7 +34,7 @@ export const prerender = true;
         gap: 1rem;
       }
       a {
-        color: #ff5fa2;
+        color: var(--carmine);
       }
     </style>
   </head>

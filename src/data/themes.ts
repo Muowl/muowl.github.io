@@ -4,6 +4,7 @@
  * detalhe fica em `src/pages/[lang]/themes/<slug>.astro`.
  */
 import { flavors, tokens } from '../lib/palette';
+import { cinder, cinderSwatches } from '../lib/cinder';
 import {
   flavors as papilioFlavors,
   palette as papilioPalette,
@@ -21,6 +22,7 @@ export interface ThemeEntry {
   marketplace?: string;
   openVsx?: string;
   tokenCount: number;
+  tokenLabel?: { pt: string; en: string };
   flavorCount: number;
   /** Amostra de cores do card da listagem. */
   strip: string[];
@@ -32,6 +34,20 @@ export interface ThemeEntry {
 }
 
 export const themes: ThemeEntry[] = [
+  {
+    slug: 'cinder', name: 'Cinder', version: '0.3.0',
+    tagline: { pt: 'carvão, brasa e espaço para pensar', en: 'charcoal, embers and room to think' },
+    summary: {
+      pt: 'Carvão quente, coral e ouro antigo. Uma linguagem visual para código, com variáveis neutras e cores que dão estrutura à leitura.',
+      en: 'Warm charcoal, coral and antique gold. A design language for code, with neutral variables and colours that give structure to reading.',
+    },
+    repo: 'https://github.com/Muowl/cinder',
+    marketplace: 'https://marketplace.visualstudio.com/items?itemName=muowl.cinder-warm-theme',
+    tokenCount: cinderSwatches.length, flavorCount: 1,
+    tokenLabel: { pt: 'cores em destaque', en: 'featured colours' },
+    strip: [cinder.deep, cinder.bg, cinder.accent, cinder.fn, cinder.string, cinder.type],
+    accent: cinder.accent, published: true,
+  },
   {
     slug: 'carmilla',
     name: 'Carmilla',

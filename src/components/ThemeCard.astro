@@ -12,7 +12,7 @@ const t = useTranslations(lang);
 const href = localePath(lang, `/themes/${theme.slug}/`);
 ---
 
-<a class="theme-card" href={href}>
+<a class="theme-card" href={href} style={`--card-accent:${theme.accent}`}>
   <div class="strip" aria-hidden="true">
     {theme.strip.map((hex) => <span style={`background:${hex}`} />)}
   </div>
@@ -27,7 +27,7 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
     <p class="tagline">{theme.tagline[lang]}</p>
     <p class="summary">{theme.summary[lang]}</p>
     <div class="facts">
-      <span>{theme.tokenCount} {t('themes.tokens')}</span>
+      <span>{theme.tokenCount} {theme.tokenLabel?.[lang] ?? t('themes.tokens')}</span>
       {
         theme.flavorCount > 1 && (
           <>
@@ -51,7 +51,7 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
     color: inherit;
     background: var(--velvet);
     border: 1px solid rgba(var(--carmine-rgb), 0.12);
-    border-radius: 1.2rem;
+    border-radius: 6px;
     overflow: hidden;
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   }
@@ -63,11 +63,14 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
 
   .strip {
     display: flex;
-    height: 64px;
+    height: 110px;
   }
   .strip span {
     flex: 1;
+    transition: flex .3s ease;
   }
+  .theme-card:hover .strip span:nth-last-child(3) { flex: 2; }
+  .theme-card:hover { border-color: var(--card-accent); }
 
   .body {
     padding: 1.3rem 1.5rem 1.5rem;
@@ -91,7 +94,7 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
     font-family: var(--font-mono);
     font-size: 0.72rem;
     color: var(--ash-mauve);
-    white-space: nowrap;
+    white-space: normal;
   }
 
   .wip {

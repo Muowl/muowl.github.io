@@ -1,5 +1,7 @@
 ---
 import { paletteCss, themeColor } from '../lib/palette';
+import { studio, studioCss } from '../lib/studio';
+import Owl from '../components/Owl.astro';
 import {
   getLangFromUrl,
   stripLang,
@@ -37,6 +39,7 @@ const {
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const bare = stripLang(Astro.url.pathname);
+const isShowcase = /^\/themes\/[^/]+\/$/.test(bare);
 
 const site = Astro.site ?? new URL('https://muowl.dev');
 const canonical = new URL(Astro.url.pathname, site);
@@ -50,11 +53,11 @@ const nav = [
 ] as const;
 ---
 
-<html lang={localeTag[lang]} data-flavor="base">
+<html lang={localeTag[lang]} data-flavor="base" data-studio={!isShowcase ? '' : undefined}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content={themeColorOverride ?? themeColor('base')} />
+    <meta name="theme-color" content={themeColorOverride ?? (isShowcase ? themeColor('base') : studio.paper)} />
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
@@ -86,13 +89,14 @@ const nav = [
     />
 
     <style is:global set:html={paletteCss()}></style>
+    {!isShowcase && <style is:global set:html={studioCss()}></style>}
     {/* Depois do bloco padrão de propósito: é a ordem que faz o override vencer. */}
     {paletteOverride && <style is:global set:html={paletteOverride}></style>}
 
     {
       /* Aplica o flavor salvo antes da primeira pintura, para não piscar.
          Numa página que troca de paleta o flavor do Carmilla não se aplica. */
-      !paletteOverride && (
+      isShowcase && !paletteOverride && (
         <script is:inline>
           {`(function () {
           try {
@@ -114,7 +118,7 @@ const nav = [
 
     <header class="site-head">
       <a class="brand" href={localePath(lang, '/')}>
-        <span class="brand-mark">❦</span>
+        <Owl class="brand-owl" />
         <span class="brand-name">muowl</span>
       </a>
 
@@ -143,7 +147,7 @@ const nav = [
     </main>
 
     <footer class="site-foot">
-      <div class="ornament" aria-hidden="true">❦</div>
+      <a class="footer-signature" href={localePath(lang, '/')} aria-label="muowl"><Owl class="footer-owl" /><span>muowl.</span></a>
       <p class="foot-meta">
         {t('footer.built')} ·
         <a href="https://github.com/Muowl">github.com/Muowl</a>
@@ -182,6 +186,24 @@ const nav = [
   }
 
   /* Grão sutil — atmosfera de filme antigo */
+  .brand-owl { width: 32px; height: 32px; align-self: center; }
+  .footer-signature { display: inline-flex; align-items: center; gap: .8rem; font: 500 3rem var(--font-display); text-decoration: none; margin-bottom: 1rem; }
+  .footer-owl { width: 48px; height: 48px; }
+  :focus-visible { outline: 2px solid var(--carmine); outline-offset: 5px; }
+  html[data-studio] { color-scheme: light; }
+  html:not([data-studio]) { color-scheme: dark; }
+  html[data-studio] body::after { display: none; }
+  html[data-studio] body::before { opacity: .025; mix-blend-mode: multiply; }
+  html[data-studio] .site-head { position: relative; padding-block: 1.3rem; }
+  html[data-studio] .brand { font-family: var(--font-body); font-weight: 600; letter-spacing: -.06em; font-size: 1.55rem; }
+  html[data-studio] .btn { border-radius: 4px; box-shadow: none; padding: .85rem 1.3rem; font-size: .88rem; }
+  html[data-studio] .section-num { font-family: var(--font-mono); font-style: normal; font-size: .75rem; }
+  html[data-studio] .section-subtitle { font-family: var(--font-body); font-size: .9rem; font-style: normal; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
   body::before {
     content: '';
     position: fixed;

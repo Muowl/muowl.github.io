@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "sync:palette": "node scripts/sync-palette.mjs",
-    "og": "node scripts/og.mjs"
+    "og": "node scripts/og.mjs",
+    "assets:studio": "node scripts/studio-assets.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@emnapi/runtime": "^1.11.3",
     "@types/js-yaml": "^4.0.9",
-    "playwright-core": "^1.62.0"
+    "playwright-core": "^1.62.0",
+    "sharp": "^0.35.3"
   }
 }

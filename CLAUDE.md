@@ -13,7 +13,7 @@ theme (palette, VS Code port, changelog); this repo only presents it.
 
 ## The palette rule — read this before touching any colour
 
-**Never write a hex literal in this repo.** Each theme's palette lives in that
+**Keep colour literals in palette data, never in components.** Each theme's palette lives in that
 theme's own repo, and `src/data/` holds byte-identical copies refreshed by:
 
 ```sh
@@ -31,7 +31,7 @@ The format is each theme repo's choice — TOML and YAML both, parsed by
 `smol-toml` and `js-yaml`. Do not convert one to the other to "standardise":
 those files are read by the themes' own generators, which would break.
 
-These loaders are the only source of colour in the site: CSS custom properties,
+These loaders and the studio palette are the only source of colour in the site: CSS custom properties,
 swatch grids, token maps and flavor cards all derive from them. A colour changes
 in exactly one place. Adding a hardcoded hex re-creates the drift problem this
 structure was built to solve.
@@ -51,6 +51,11 @@ they live in `src/lib/palette.ts`: `TABSTRIP` (chrome of the editor mockup, not 
 palette token) and the base accent hover (taken from `terminal.bright.magenta`).
 
 ## i18n
+The portfolio has its own editorial identity, authorized in September 2026.
+`src/data/studio.palette.json` owns its colours, loaded by `src/lib/studio.ts`.
+Theme showcases retain their own palettes. Cinder's foundation, semantic and
+syntax JSON files are byte-identical upstream copies refreshed by `sync:palette`.
+
 
 Every page exists at `/pt/…` and `/en/…` — real routes, not a JS toggle, so both
 languages are indexable. Rules:

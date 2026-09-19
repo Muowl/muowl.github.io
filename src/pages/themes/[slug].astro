@@ -8,6 +8,7 @@
  * republicada, então esse link precisa envelhecer bem.
  */
 import { themes } from '../../data/themes';
+import { studioCss } from '../../lib/studio';
 
 export function getStaticPaths() {
   return themes.map((theme) => ({ params: { slug: theme.slug }, props: { theme } }));
@@ -29,17 +30,18 @@ const en = `/en/themes/${theme.slug}/`;
     <script is:inline define:vars={{ pt, en }}>
       location.replace((navigator.language || 'en').toLowerCase().startsWith('pt') ? pt : en);
     </script>
+    <style is:global set:html={studioCss()} />
     <style>
       body {
-        background: #16101a;
-        color: #f5eada;
+        background: var(--crypt);
+        color: var(--pearl);
         font-family: system-ui, sans-serif;
         display: grid;
         place-items: center;
         min-height: 100vh;
       }
       a {
-        color: #ff5fa2;
+        color: var(--carmine);
       }
     </style>
   </head>

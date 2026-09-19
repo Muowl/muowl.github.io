@@ -1,0 +1,39 @@
+---
+import CinderEditor from './CinderEditor.astro';
+import { cinder, cinderSwatches } from '../lib/cinder';
+import { contrastRatio, formatRatio } from '../lib/contrast';
+import { getLangFromUrl } from '../i18n/ui';
+const lang = getLangFromUrl(Astro.url);
+const pt = lang === 'pt';
+---
+<section class="cinder-preview">
+  <div><span class="kicker">01 / {pt ? 'NO EDITOR' : 'IN THE EDITOR'}</span>
+    <h2>{pt ? 'A brasa fica. O ruído vai.' : 'Keep the warmth. Clear the noise.'}</h2>
+    <p>{pt ? 'Carvão quente no fundo, variáveis neutras e cor onde ela ajuda a ler: coral nas palavras-chave, ouro nas funções e pátina nas strings.' : 'Warm charcoal backgrounds, neutral variables and colour where it helps you read: coral keywords, golden functions and patina strings.'}</p>
+    <p>{pt ? 'Para VS Code e a janela de editor do Cursor. Tokens próprios também para chat, sugestões e revisão de código.' : 'For VS Code and Cursor’s Editor Window. Dedicated tokens for chat, suggestions and code review, too.'}</p>
+  </div>
+  <CinderEditor lang={lang} />
+</section>
+<section>
+  <span class="kicker">02 / {pt ? 'A PALETA' : 'THE PALETTE'}</span>
+  <h2>{pt ? 'Matéria-prima, à vista.' : 'The raw materials, in plain sight.'}</h2>
+  <div class="swatches">{cinderSwatches.map(([name, hex]) => <div class="swatch"><span style={`background:${hex}`} aria-hidden="true"></span><strong>{name}</strong><code>{hex}</code></div>)}</div>
+</section>
+<section class="notes">
+  <div><span class="kicker">03 / {pt ? 'LEITURA' : 'READABILITY'}</span><h2>{pt ? 'Contraste com contexto.' : 'Contrast in context.'}</h2><p>{pt ? 'Razões calculadas a partir dos tokens, sobre o fundo Char. Seleções, sobreposições e renderização do editor podem alterar o resultado.' : 'Ratios calculated from the tokens against Char. Selections, overlays and editor rendering can change the result.'}</p></div>
+  <dl><div><dt>{pt ? 'Texto principal' : 'Primary text'}</dt><dd>{formatRatio(contrastRatio(cinder.text, cinder.bg))}</dd></div><div><dt>{pt ? 'Comentários' : 'Comments'}</dt><dd>{formatRatio(contrastRatio(cinder.comment, cinder.bg))}</dd></div></dl>
+</section>
+<style>
+  .kicker { font: .72rem var(--font-mono); letter-spacing: .12em; color: var(--ash-mauve); }
+  h2 { font: 500 clamp(2rem, 4vw, 3.2rem)/1.1 var(--font-display); margin: 1rem 0 1.5rem; }
+  p { color: var(--ash-mauve); margin-top: 1rem; max-width: 55ch; }
+  .cinder-preview, .notes { display: grid; grid-template-columns: 1fr 1.3fr; gap: 4rem; align-items: center; }
+  .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-top: 2rem; }
+  .swatch { border: 1px solid var(--selection); border-radius: 6px; overflow: hidden; padding-bottom: 1rem; }
+  .swatch span { display: block; height: 90px; margin-bottom: .8rem; }
+  .swatch strong, .swatch code { display: block; margin: .2rem 1rem; font-size: .78rem; }
+  .swatch code { color: var(--ash-mauve); }
+  dl div { display: flex; justify-content: space-between; gap: 1rem; padding: 1.2rem 0; border-bottom: 1px solid var(--selection); }
+  dd { font: 1.5rem var(--font-mono); color: var(--carmine); }
+  @media(max-width: 800px) { .cinder-preview, .notes { grid-template-columns: 1fr; gap: 2rem; } .swatches { grid-template-columns: repeat(2, 1fr); } }
+</style>

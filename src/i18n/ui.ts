@@ -35,7 +35,7 @@ export const ui = {
     'home.eyebrow': 'Desenvolvedor · Temas · Open source',
     'home.subtitle': 'ferramentas com identidade, não com preset',
     'home.lead':
-      'Faço temas e ferramentas pequenas com atenção a cor, tipografia e contraste. Tudo aberto, tudo com paleta própria — nenhum hex copiado de outro tema.',
+      'Construo interfaces, temas e pequenas ferramentas. Gosto de código bem pensado, cores com propósito e coisas que ficam melhores quando você usa todos os dias.',
     'home.cta.themes': 'Ver os temas',
     'home.cta.github': 'GitHub',
     'home.themes.title': 'Temas',
@@ -105,7 +105,7 @@ export const ui = {
     'home.eyebrow': 'Developer · Themes · Open source',
     'home.subtitle': 'tools with an identity, not a preset',
     'home.lead':
-      'I build themes and small tools with care for colour, type and contrast. All open, all with an original palette — not a single hex copied from another theme.',
+      'I build interfaces, themes and small tools. I care about thoughtful code, purposeful colours and things that feel better the more you use them.',
     'home.cta.themes': 'See the themes',
     'home.cta.github': 'GitHub',
     'home.themes.title': 'Themes',

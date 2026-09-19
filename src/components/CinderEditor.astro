@@ -1,0 +1,39 @@
+---
+import { cinderStyle } from '../lib/cinder';
+import type { Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+---
+<figure class="editor" style={cinderStyle}>
+  <div class="editor-bar"><span class="lights" aria-hidden="true">● ● ●</span><span>cinder / studio.ts</span><span>TS</span></div>
+  <div class="editor-code" tabindex="0" role="region" aria-label={lang === 'pt' ? 'Prévia de código com a paleta Cinder' : 'Code preview with the Cinder palette'}>
+    <pre><code><span class="comment">// {lang === 'pt' ? 'Um pouco de calor. Espaço para pensar.' : 'A little warmth. Room to think.'}</span>
+
+<span class="keyword">type</span> <span class="type">Workspace</span> = {'{'}
+  name: <span class="type">string</span>;
+  light: <span class="type">number</span>;
+{'}'};
+
+<span class="keyword">export function</span> <span class="fn">createSpace</span>() {'{'}
+  <span class="keyword">const</span> studio: <span class="type">Workspace</span> = {'{'}
+    name: <span class="string">'Cinder'</span>,
+    light: <span class="number">0.3</span>,
+  {'}'};
+
+  <span class="keyword">return</span> studio;
+{'}'}</code></pre>
+  </div>
+  <figcaption><span>Cinder</span><span>{lang === 'pt' ? 'Estudo de sintaxe · prévia ilustrativa' : 'Syntax study · illustrative preview'}</span></figcaption>
+</figure>
+<style>
+  .editor { background: var(--c-bg); color: var(--c-text); border: 1px solid var(--c-overlay); border-radius: 8px; overflow: hidden; min-width: 0; box-shadow: 0 24px 60px -30px var(--c-deep); }
+  .editor-bar, figcaption { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .9rem 1.25rem; background: var(--c-deep); color: var(--c-muted); font: .65rem var(--font-mono); }
+  .lights { color: var(--c-accent); letter-spacing: .25em; }
+  .editor-code { overflow: auto; padding: 1.7rem; }
+  pre { font: clamp(.7rem, 1.1vw, .85rem)/1.9 var(--font-mono); tab-size: 2; }
+  .comment { color: var(--c-comment); font-style: italic; }
+  .keyword { color: var(--c-keyword); } .type { color: var(--c-type); }
+  .fn { color: var(--c-fn); } .string { color: var(--c-string); } .number { color: var(--c-number); }
+  figcaption { background: var(--c-surface); flex-wrap: wrap; }
+  @media(max-width: 480px) { .editor-code { padding: 1rem; } }
+</style>

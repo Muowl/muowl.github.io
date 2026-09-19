@@ -2,6 +2,8 @@
 import Base from '../../../layouts/Base.astro';
 import CarmillaShowcase from '../../../components/CarmillaShowcase.astro';
 import PapilioShowcase from '../../../components/PapilioShowcase.astro';
+import CinderShowcase from '../../../components/CinderShowcase.astro';
+import { cinder, cinderSiteCss } from '../../../lib/cinder';
 import {
   siteVarsCss as papilioSiteVars,
   BG as papilioBg,
@@ -31,8 +33,8 @@ const ogImage = existsSync(join(process.cwd(), 'public', 'og', `${slug}.png`))
 // A página de um tema é pintada por ele. O Carmilla já é a paleta do site, então
 // só os outros precisam reescrever as variáveis. O CSS do Papilio já emite os
 // dois flavors; o script abaixo reaplica o escolhido antes da primeira pintura.
-const paletteOverride = slug === 'papilio' ? papilioSiteVars(':root') : undefined;
-const themeColorOverride = slug === 'papilio' ? papilioBg : undefined;
+const paletteOverride = slug === 'papilio' ? papilioSiteVars(':root') : slug === 'cinder' ? cinderSiteCss() : undefined;
+const themeColorOverride = slug === 'papilio' ? papilioBg : slug === 'cinder' ? cinder.deep : undefined;
 const papilioThemeColors =
   slug === 'papilio'
     ? Object.fromEntries(papilioFlavors().map((f) => [f.id, f.bg]))
@@ -113,6 +115,7 @@ const papilioThemeColors =
 
     {slug === 'carmilla' && <CarmillaShowcase />}
     {slug === 'papilio' && <PapilioShowcase />}
+    {slug === 'cinder' && <CinderShowcase />}
 
     {
       theme.disclaimer && (

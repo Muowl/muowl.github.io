@@ -13,6 +13,15 @@ export interface ProjectEntry {
 
 export const projects: ProjectEntry[] = [
   {
+    name: 'cinder',
+    summary: {
+      pt: 'Linguagem visual para ferramentas de desenvolvimento. Tokens de fundação, interface e sintaxe, adaptador para VS Code e validação automatizada de contraste.',
+      en: 'A design language for developer tools. Foundation, interface and syntax tokens, a VS Code adapter and automated contrast validation.',
+    },
+    url: 'https://github.com/Muowl/cinder',
+    stack: ['Design tokens', 'JSON', 'VS Code'], year: 2026,
+  },
+  {
     name: 'carmilla',
     summary: {
       pt: 'Monorepo do tema: paleta documentada em TOML como fonte da verdade, port para VS Code publicado no Marketplace e no Open VSX, e dois flavors.',

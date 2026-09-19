@@ -14,6 +14,11 @@ import { fileURLToPath } from 'node:url';
 
 /** Uma entrada por tema. O formato do arquivo é escolha de cada repo. */
 const SOURCES = [
+  ...['foundation', 'semantic', 'syntax'].map((layer) => ({
+    theme: `cinder-${layer}`,
+    url: `https://raw.githubusercontent.com/Muowl/cinder/main/tokens/cinder.${layer}.json`,
+    target: `../src/data/cinder.${layer}.json`,
+  })),
   {
     theme: 'carmilla',
     url: 'https://raw.githubusercontent.com/Muowl/carmilla/main/palette/carmilla.toml',

@@ -18,11 +18,13 @@ npm run build      # gera dist/
 npm run preview    # serve o dist/
 ```
 
-## A paleta não mora aqui
+## Identidade e paletas
 
-As cores vêm de [`Muowl/carmilla`](https://github.com/Muowl/carmilla), do arquivo
-`palette/carmilla.toml`. Este repo guarda uma cópia byte-a-byte em
-`src/data/carmilla.palette.toml` e a lê no build — nenhum hex é digitado à mão.
+A identidade editorial do portfólio tem paleta própria em `src/data/studio.palette.json`:
+papel, tinta e verde discreto. Cada vitrine preserva a identidade do seu tema.
+As paletas de Carmilla, Papilio e Cinder são cópias byte-a-byte dos repositórios
+originais; o loader do Cinder resolve os tokens semânticos e de sintaxe.
+`npm run assets:studio` gera o ícone e os cards sociais de muowl e Cinder.
 
 ```sh
 npm run sync:palette             # atualiza a cópia a partir de main
