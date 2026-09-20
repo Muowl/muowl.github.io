@@ -35,7 +35,7 @@ export interface ThemeEntry {
 
 export const themes: ThemeEntry[] = [
   {
-    slug: 'cinder', name: 'Cinder', version: '0.3.0',
+    slug: 'cinder', name: 'Cinder', version: '0.3.1',
     tagline: { pt: 'carvão, brasa e espaço para pensar', en: 'charcoal, embers and room to think' },
     summary: {
       pt: 'Carvão quente, coral e ouro antigo. Uma linguagem visual para código, com variáveis neutras e cores que dão estrutura à leitura.',
@@ -43,6 +43,7 @@ export const themes: ThemeEntry[] = [
     },
     repo: 'https://github.com/Muowl/cinder',
     marketplace: 'https://marketplace.visualstudio.com/items?itemName=muowl.cinder-warm-theme',
+    openVsx: 'https://open-vsx.org/extension/muowl/cinder-warm-theme',
     tokenCount: cinderSwatches.length, flavorCount: 1,
     tokenLabel: { pt: 'cores em destaque', en: 'featured colours' },
     strip: [cinder.deep, cinder.bg, cinder.accent, cinder.fn, cinder.string, cinder.type],
