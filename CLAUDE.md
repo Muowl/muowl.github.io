@@ -23,6 +23,7 @@ npm run sync:palette -- --check   # falha se alguma estiver desatualizada (roda 
 
 | Tema     | Fonte                                       | Cópia                            | Loader              |
 | -------- | ------------------------------------------- | -------------------------------- | ------------------- |
+| Vesperveil | `Muowl/vesperveil` → `src/palette.json` | `src/data/vesperveil.palette.json` | `src/lib/vesperveil.ts` |
 | Carmilla | `Muowl/carmilla` → `palette/carmilla.toml`  | `src/data/carmilla.palette.toml` | `src/lib/palette.ts` |
 | Papilio  | `Muowl/papilio-theme` → `palette/papilio.yaml` | `src/data/papilio.palette.yaml` | `src/lib/papilio.ts` |
 | Papilio Blood Blossom | `…/palette/papilio-blood-blossom.yaml` (overlay) | `src/data/papilio-blood-blossom.palette.yaml` | mesclado em `papilio.ts` |

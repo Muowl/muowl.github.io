@@ -3,6 +3,8 @@ import Base from '../../../layouts/Base.astro';
 import CarmillaShowcase from '../../../components/CarmillaShowcase.astro';
 import PapilioShowcase from '../../../components/PapilioShowcase.astro';
 import CinderShowcase from '../../../components/CinderShowcase.astro';
+import VesperveilShowcase from '../../../components/VesperveilShowcase.astro';
+import { vesperveil, vesperveilSiteCss } from '../../../lib/vesperveil';
 import { cinder, cinderSiteCss } from '../../../lib/cinder';
 import {
   siteVarsCss as papilioSiteVars,
@@ -33,8 +35,8 @@ const ogImage = existsSync(join(process.cwd(), 'public', 'og', `${slug}.png`))
 // A página de um tema é pintada por ele. O Carmilla já é a paleta do site, então
 // só os outros precisam reescrever as variáveis. O CSS do Papilio já emite os
 // dois flavors; o script abaixo reaplica o escolhido antes da primeira pintura.
-const paletteOverride = slug === 'papilio' ? papilioSiteVars(':root') : slug === 'cinder' ? cinderSiteCss() : undefined;
-const themeColorOverride = slug === 'papilio' ? papilioBg : slug === 'cinder' ? cinder.deep : undefined;
+const paletteOverride = slug === 'vesperveil' ? vesperveilSiteCss() : slug === 'papilio' ? papilioSiteVars(':root') : slug === 'cinder' ? cinderSiteCss() : undefined;
+const themeColorOverride = slug === 'vesperveil' ? vesperveil.deep : slug === 'papilio' ? papilioBg : slug === 'cinder' ? cinder.deep : undefined;
 const papilioThemeColors =
   slug === 'papilio'
     ? Object.fromEntries(papilioFlavors().map((f) => [f.id, f.bg]))
@@ -72,14 +74,14 @@ const papilioThemeColors =
             ? `Tema escuro · Paleta autoral · v${theme.version}`
             : `Dark theme · Original palette · v${theme.version}`
         }
-        {!theme.published && <span class="wip">{t('theme.wip')}</span>}
+        {!theme.published && <span class="wip">{theme.pendingLabel?.[lang] ?? t('theme.wip')}</span>}
       </div>
       <h1>{theme.name}</h1>
       <div class="subtitle">{theme.tagline[lang]}</div>
       <p class="lead">{theme.summary[lang]}</p>
       <div class="cta">
         {
-          theme.marketplace && (
+          theme.published && theme.marketplace && (
             <a class="btn btn-primary" href={theme.marketplace}>
               <svg
                 viewBox="0 0 24 24"
@@ -98,7 +100,7 @@ const papilioThemeColors =
             </a>
           )
         }
-        {theme.openVsx && <a class="btn btn-ghost" href={theme.openVsx}>{t('theme.openvsx')}</a>}
+        {theme.published && theme.openVsx && <a class="btn btn-ghost" href={theme.openVsx}>{t('theme.openvsx')}</a>}
         <a class="btn btn-ghost" href={theme.repo}>
           <svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true"
             ><path
@@ -109,12 +111,13 @@ const papilioThemeColors =
         </a>
       </div>
 
-      {!theme.published && <p class="wip-note">{t('theme.wip.note')}</p>}
+      {!theme.published && <p class="wip-note">{theme.pendingNote?.[lang] ?? t('theme.wip.note')}</p>}
     </header>
 
     {slug === 'carmilla' && <CarmillaShowcase />}
     {slug === 'papilio' && <PapilioShowcase />}
     {slug === 'cinder' && <CinderShowcase />}
+    {slug === 'vesperveil' && <VesperveilShowcase />}
 
     {
       theme.disclaimer && (

@@ -1,0 +1,70 @@
+---
+import { vesperveil, vesperveilSwatches } from '../lib/vesperveil';
+import { contrastRatio, formatRatio } from '../lib/contrast';
+import { getLangFromUrl } from '../i18n/ui';
+const lang = getLangFromUrl(Astro.url);
+const pt = lang === 'pt';
+---
+<section class="intro">
+  <img class="icon" src="/themes/vesperveil/icon.png" width="512" height="512" alt={pt ? 'Ícone do Vesperveil: olho carmim com íris dourada entrelaçada' : 'Vesperveil icon: a carmine eye with an interwoven golden iris'} />
+  <div>
+    <span class="kicker">01 / {pt ? 'NO EDITOR' : 'IN THE EDITOR'}</span>
+    <h2>{pt ? 'Um fundo quieto. Cor para ler.' : 'A quiet background. Colour for reading.'}</h2>
+    <p>{pt ? 'Rosa nas palavras-chave, dourado nas funções, lavanda nos tipos e verde nas strings. Variáveis em marfim mantêm o texto estável; só os comentários usam itálico.' : 'Rose keywords, golden functions, lavender types and green strings. Ivory variables keep the text steady; only comments use italics.'}</p>
+    <p>{pt ? 'Capturas reais do VS Code com TypeScript e Python. Fontes, ícones de arquivos e algumas decorações dependem das configurações e extensões do editor.' : 'Real VS Code captures with TypeScript and Python. Fonts, file icons and some decorations depend on editor settings and extensions.'}</p>
+  </div>
+</section>
+<div class="screenshots">
+  {['typescript', 'python'].map((language) => (
+    <figure>
+      <a href={`/themes/vesperveil/vesperveil-${language}.png`} aria-label={`${pt ? 'Abrir captura completa' : 'Open full screenshot'} — ${language === 'typescript' ? 'TypeScript' : 'Python'}`}>
+        <img src={`/themes/vesperveil/vesperveil-${language}.png`} width="1600" height="900" loading="lazy" alt={`${language === 'typescript' ? 'TypeScript' : 'Python'} — Vesperveil Dark ${pt ? 'no VS Code' : 'in VS Code'}`} />
+      </a>
+      <figcaption>{language === 'typescript' ? 'TypeScript' : 'Python'} · VS Code</figcaption>
+    </figure>
+  ))}
+</div>
+<section>
+  <span class="kicker">02 / {pt ? 'A PALETA' : 'THE PALETTE'}</span>
+  <h2>{pt ? 'Vinho nas superfícies. Marfim no texto.' : 'Wine surfaces. Ivory text.'}</h2>
+  <div class="swatches">{vesperveilSwatches.map((swatch) => <div class="swatch"><span style={`background:${swatch.color}`} aria-hidden="true"></span><strong>{swatch[lang]}</strong><code>{swatch.color}</code></div>)}</div>
+</section>
+<section class="notes">
+  <div>
+    <span class="kicker">03 / {pt ? 'LEITURA' : 'READABILITY'}</span>
+    <h2>{pt ? 'Contraste medido na paleta.' : 'Contrast measured from the palette.'}</h2>
+    <p>{pt ? 'Razões calculadas sobre o fundo do editor. A revisão cobre estados selecionados do VS Code; não é uma certificação de acessibilidade. Cursor e uma revisão completa das interações ainda estão pendentes.' : 'Ratios calculated against the editor background. The review covers selected VS Code states; it is not an accessibility certification. Cursor and a full interaction review are still pending.'}</p>
+  </div>
+  <dl>
+    <div><dt>{pt ? 'Texto principal' : 'Primary text'}</dt><dd>{formatRatio(contrastRatio(vesperveil.foreground, vesperveil.background))}</dd></div>
+    <div><dt>{pt ? 'Comentários' : 'Comments'}</dt><dd>{formatRatio(contrastRatio(vesperveil.muted, vesperveil.background))}</dd></div>
+  </dl>
+</section>
+<section>
+  <span class="kicker">04 / WINDOWS TERMINAL</span>
+  <h2>{pt ? 'A mesma paleta no terminal.' : 'The same palette in the terminal.'}</h2>
+  <p>{pt ? 'O repositório inclui um esquema para Windows Terminal com as 16 cores ANSI, fundo, texto, seleção e cursor.' : 'The repository includes a Windows Terminal scheme with all 16 ANSI colours, background, text, selection and cursor.'}</p>
+  <a class="terminal-link" href="https://github.com/Muowl/vesperveil/blob/main/ports/windows-terminal/vesperveil.json">{pt ? 'Ver o esquema do terminal' : 'View the terminal scheme'} ↗</a>
+</section>
+<style>
+  .kicker { font: .72rem var(--font-mono); letter-spacing: .12em; color: var(--ash-mauve); }
+  h2 { font: 600 clamp(2.25rem, 4.5vw, 3.5rem)/1.12 var(--font-display); letter-spacing: -.025em; text-wrap: balance; margin: 1rem 0 1.5rem; }
+  p { color: var(--ash-mauve); font-size: 1.0625rem; line-height: 1.8; text-wrap: pretty; margin-top: 1rem; max-width: 65ch; }
+  .intro { display: grid; grid-template-columns: 240px 1fr; gap: 4rem; align-items: center; }
+  .icon { width: 100%; height: auto; border-radius: 16px; }
+  .screenshots { display: grid; gap: 2rem; margin-top: 3rem; }
+  figure { margin: 0; min-width: 0; }
+  figure img { display: block; width: 100%; height: auto; border: 1px solid var(--selection); border-radius: 8px; }
+  figcaption { margin-top: .8rem; color: var(--ash-mauve); font: .8rem var(--font-mono); }
+  .swatches { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1rem; margin-top: 2rem; }
+  .swatch { border: 1px solid var(--selection); border-radius: 6px; overflow: hidden; padding-bottom: 1rem; }
+  .swatch span { display: block; height: 90px; margin-bottom: .8rem; }
+  .swatch strong, .swatch code { display: block; margin: .3rem .8rem; font-size: .9375rem; line-height: 1.5; }
+  .swatch strong { font-weight: 500; }
+  .swatch code { color: var(--ash-mauve); font-family: var(--font-mono); font-size: .8rem; }
+  .notes { display: grid; grid-template-columns: 1.3fr 1fr; gap: 4rem; align-items: center; }
+  dl div { display: flex; justify-content: space-between; gap: 1rem; padding: 1.2rem 0; border-bottom: 1px solid var(--selection); }
+  dd { margin: 0; font: 1.5rem var(--font-mono); color: var(--carmine); }
+  .terminal-link { display: inline-block; margin-top: 1.5rem; }
+  @media(max-width: 800px) { .intro, .notes { grid-template-columns: 1fr; gap: 2rem; } .icon { max-width: 180px; margin: auto; } .swatches { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

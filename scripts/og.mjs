@@ -143,3 +143,4 @@ for (const card of CARDS) {
 await browser.close();
 // Identidade editorial e Cinder usam o gerador vetorial compartilhado.
 await import('./studio-assets.mjs');
+await import('./vesperveil-assets.mjs');

@@ -20,7 +20,7 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
     <div class="top">
       <h3>{theme.name}</h3>
       <span class="version">
-        {!theme.published && <span class="wip">{t('theme.wip')}</span>}
+        {!theme.published && <span class="wip">{theme.pendingLabel?.[lang] ?? t('theme.wip')}</span>}
         v{theme.version}
       </span>
     </div>
@@ -78,6 +78,7 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
 
   .top {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
     gap: 0.8rem;

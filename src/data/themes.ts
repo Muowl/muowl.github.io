@@ -5,6 +5,7 @@
  */
 import { flavors, tokens } from '../lib/palette';
 import { cinder, cinderSwatches } from '../lib/cinder';
+import { vesperveil, vesperveilSwatches } from '../lib/vesperveil';
 import {
   flavors as papilioFlavors,
   palette as papilioPalette,
@@ -29,11 +30,35 @@ export interface ThemeEntry {
   accent: string;
   /** `false` esconde os botões de instalar e liga o selo de "em construção". */
   published: boolean;
+  pendingLabel?: { pt: string; en: string };
+  pendingNote?: { pt: string; en: string };
   /** Aviso legal obrigatório na página, quando o tema é fan-made. */
   disclaimer?: { pt: string; en: string };
 }
 
 export const themes: ThemeEntry[] = [
+  {
+    slug: 'vesperveil', name: 'Vesperveil', version: '0.1.0',
+    tagline: { pt: 'vinho, marfim e um véu de carmim', en: 'wine, ivory and a veil of carmine' },
+    summary: {
+      pt: 'Fundos vinho quase pretos, texto marfim e acentos suaves. Um tema escuro para VS Code, com comentários em itálico e cores contidas para a sintaxe.',
+      en: 'Near-black wine backgrounds, ivory text and soft accents. A dark VS Code theme with italic comments and restrained syntax colours.',
+    },
+    repo: 'https://github.com/Muowl/vesperveil',
+    tokenCount: vesperveilSwatches.length, flavorCount: 1,
+    tokenLabel: { pt: 'cores em destaque', en: 'featured colours' },
+    strip: [vesperveil.deep, vesperveil.background, vesperveil.accent, vesperveil.function, vesperveil.type, vesperveil.string],
+    accent: vesperveil.accent, published: false,
+    pendingLabel: { pt: 'em breve', en: 'coming soon' },
+    pendingNote: {
+      pt: 'Versão 0.1.0 preparada para a primeira publicação. Os links de instalação serão adicionados quando o tema estiver disponível nas lojas.',
+      en: 'Version 0.1.0 is prepared for its first release. Installation links will be added when the theme is available in the registries.',
+    },
+    disclaimer: {
+      pt: 'Projeto independente, sem vínculo com a HoYoverse. Sutilmente inspirado na paleta da Ronova (Genshin Impact); não inclui arte oficial.',
+      en: 'An independent project, unaffiliated with HoYoverse. Subtly inspired by Ronova’s palette (Genshin Impact); no official artwork is included.',
+    },
+  },
   {
     slug: 'cinder', name: 'Cinder', version: '0.3.1',
     tagline: { pt: 'carvão, brasa e espaço para pensar', en: 'charcoal, embers and room to think' },
