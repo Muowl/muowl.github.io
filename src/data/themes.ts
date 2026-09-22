@@ -45,15 +45,12 @@ export const themes: ThemeEntry[] = [
       en: 'Near-black wine backgrounds, ivory text and soft accents. A dark VS Code theme with italic comments and restrained syntax colours.',
     },
     repo: 'https://github.com/Muowl/vesperveil',
+    marketplace: 'https://marketplace.visualstudio.com/items?itemName=muowl.vesperveil',
+    openVsx: 'https://open-vsx.org/extension/muowl/vesperveil',
     tokenCount: vesperveilSwatches.length, flavorCount: 1,
     tokenLabel: { pt: 'cores em destaque', en: 'featured colours' },
     strip: [vesperveil.deep, vesperveil.background, vesperveil.accent, vesperveil.function, vesperveil.type, vesperveil.string],
-    accent: vesperveil.accent, published: false,
-    pendingLabel: { pt: 'em breve', en: 'coming soon' },
-    pendingNote: {
-      pt: 'Versão 0.1.0 preparada para a primeira publicação. Os links de instalação serão adicionados quando o tema estiver disponível nas lojas.',
-      en: 'Version 0.1.0 is prepared for its first release. Installation links will be added when the theme is available in the registries.',
-    },
+    accent: vesperveil.accent, published: true,
     disclaimer: {
       pt: 'Projeto independente, sem vínculo com a HoYoverse. Sutilmente inspirado na paleta da Ronova (Genshin Impact); não inclui arte oficial.',
       en: 'An independent project, unaffiliated with HoYoverse. Subtly inspired by Ronova’s palette (Genshin Impact); no official artwork is included.',
