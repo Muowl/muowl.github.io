@@ -6,12 +6,20 @@ const read = async (p) => JSON.parse(await readFile(new URL(p, import.meta.url),
 const vesperveil = await read('../src/data/vesperveil.palette.json');
 const studio = { paper: vesperveil.deep, surface: vesperveil.surface, ink: vesperveil.foreground, muted: vesperveil.muted, accent: vesperveil.accent, line: vesperveil.border };
 const { color } = await read('../src/data/cinder.foundation.json');
-const owl = (ink) => `<g fill="none" stroke="${ink}" stroke-width="2"><path d="M12 17 27 24Q40 18 53 24L68 17V43Q68 65 40 73 12 65 12 43Z"/><circle cx="28" cy="39" r="13"/><circle cx="52" cy="39" r="13"/><circle cx="28" cy="39" r="4" fill="${ink}" stroke="none"/><circle cx="52" cy="39" r="4" fill="${ink}" stroke="none"/><path d="m35 52 5 6 5-6M26 60l14 8 14-8"/></g>`;
-const icon = `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 96 96"><rect width="96" height="96" rx="20" fill="${studio.paper}"/><g transform="translate(8 4)">${owl(studio.ink)}</g></svg>`;
+const owl = (ink, size = 80, stroke = 2) => {
+  const drawing = `<path d="M10 12 27 21Q40 16 53 21L70 12V40Q70 62 40 74 10 62 10 40Z"/><circle cx="28" cy="39" r="12"/><circle cx="52" cy="39" r="12"/><path d="m36 54 4 5 4-5"/>`;
+  const pupils = `<circle cx="28" cy="39" r="3.2"/><circle cx="52" cy="39" r="3.2"/>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 80 80"><g fill="none" stroke="${vesperveil.info}" stroke-width="${stroke}" stroke-linecap="round" stroke-linejoin="round" transform="translate(-1.4 0)" opacity=".5">${drawing}<g fill="${vesperveil.info}" stroke="none">${pupils}</g></g><g fill="none" stroke="${studio.accent}" stroke-width="${stroke}" stroke-linecap="round" stroke-linejoin="round" transform="translate(1.4 0)" opacity=".5">${drawing}<g fill="${studio.accent}" stroke="none">${pupils}</g></g><g fill="none" stroke="${ink}" stroke-width="${stroke}" stroke-linecap="round" stroke-linejoin="round">${drawing}<g fill="${ink}" stroke="none">${pupils}</g></g></svg>`;
+};
+const mark = (ink, size, stroke) => {
+  const svg = owl(ink, size, stroke);
+  return svg.slice(svg.indexOf('<g'), svg.lastIndexOf('</svg>'));
+};
+const icon = `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 96 96"><rect width="96" height="96" rx="20" fill="${studio.paper}"/><g transform="translate(8 8)">${mark(studio.ink, 80, 2)}</g></svg>`;
 await writeFile(new URL('../public/icon.svg', import.meta.url), icon);
 await sharp(Buffer.from(icon)).png().toFile(fileURLToPath(new URL('../public/icon.png', import.meta.url)));
-// Desenho óptico para abas: olhos maiores, traço firme e menos detalhes.
-const favicon = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${studio.paper}"/><g fill="none" stroke="${studio.ink}" stroke-width="3.5" stroke-linejoin="round"><path d="M10 12 23 18Q32 14 41 18L54 12V34Q54 49 32 56 10 49 10 34Z"/><circle cx="23" cy="30" r="10"/><circle cx="41" cy="30" r="10"/><path d="m28 42 4 5 4-5"/></g><g fill="${studio.ink}"><circle cx="23" cy="30" r="3.5"/><circle cx="41" cy="30" r="3.5"/></g></svg>`;
+// O favicon usa a mesma marca; os deslocamentos cromáticos sobrevivem ao tamanho reduzido.
+const favicon = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 80 80"><rect width="80" height="80" rx="18" fill="${studio.paper}"/>${mark(studio.ink, 80, 3)}</svg>`;
 await writeFile(new URL('../public/owl.svg', import.meta.url), favicon);
 const faviconBuffers = [];
 for (const size of [16, 32, 48, 180]) {

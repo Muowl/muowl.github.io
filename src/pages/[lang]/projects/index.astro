@@ -14,7 +14,6 @@ const ordered = [...projects].sort((a, b) => b.year - a.year);
 <Base title={`${t('projects.title')} — muowl`} description={t('projects.lead')}>
   <div class="wrap">
     <div class="section-head" style="margin-top:2rem">
-      <div class="section-num">❦</div>
       <h1 class="section-title">{t('projects.title')}</h1>
     </div>
     <p class="section-subtitle">{t('projects.subtitle')}</p>
@@ -44,6 +43,10 @@ const ordered = [...projects].sort((a, b) => b.year - a.year);
 </Base>
 
 <style>
+  .section-head {
+    margin-left: 66px;
+  }
+
   .project-list {
     list-style: none;
     display: grid;
@@ -107,5 +110,11 @@ const ordered = [...projects].sort((a, b) => b.year - a.year);
     border: 1px solid rgba(var(--carmine-rgb), 0.18);
     border-radius: 999px;
     padding: 0.2rem 0.6rem;
+  }
+
+  @media (max-width: 680px) {
+    .section-head {
+      margin-left: 0;
+    }
   }
 </style>

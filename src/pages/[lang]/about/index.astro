@@ -8,18 +8,18 @@ export const getStaticPaths = langPaths;
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-// Texto adaptado do perfil em github.com/Muowl — palavras do próprio autor.
+// Bio e interesses declarados pelo autor.
 const bio =
   lang === 'pt'
     ? [
-        'Sou <strong>Felipe Lazzarini</strong>, desenvolvedor full stack. Trabalho com soluções voltadas a negócio desde 2020, com ênfase em performance, usabilidade e entrega prática.',
-        'No dia a dia construo aplicações web, sites institucionais e ferramentas internas. Fora dele, faço temas de editor — é onde a atenção a cor, tipografia e contraste vira o trabalho inteiro em vez de um detalhe.',
-        'Os temas daqui são abertos de ponta a ponta: paleta documentada token a token, alvos de contraste definidos antes do código e nenhum hex herdado de outro tema.',
+        'Sou <strong>Felipe Lazzarini</strong>, desenvolvedor full stack. Trabalho com software para negócios desde 2020 e sigo estudando como construir sistemas que sejam úteis, claros e fáceis de manter.',
+        'Tenho me interessado cada vez mais por engenharia de software e design: como organizar um sistema, justificar escolhas e fazer uma interface que não atrapalhe quem precisa usá-la. Criar temas de editor virou um jeito prático de estudar isso — cada cor, estado e contraste aparece na tela o tempo todo.',
+        'Também estou estudando LLMs. Quero entender melhor como funcionam e experimentar aplicações concretas, sem tratar a ferramenta como mágica nem a resposta como certa por padrão. Este site reúne alguns desses estudos; nos repositórios ficam o código e as decisões pelo caminho.',
       ]
     : [
-        "I'm <strong>Felipe Lazzarini</strong>, a full stack developer. I've worked on business-oriented solutions since 2020, with an emphasis on performance, usability and practical delivery.",
-        'By day I build web applications, business websites and internal tools. Outside that, I make editor themes — where attention to colour, type and contrast becomes the whole job instead of a detail.',
-        'The themes here are open end to end: a palette documented token by token, contrast targets set before any code, and not a single hex inherited from another theme.',
+        "I'm <strong>Felipe Lazzarini</strong>, a full stack developer. I've been building software for businesses since 2020, and I keep studying how to make systems useful, clear and easier to maintain.",
+        'I’ve grown especially interested in software engineering and design: how to structure a system, explain its choices and make an interface that stays out of the way. Making editor themes became a practical way to study that — every colour, state and contrast is right there on screen.',
+        'I’m also studying LLMs. I want to understand how they work and try them on concrete problems, without treating the tool as magic or its answers as automatically correct. This site gathers some of those studies; the repositories show the code and decisions along the way.',
       ];
 
 const stack = {

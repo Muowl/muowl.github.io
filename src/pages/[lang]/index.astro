@@ -11,31 +11,31 @@ const lang = getLangFromUrl(Astro.url);
 const pt = lang === 'pt';
 const t = useTranslations(lang);
 ---
-<Base title={pt ? 'muowl — código, cor e cuidado' : 'muowl — code, colour and care'} description={t('home.lead')}>
+<Base title={pt ? 'muowl — software, design e aprendizado' : 'muowl — software, design and learning'} description={t('home.lead')}>
   <div class="wrap home">
     <header class="hero">
       <div class="hero-copy">
         <p class="eyebrow">FELIPE LAZZARINI <span> / </span> {pt ? 'DESENVOLVEDOR & CRIADOR' : 'DEVELOPER & MAKER'}</p>
-        <h1>{pt ? 'Código com intenção.' : 'Code with intention.'}<br /><em>{pt ? 'Cor com alma.' : 'Colour with soul.'}</em></h1>
+        <h1>{pt ? 'Aprender fazendo.' : 'Learning by building.'}<br /><em>{pt ? 'Pensar em cada detalhe.' : 'Thinking through the details.'}</em></h1>
         <p class="intro">{t('home.lead')}</p>
-        <div class="hero-links"><a class="btn btn-primary" href="#collection">{pt ? 'Explore os temas' : 'Explore the themes'} <span aria-hidden="true">↘</span></a><a class="text-link" href={localePath(lang, '/about/')}>{pt ? 'Um pouco sobre mim' : 'A little about me'} <span aria-hidden="true">↗</span></a></div>
+        <div class="hero-links"><a class="btn btn-primary" href="#collection">{pt ? 'Ver o que estou fazendo' : 'See what I’m working on'} <span aria-hidden="true">↘</span></a><a class="text-link" href={localePath(lang, '/about/')}>{pt ? 'Como penso e o que estudo' : 'How I think and what I study'} <span aria-hidden="true">↗</span></a></div>
       </div>
       <div class="seal" aria-hidden="true"><span class="seal-top">REC ●  /  MUOWL 01</span><Owl class="hero-owl" /><span class="seal-bottom">PLAY ▸  /  CODE + COLOUR</span><span class="orbit"></span></div>
     </header>
-    <div class="folio"><span>{pt ? 'UM PEQUENO ESTÚDIO DIGITAL' : 'A SMALL DIGITAL STUDIO'}</span><span>{pt ? 'FEITO NO BRASIL · ABERTO PARA O MUNDO' : 'MADE IN BRAZIL · OPEN TO THE WORLD'}</span></div>
+    <div class="folio"><span>{pt ? 'ESTUDOS EM ANDAMENTO, CÓDIGO ABERTO' : 'ONGOING STUDIES, OPEN SOURCE CODE'}</span><span>{pt ? 'FEITO NO BRASIL · ABERTO PARA O MUNDO' : 'MADE IN BRAZIL · OPEN TO THE WORLD'}</span></div>
     <section class="featured" aria-labelledby="featured-title">
-      <div class="feature-copy"><p class="eyebrow">01 / {pt ? 'EM DESTAQUE' : 'IN THE SPOTLIGHT'}</p><h2 id="featured-title">Vesperveil<span class="period">.</span></h2><p class="feature-tagline">{pt ? 'Vinho, marfim e um véu de carmim.' : 'Wine, ivory and a veil of carmine.'}</p><p>{pt ? 'Um tema escuro de superfícies vinho e texto marfim. A cor organiza o código; o dourado e o carmim dão forma aos detalhes.' : 'A dark theme with wine surfaces and ivory text. Colour structures the code; gold and carmine shape the details.'}</p><div class="feature-meta"><span>VS CODE</span><span>v0.1.0</span><span>OPEN SOURCE</span></div><a class="text-link" href={localePath(lang, '/themes/vesperveil/')}>{pt ? 'Conheça o Vesperveil' : 'Meet Vesperveil'} <span aria-hidden="true">↗</span></a></div>
+      <div class="feature-copy"><p class="eyebrow">01 / {pt ? 'EM DESTAQUE' : 'FEATURED'}</p><h2 id="featured-title">Vesperveil<span class="period">.</span></h2><p class="feature-tagline">{pt ? 'Vinho, marfim e um véu de carmim.' : 'Wine, ivory and a veil of carmine.'}</p><p>{pt ? 'Fiz este tema para passar o dia no editor sem cansar os olhos. Testei os tons em TypeScript e Python; o contraste segura a leitura, e as cores de sintaxe ajudam a separar o que estou vendo.' : 'I made this theme for long days in the editor. I tried the colours in TypeScript and Python; contrast keeps the text readable, while syntax colours help separate what I’m looking at.'}</p><div class="feature-meta"><span>VS CODE</span><span>v0.1.0</span><span>OPEN SOURCE</span></div><a class="text-link" href={localePath(lang, '/themes/vesperveil/')}>{pt ? 'Ver como o tema funciona' : 'See how the theme works'} <span aria-hidden="true">↗</span></a></div>
       <div class="feature-preview"><div class="tape-heading"><span>MUOWL / VESPERVEIL</span><span>SP ▸ 01:22:06</span></div><img src="/themes/vesperveil/vesperveil-typescript.png" width="1600" height="900" alt={pt ? 'Captura do Vesperveil no VS Code com código TypeScript' : 'Vesperveil in VS Code with TypeScript code'} loading="lazy" /><span class="tape-foot">{pt ? 'CAPTURA REAL · VS CODE' : 'ACTUAL SCREENSHOT · VS CODE'}</span></div>
     </section>
     <section id="collection" aria-labelledby="collection-title">
-      <div class="collection-head"><div><p class="eyebrow">02 / {pt ? 'A COLEÇÃO' : 'THE COLLECTION'}</p><h2 id="collection-title">{pt ? 'Uma paleta. Um universo.' : 'A palette. A world.'}</h2></div><span class="collection-count">{String(themes.length).padStart(2, '0')} {pt ? 'TEMAS AUTORAIS' : 'ORIGINAL THEMES'}</span></div>
+      <div class="collection-head"><div><p class="eyebrow">02 / {pt ? 'ESTUDOS DE COR' : 'COLOUR STUDIES'}</p><h2 id="collection-title">{pt ? 'Temas que estou desenvolvendo.' : 'Themes I’m working on.'}</h2></div><span class="collection-count">{String(themes.length).padStart(2, '0')} {pt ? 'TEMAS' : 'THEMES'}</span></div>
       <div class="card-grid">{themes.map(theme => <ThemeCard theme={theme} lang={lang} />)}</div>
     </section>
     <section class="work" aria-labelledby="work-title">
-      <div><p class="eyebrow">03 / {pt ? 'POR DENTRO' : 'UNDER THE SURFACE'}</p><h2 id="work-title">{pt ? 'O cuidado também está no código.' : 'The care is in the code, too.'}</h2><p>{pt ? 'Paletas documentadas, tokens com propósito e ferramentas abertas. Entre, leia, use, transforme.' : 'Documented palettes, purposeful tokens and open tools. Step in, read, use, make it your own.'}</p><a class="text-link" href="https://github.com/Muowl">GitHub <span aria-hidden="true">↗</span></a></div>
+      <div><p class="eyebrow">03 / {pt ? 'CADERNO ABERTO' : 'OPEN NOTEBOOK'}</p><h2 id="work-title">{pt ? 'Estudo melhor quando posso testar.' : 'I learn best when I can test an idea.'}</h2><p>{pt ? 'Cada repositório guarda decisões, tentativas e o resultado até aqui. Estou estudando engenharia de software, design de interfaces e LLMs; esse trabalho é parte do processo.' : 'Each repository keeps the decisions, experiments and the result so far. I’m studying software engineering, interface design and LLMs; this work is part of that process.'}</p><a class="text-link" href="https://github.com/Muowl">GitHub <span aria-hidden="true">↗</span></a></div>
       <div class="repo-list">{projects.map((p, i) => <a href={p.url}><span class="repo-number">0{i + 1}</span><div><h3>{p.name}</h3><p>{p.summary[lang]}</p><span class="repo-stack">{p.stack.join(' / ')}</span></div><span aria-hidden="true">↗</span></a>)}</div>
     </section>
-    <aside class="closing"><p>{pt ? 'Pequenos detalhes. Muitas horas de uso.' : 'Small details. Many hours of use.'}</p><a class="text-link" href={localePath(lang, '/about/')}>{pt ? 'Vamos conversar' : 'Let’s talk'} ↗</a></aside>
+    <aside class="closing"><p>{pt ? 'Aprendiz para a vida toda. Curioso por natureza.' : 'A lifelong learner. Curious by nature.'}</p><a class="text-link" href={localePath(lang, '/about/')}>{pt ? 'Mais sobre meu percurso' : 'More about my work'} ↗</a></aside>
   </div>
 </Base>
 <style>

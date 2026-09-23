@@ -32,23 +32,23 @@ export const ui = {
     'nav.about': 'Sobre',
     'nav.skip': 'Pular para o conteúdo',
 
-    'home.eyebrow': 'Desenvolvedor · Temas · Open source',
-    'home.subtitle': 'ferramentas com identidade, não com preset',
+    'home.eyebrow': 'Desenvolvimento · Engenharia · Design',
+    'home.subtitle': 'entender o problema também faz parte de programar',
     'home.lead':
-      'Construo interfaces, temas e pequenas ferramentas. Gosto de código bem pensado, cores com propósito e coisas que ficam melhores quando você usa todos os dias.',
+      'Sou Felipe, desenvolvedor full stack. Aprendo construindo: estudo engenharia de software, desenho interfaces e testo ideias em projetos próprios. No momento, também ando explorando o que dá para fazer com LLMs — e onde eles realmente ajudam.',
     'home.cta.themes': 'Ver os temas',
     'home.cta.github': 'GitHub',
     'home.themes.title': 'Temas',
-    'home.themes.subtitle': 'paletas autorais, portadas para vários editores',
+    'home.themes.subtitle': 'cor, contraste e leitura tratados como parte da interface',
     'home.projects.title': 'Projetos',
-    'home.projects.subtitle': 'o que mais anda em construção',
+    'home.projects.subtitle': 'ideias que viraram código e continuam evoluindo',
     'home.all.themes': 'Todos os temas',
     'home.all.projects': 'Todos os projetos',
 
     'themes.title': 'Temas',
-    'themes.subtitle': 'uma paleta por vez, levada a sério',
+    'themes.subtitle': 'projetados para passar horas olhando para código',
     'themes.lead':
-      'Cada tema nasce de uma paleta documentada — tokens nomeados, papéis definidos e alvos de contraste WCAG antes de qualquer linha de JSON.',
+      'Faço cada tema como faria uma interface: começo pela paleta, defino o papel de cada cor e confiro como ela se comporta no editor. Os detalhes e critérios de cada projeto estão abertos para consulta.',
     'themes.view': 'Ver o tema',
     'themes.tokens': 'tokens',
     'themes.flavors': 'flavors',
@@ -79,12 +79,12 @@ export const ui = {
     'theme.roles.subtitle': 'o que cada token colore no código',
 
     'projects.title': 'Projetos',
-    'projects.subtitle': 'o que anda em construção',
-    'projects.lead': 'Coisas pequenas, feitas com cuidado, abertas de ponta a ponta.',
+    'projects.subtitle': 'projetos que uso para estudar fazendo',
+    'projects.lead': 'Aqui ficam os experimentos que saíram das anotações e foram parar no código: temas, sistemas de design e ferramentas para organizar decisões.',
     'projects.visit': 'Ver projeto',
 
     'about.title': 'Sobre',
-    'about.subtitle': 'quem faz isto',
+    'about.subtitle': 'o que venho aprendendo e construindo',
     'about.contact': 'Contato',
 
     'notfound.title': 'Perdeu-se no corredor',
@@ -102,23 +102,23 @@ export const ui = {
     'nav.about': 'About',
     'nav.skip': 'Skip to content',
 
-    'home.eyebrow': 'Developer · Themes · Open source',
-    'home.subtitle': 'tools with an identity, not a preset',
+    'home.eyebrow': 'Development · Engineering · Design',
+    'home.subtitle': 'understanding the problem is part of programming',
     'home.lead':
-      'I build interfaces, themes and small tools. I care about thoughtful code, purposeful colours and things that feel better the more you use them.',
+      'I’m Felipe, a full stack developer. I learn by building: studying software engineering, designing interfaces and testing ideas in personal projects. Lately, I’ve also been exploring what LLMs can do — and where they actually help.',
     'home.cta.themes': 'See the themes',
     'home.cta.github': 'GitHub',
     'home.themes.title': 'Themes',
-    'home.themes.subtitle': 'original palettes, ported to several editors',
+    'home.themes.subtitle': 'colour, contrast and readability treated as interface design',
     'home.projects.title': 'Projects',
-    'home.projects.subtitle': 'what else is being built',
+    'home.projects.subtitle': 'ideas turned into code, still evolving',
     'home.all.themes': 'All themes',
     'home.all.projects': 'All projects',
 
     'themes.title': 'Themes',
-    'themes.subtitle': 'one palette at a time, taken seriously',
+    'themes.subtitle': 'made for spending hours looking at code',
     'themes.lead':
-      'Every theme starts from a documented palette — named tokens, defined roles and WCAG contrast targets, before a single line of JSON.',
+      'I make each theme the way I would approach an interface: start with the palette, give every colour a role, then see how it behaves in the editor. The details and criteria behind each project are open to explore.',
     'themes.view': 'View the theme',
     'themes.tokens': 'tokens',
     'themes.flavors': 'flavors',
@@ -149,12 +149,12 @@ export const ui = {
     'theme.roles.subtitle': 'what each token colours in code',
 
     'projects.title': 'Projects',
-    'projects.subtitle': 'what is being built',
-    'projects.lead': 'Small things, made with care, open end to end.',
+    'projects.subtitle': 'projects I use to learn by making',
+    'projects.lead': 'These are experiments that made it out of my notes and into code: themes, design systems and tools for making decisions visible.',
     'projects.visit': 'View project',
 
     'about.title': 'About',
-    'about.subtitle': 'who makes this',
+    'about.subtitle': 'what I’m learning and building',
     'about.contact': 'Contact',
 
     'notfound.title': 'Lost in the corridor',

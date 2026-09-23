@@ -15,8 +15,8 @@ export const projects: ProjectEntry[] = [
   {
     name: 'cinder',
     summary: {
-      pt: 'Linguagem visual para ferramentas de desenvolvimento. Tokens de fundação, interface e sintaxe, adaptador para VS Code e validação automatizada de contraste.',
-      en: 'A design language for developer tools. Foundation, interface and syntax tokens, a VS Code adapter and automated contrast validation.',
+      pt: 'Um estudo de como levar uma paleta para uma ferramenta de desenvolvimento: tokens separados por função, port para VS Code e checagens automáticas de contraste.',
+      en: 'An exploration of bringing a palette into a developer tool: tokens organized by role, a VS Code port and automated contrast checks.',
     },
     url: 'https://github.com/Muowl/cinder',
     stack: ['Design tokens', 'JSON', 'VS Code'], year: 2026,
@@ -24,8 +24,8 @@ export const projects: ProjectEntry[] = [
   {
     name: 'carmilla',
     summary: {
-      pt: 'Monorepo do tema: paleta documentada em TOML como fonte da verdade, port para VS Code publicado no Marketplace e no Open VSX, e dois flavors.',
-      en: 'The theme monorepo: a palette documented in TOML as the source of truth, the VS Code port published on the Marketplace and Open VSX, and two flavors.',
+      pt: 'Um tema e tudo que precisa para mantê-lo: a paleta em TOML como fonte única, versões para editores e dois flavors com identidades próprias.',
+      en: 'A theme and the pieces needed to maintain it: a TOML palette as the single source, editor ports and two flavours with their own identities.',
     },
     url: 'https://github.com/Muowl/carmilla',
     stack: ['TOML', 'JSON', 'VS Code'],
@@ -34,8 +34,8 @@ export const projects: ProjectEntry[] = [
   {
     name: 'papilio-theme',
     summary: {
-      pt: 'Tema a partir de âncoras de personagem: paleta em YAML, variante Blood Blossom, export Base24 e três gates de build (contraste WCAG, daltonismo e tokenização real).',
-      en: 'A theme from character anchors: YAML palette, Blood Blossom variant, Base24 export, and three build gates (WCAG contrast, colour blindness and real tokenisation).',
+      pt: 'Um exercício de transformar cores de referência em uma paleta utilizável: YAML, uma variante alternativa e verificações de contraste, distinção de cores e tokens.',
+      en: 'An exercise in turning reference colours into a usable palette: YAML, an alternate variant, and checks for contrast, colour distinction and tokens.',
     },
     url: 'https://github.com/Muowl/papilio-theme',
     stack: ['TypeScript', 'YAML', 'VS Code', 'Base24'],

@@ -2,10 +2,37 @@
 interface Props { class?: string }
 const { class: className } = Astro.props;
 ---
-<svg class={className} viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-  <path d="M12 17 27 24Q40 18 53 24L68 17V43Q68 65 40 73 12 65 12 43Z" />
-  <circle cx="28" cy="39" r="13" /><circle cx="52" cy="39" r="13" />
-  <circle cx="28" cy="39" r="4" fill="currentColor" stroke="none" />
-  <circle cx="52" cy="39" r="4" fill="currentColor" stroke="none" />
-  <path d="m35 52 5 6 5-6M26 60l14 8 14-8" />
+<svg class={className} viewBox="0 0 80 80" fill="none" aria-hidden="true">
+  <g class="owl-fringe owl-fringe-cyan" transform="translate(-1.4 0)" stroke="var(--verdigris, currentColor)" fill="none">
+    <path d="M10 12 27 21Q40 16 53 21L70 12V40Q70 62 40 74 10 62 10 40Z" />
+    <circle cx="28" cy="39" r="12" /><circle cx="52" cy="39" r="12" />
+    <circle cx="28" cy="39" r="3.2" fill="var(--verdigris, currentColor)" stroke="none" />
+    <circle cx="52" cy="39" r="3.2" fill="var(--verdigris, currentColor)" stroke="none" />
+    <path d="m36 54 4 5 4-5" />
+  </g>
+  <g class="owl-fringe owl-fringe-red" transform="translate(1.4 0)" stroke="var(--carmine, currentColor)" fill="none">
+    <path d="M10 12 27 21Q40 16 53 21L70 12V40Q70 62 40 74 10 62 10 40Z" />
+    <circle cx="28" cy="39" r="12" /><circle cx="52" cy="39" r="12" />
+    <circle cx="28" cy="39" r="3.2" fill="var(--carmine, currentColor)" stroke="none" />
+    <circle cx="52" cy="39" r="3.2" fill="var(--carmine, currentColor)" stroke="none" />
+    <path d="m36 54 4 5 4-5" />
+  </g>
+  <g class="owl-core" fill="none" stroke="currentColor">
+    <path d="M10 12 27 21Q40 16 53 21L70 12V40Q70 62 40 74 10 62 10 40Z" />
+    <circle cx="28" cy="39" r="12" /><circle cx="52" cy="39" r="12" />
+    <circle cx="28" cy="39" r="3.2" fill="currentColor" stroke="none" />
+    <circle cx="52" cy="39" r="3.2" fill="currentColor" stroke="none" />
+    <path d="m36 54 4 5 4-5" />
+  </g>
 </svg>
+
+<style>
+  svg { overflow: visible; }
+  .owl-fringe { stroke-width: 2; opacity: .58; }
+  .owl-core { stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  @media (prefers-reduced-motion: no-preference) {
+    .owl-fringe { transition: transform 180ms ease, opacity 180ms ease; }
+    svg:hover .owl-fringe-cyan { transform: translate(-2px, 0); }
+    svg:hover .owl-fringe-red { transform: translate(2px, 0); }
+  }
+</style>

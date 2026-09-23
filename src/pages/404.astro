@@ -4,40 +4,31 @@
  * qualquer rota desconhecida. Não é localizado: como a URL errada pode estar em
  * qualquer idioma, a página fala os dois.
  */
-import { paletteCss, themeColor } from '../lib/palette';
+import { studio, studioCss } from '../lib/studio';
 import { ui } from '../i18n/ui';
 import Favicons from '../components/Favicons.astro';
+import Owl from '../components/Owl.astro';
 ---
 
-<html lang="en">
+<html lang="en" data-flavor="base" data-studio>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content={themeColor('base')} />
+    <meta name="theme-color" content={studio.paper} />
     <meta name="robots" content="noindex" />
     <title>404 — muowl</title>
     <Favicons />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&family=Inter:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
-    <style is:global set:html={paletteCss()}></style>
-
-    {/* Mantém o flavor escolhido no resto do site também aqui. */}
-    <script is:inline>
-      (function () {
-        try {
-          if (localStorage.getItem('carmilla-flavor') === 'amethyst') {
-            document.documentElement.dataset.flavor = 'amethyst';
-          }
-        } catch (e) {}
-      })();
-    </script>
+    <style is:global set:html={studioCss()}></style>
   </head>
   <body>
     <main>
+      <Owl class="notfound-owl" />
       <div class="code">404</div>
       <h1>{ui.pt['notfound.title']}</h1>
       <p>{ui.pt['notfound.lead']}</p>
@@ -66,8 +57,22 @@ import Favicons from '../components/Favicons.astro';
         padding: 2rem;
         text-align: center;
       }
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(var(--pearl-rgb), .018) 4px);
+      }
       main {
         max-width: 34rem;
+        position: relative;
+      }
+      .notfound-owl {
+        width: 3.5rem;
+        height: 3.5rem;
+        color: var(--champagne);
+        margin-bottom: 1.2rem;
       }
       .code {
         font-family: 'Cormorant Garamond', Georgia, serif;
@@ -111,7 +116,7 @@ import Favicons from '../components/Favicons.astro';
         font-weight: 600;
         font-size: 0.95rem;
         padding: 0.8rem 1.6rem;
-        border-radius: 999px;
+        border-radius: 3px;
         color: var(--pearl);
         background: rgba(var(--velvet-rgb), 0.5);
         border: 1px solid rgba(var(--carmine-rgb), 0.4);
