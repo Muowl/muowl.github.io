@@ -16,7 +16,7 @@ import Favicons from '../components/Favicons.astro';
     <meta name="robots" content="noindex" />
     <title>muowl</title>
     <Favicons />
-    <link rel="canonical" href="https://muowl.dev/pt/" />
+    <link rel="canonical" href={new URL('/pt/', Astro.site ?? new URL('https://muowl.dev')).href} />
     <meta http-equiv="refresh" content="0; url=/pt/" />
     <script is:inline>
       (function () {

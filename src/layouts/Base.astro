@@ -104,7 +104,7 @@ const nav = [
             if (f === 'amethyst') {
               document.documentElement.dataset.flavor = f;
               var m = document.querySelector('meta[name="theme-color"]');
-              if (m) m.setAttribute('content', '#18101A');
+              if (m) m.setAttribute('content', '${themeColor('amethyst')}');
             }
           } catch (e) {}
         })();`}
@@ -122,7 +122,7 @@ const nav = [
         <span class="brand-name">muowl</span>
       </a>
 
-      <nav class="site-nav" aria-label={t('nav.home')}>
+      <nav class="site-nav" aria-label={t('nav.label')}>
         {
           nav.map((item) => {
             const href = localePath(lang, item.path);

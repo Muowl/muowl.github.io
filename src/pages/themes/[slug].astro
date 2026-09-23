@@ -18,6 +18,7 @@ export function getStaticPaths() {
 const { theme } = Astro.props;
 const pt = `/pt/themes/${theme.slug}/`;
 const en = `/en/themes/${theme.slug}/`;
+const site = Astro.site ?? new URL('https://muowl.dev');
 ---
 
 <html lang="en">
@@ -27,7 +28,7 @@ const en = `/en/themes/${theme.slug}/`;
     <meta name="robots" content="noindex" />
     <title>{theme.name}</title>
     <Favicons />
-    <link rel="canonical" href={`https://muowl.dev${en}`} />
+    <link rel="canonical" href={new URL(en, site).href} />
     <meta http-equiv="refresh" content={`0; url=${en}`} />
     <script is:inline define:vars={{ pt, en }}>
       location.replace((navigator.language || 'en').toLowerCase().startsWith('pt') ? pt : en);

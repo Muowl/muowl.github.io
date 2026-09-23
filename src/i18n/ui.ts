@@ -27,6 +27,7 @@ export function localePath(lang: Lang, path = '/'): string {
 export const ui = {
   pt: {
     'nav.home': 'Início',
+    'nav.label': 'Navegação principal',
     'nav.themes': 'Temas',
     'nav.projects': 'Projetos',
     'nav.about': 'Sobre',
@@ -97,6 +98,7 @@ export const ui = {
   },
   en: {
     'nav.home': 'Home',
+    'nav.label': 'Main navigation',
     'nav.themes': 'Themes',
     'nav.projects': 'Projects',
     'nav.about': 'About',

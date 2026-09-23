@@ -6,7 +6,7 @@
  * cards saem de `lib/palette`, que lê o TOML. Os textos vêm do idioma da rota,
  * em vez de ficarem os dois na página escondidos por CSS.
  */
-import { tokens, flavors, type FlavorId } from '../lib/palette';
+import { tokens, flavors, themeColor, type FlavorId } from '../lib/palette';
 import { getLangFromUrl, useTranslations, type Lang } from '../i18n/ui';
 
 const lang: Lang = getLangFromUrl(Astro.url);
@@ -150,9 +150,9 @@ const flavorsLead =
 
   <div class="editor">
     <div class="editor-titlebar">
-      <span class="traffic r"></span>
-      <span class="traffic y"></span>
-      <span class="traffic g"></span>
+      <span class="traffic r" aria-hidden="true"></span>
+      <span class="traffic y" aria-hidden="true"></span>
+      <span class="traffic g" aria-hidden="true"></span>
       <span class="file">carmilla / <strong>countess.ts</strong></span>
     </div>
     <div class="editor-tabs">
@@ -288,13 +288,13 @@ const flavorsLead =
   </div>
 </section>
 
-<script>
+<script define:vars={{ baseCrypt: themeColor('base'), amethystCrypt: themeColor('amethyst') }}>
   // Troca o flavor da página inteira e guarda a escolha. O Base.astro reaplica
   // antes da primeira pintura nas próximas navegações.
   const root = document.documentElement;
   const buttons = document.querySelectorAll<HTMLElement>('[data-set-flavor]');
   const themeMeta = document.querySelector('meta[name="theme-color"]');
-  const CRYPT: Record<string, string> = { base: '#16101A', amethyst: '#18101A' };
+  const CRYPT: Record<string, string> = { base: baseCrypt, amethyst: amethystCrypt };
 
   function applyFlavor(flavor: string) {
     root.dataset.flavor = flavor;
@@ -426,13 +426,13 @@ const flavorsLead =
     display: inline-block;
   }
   .traffic.r {
-    background: #ff5f57;
+    background: var(--pomegranate);
   }
   .traffic.y {
-    background: #febc2e;
+    background: var(--champagne);
   }
   .traffic.g {
-    background: #28c840;
+    background: var(--absinthe);
   }
 
   .editor-titlebar .file {
