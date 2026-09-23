@@ -52,9 +52,9 @@ they live in `src/lib/palette.ts`: `TABSTRIP` (chrome of the editor mockup, not 
 palette token) and the base accent hover (taken from `terminal.bright.magenta`).
 
 ## i18n
-The portfolio has its own editorial identity, authorized in September 2026.
-`src/data/studio.palette.json` owns its colours, loaded by `src/lib/studio.ts`.
-Theme showcases retain their own palettes. Cinder's foundation, semantic and
+The portfolio uses Vesperveil as its base palette, mapped by `src/lib/studio.ts`
+from the byte-identical `src/data/vesperveil.palette.json` copy. Theme showcases
+retain their own palettes. The global site chrome uses restrained VHS cues. Cinder's foundation, semantic and
 syntax JSON files are byte-identical upstream copies refreshed by `sync:palette`.
 
 

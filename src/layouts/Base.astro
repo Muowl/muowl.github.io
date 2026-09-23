@@ -190,15 +190,30 @@ const nav = [
   .footer-signature { display: inline-flex; align-items: center; gap: .8rem; font: 500 3rem var(--font-display); text-decoration: none; margin-bottom: 1rem; }
   .footer-owl { width: 48px; height: 48px; }
   :focus-visible { outline: 2px solid var(--carmine); outline-offset: 5px; }
-  html[data-studio] { color-scheme: light; }
+  html[data-studio] { color-scheme: dark; }
   html:not([data-studio]) { color-scheme: dark; }
-  html[data-studio] body::after { display: none; }
-  html[data-studio] body::before { opacity: .025; mix-blend-mode: multiply; }
-  html[data-studio] .site-head { position: relative; padding-block: 1.3rem; }
+  html[data-studio] body::after {
+    z-index: 99;
+    opacity: .5;
+    background: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(var(--pearl-rgb), .018) 4px);
+  }
+  html[data-studio] body::before { opacity: .028; mix-blend-mode: screen; }
+  html[data-studio] .site-head { padding-block: 1.3rem; border-bottom-color: var(--selection); }
+  html[data-studio] .site-head::after {
+    content: 'PLAY  ▸  MUOWL / SIDE A';
+    position: absolute; right: clamp(1rem, 4vw, 2.5rem); bottom: -.8rem;
+    padding: .1rem .5rem; background: var(--crypt); color: var(--champagne);
+    font: .62rem var(--font-mono); letter-spacing: .07em;
+  }
   html[data-studio] .brand { font-family: var(--font-body); font-weight: 600; letter-spacing: -.06em; font-size: 1.55rem; }
-  html[data-studio] .btn { border-radius: 4px; box-shadow: none; padding: .85rem 1.3rem; font-size: .88rem; }
+  html[data-studio] .brand-name:hover { text-shadow: -1px 0 var(--wisteria), 1px 0 var(--carmine); }
+  html[data-studio] .btn { border-radius: 3px; box-shadow: none; padding: .85rem 1.3rem; font-size: .88rem; }
   html[data-studio] .section-num { font-family: var(--font-mono); font-style: normal; font-size: .75rem; }
   html[data-studio] .section-subtitle { font-family: var(--font-body); font-size: .9rem; font-style: normal; }
+  html[data-studio] .section-title { text-wrap: balance; }
+  html[data-studio] .lang-switch { border-radius: 3px; }
+  html[data-studio] .lang-switch a { border-radius: 2px; }
+  html[data-studio] ::selection { background: var(--selection); color: var(--pearl); }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { animation: none !important; transition: none !important; }

@@ -20,8 +20,9 @@ npm run preview    # serve o dist/
 
 ## Identidade e paletas
 
-A identidade editorial do portfólio tem paleta própria em `src/data/studio.palette.json`:
-papel, tinta e verde discreto. Cada vitrine preserva a identidade do seu tema.
+A identidade principal do portfólio deriva diretamente da paleta Vesperveil em
+`src/data/vesperveil.palette.json`, com marcas VHS discretas. Cada vitrine
+preserva a identidade do próprio tema.
 As paletas de Carmilla, Papilio e Cinder são cópias byte-a-byte dos repositórios
 originais; o loader do Cinder resolve os tokens semânticos e de sintaxe.
 `npm run assets:studio` gera o ícone e os cards sociais de muowl e Cinder.
