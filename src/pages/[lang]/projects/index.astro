@@ -2,13 +2,13 @@
 import Base from '../../../layouts/Base.astro';
 import { langPaths } from '../../../i18n/paths';
 import { useTranslations, getLangFromUrl, type Lang } from '../../../i18n/ui';
-import { projects } from '../../../data/projects';
+import { listedProjects } from '../../../data/projects';
 
 export const getStaticPaths = langPaths;
 
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-const ordered = [...projects].sort((a, b) => b.year - a.year);
+const ordered = [...listedProjects].sort((a, b) => b.year - a.year);
 ---
 
 <Base title={`${t('projects.title')} — muowl`} description={t('projects.lead')}>

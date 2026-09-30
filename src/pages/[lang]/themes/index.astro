@@ -3,7 +3,7 @@ import Base from '../../../layouts/Base.astro';
 import ThemeCard from '../../../components/ThemeCard.astro';
 import { langPaths } from '../../../i18n/paths';
 import { useTranslations, getLangFromUrl, type Lang } from '../../../i18n/ui';
-import { themes } from '../../../data/themes';
+import { listedThemes } from '../../../data/themes';
 
 export const getStaticPaths = langPaths;
 
@@ -21,7 +21,7 @@ const t = useTranslations(lang);
     <p class="lead-text">{t('themes.lead')}</p>
 
     <div class="card-grid">
-      {themes.map((theme) => <ThemeCard theme={theme} lang={lang} />)}
+      {listedThemes.map((theme) => <ThemeCard theme={theme} lang={lang} />)}
     </div>
   </div>
 </Base>

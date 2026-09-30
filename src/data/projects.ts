@@ -9,6 +9,8 @@ export interface ProjectEntry {
   /** Tecnologias mostradas como chips no card. */
   stack: string[];
   year: number;
+  /** `false` mantém o registro no código, mas o oculta das listagens públicas. */
+  listed?: boolean;
 }
 
 export const projects: ProjectEntry[] = [
@@ -40,5 +42,8 @@ export const projects: ProjectEntry[] = [
     url: 'https://github.com/Muowl/papilio-theme',
     stack: ['TypeScript', 'YAML', 'VS Code', 'Base24'],
     year: 2026,
+    listed: false,
   },
 ];
+
+export const listedProjects = projects.filter((project) => project.listed !== false);

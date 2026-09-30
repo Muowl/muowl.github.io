@@ -7,12 +7,12 @@
  * README do Marketplace, em particular, só é atualizado quando a extensão é
  * republicada, então esse link precisa envelhecer bem.
  */
-import { themes } from '../../data/themes';
+import { listedThemes } from '../../data/themes';
 import { studioCss } from '../../lib/studio';
 import Favicons from '../../components/Favicons.astro';
 
 export function getStaticPaths() {
-  return themes.map((theme) => ({ params: { slug: theme.slug }, props: { theme } }));
+  return listedThemes.map((theme) => ({ params: { slug: theme.slug }, props: { theme } }));
 }
 
 const { theme } = Astro.props;

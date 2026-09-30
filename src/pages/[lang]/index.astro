@@ -4,8 +4,8 @@ import ThemeCard from '../../components/ThemeCard.astro';
 import Owl from '../../components/Owl.astro';
 import { langPaths } from '../../i18n/paths';
 import { localePath, useTranslations, getLangFromUrl } from '../../i18n/ui';
-import { themes } from '../../data/themes';
-import { projects } from '../../data/projects';
+import { listedThemes } from '../../data/themes';
+import { listedProjects } from '../../data/projects';
 export const getStaticPaths = langPaths;
 const lang = getLangFromUrl(Astro.url);
 const pt = lang === 'pt';
@@ -28,12 +28,12 @@ const t = useTranslations(lang);
       <div class="feature-preview"><div class="tape-heading"><span>MUOWL / VESPERVEIL</span><span>SP ▸ 01:22:06</span></div><img src="/themes/vesperveil/vesperveil-typescript.png" width="1600" height="900" alt={pt ? 'Captura do Vesperveil no VS Code com código TypeScript' : 'Vesperveil in VS Code with TypeScript code'} loading="lazy" /><span class="tape-foot">{pt ? 'CAPTURA REAL · VS CODE' : 'ACTUAL SCREENSHOT · VS CODE'}</span></div>
     </section>
     <section id="collection" aria-labelledby="collection-title">
-      <div class="collection-head"><div><p class="eyebrow">02 / {pt ? 'ESTUDOS DE COR' : 'COLOUR STUDIES'}</p><h2 id="collection-title">{pt ? 'Temas que estou desenvolvendo.' : 'Themes I’m working on.'}</h2></div><span class="collection-count">{String(themes.length).padStart(2, '0')} {pt ? 'TEMAS' : 'THEMES'}</span></div>
-      <div class="card-grid">{themes.map(theme => <ThemeCard theme={theme} lang={lang} />)}</div>
+      <div class="collection-head"><div><p class="eyebrow">02 / {pt ? 'ESTUDOS DE COR' : 'COLOUR STUDIES'}</p><h2 id="collection-title">{pt ? 'Temas que estou desenvolvendo.' : 'Themes I’m working on.'}</h2></div><span class="collection-count">{String(listedThemes.length).padStart(2, '0')} {pt ? 'TEMAS' : 'THEMES'}</span></div>
+      <div class="card-grid">{listedThemes.map(theme => <ThemeCard theme={theme} lang={lang} />)}</div>
     </section>
     <section class="work" aria-labelledby="work-title">
       <div><p class="eyebrow">03 / {pt ? 'CADERNO ABERTO' : 'OPEN NOTEBOOK'}</p><h2 id="work-title">{pt ? 'Estudo melhor quando posso testar.' : 'I learn best when I can test an idea.'}</h2><p>{pt ? 'Cada repositório guarda decisões, tentativas e o resultado até aqui. Estou estudando engenharia de software, design de interfaces e LLMs; esse trabalho é parte do processo.' : 'Each repository keeps the decisions, experiments and the result so far. I’m studying software engineering, interface design and LLMs; this work is part of that process.'}</p><a class="text-link" href="https://github.com/Muowl">GitHub <span aria-hidden="true">↗</span></a></div>
-      <div class="repo-list">{projects.map((p, i) => <a href={p.url}><span class="repo-number">0{i + 1}</span><div><h3>{p.name}</h3><p>{p.summary[lang]}</p><span class="repo-stack">{p.stack.join(' / ')}</span></div><span aria-hidden="true">↗</span></a>)}</div>
+      <div class="repo-list">{listedProjects.map((p, i) => <a href={p.url}><span class="repo-number">0{i + 1}</span><div><h3>{p.name}</h3><p>{p.summary[lang]}</p><span class="repo-stack">{p.stack.join(' / ')}</span></div><span aria-hidden="true">↗</span></a>)}</div>
     </section>
     <aside class="closing"><p>{pt ? 'Aprendiz para a vida toda. Curioso por natureza.' : 'A lifelong learner. Curious by nature.'}</p><a class="text-link" href={localePath(lang, '/about/')}>{pt ? 'Mais sobre meu percurso' : 'More about my work'} ↗</a></aside>
   </div>

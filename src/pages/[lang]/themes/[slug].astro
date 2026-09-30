@@ -14,11 +14,11 @@ import {
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { languages, localePath, useTranslations, type Lang } from '../../../i18n/ui';
-import { themes, themeBySlug } from '../../../data/themes';
+import { listedThemes, themeBySlug } from '../../../data/themes';
 
 export function getStaticPaths() {
   return (Object.keys(languages) as Lang[]).flatMap((lang) =>
-    themes.map((theme) => ({ params: { lang, slug: theme.slug } })),
+    listedThemes.map((theme) => ({ params: { lang, slug: theme.slug } })),
   );
 }
 

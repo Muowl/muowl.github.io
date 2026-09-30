@@ -30,6 +30,8 @@ export interface ThemeEntry {
   accent: string;
   /** `false` esconde os botões de instalar e liga o selo de "em construção". */
   published: boolean;
+  /** `false` mantém o tema no catálogo interno, mas fora das páginas públicas. */
+  listed?: boolean;
   pendingLabel?: { pt: string; en: string };
   pendingNote?: { pt: string; en: string };
   /** Aviso legal obrigatório na página, quando o tema é fan-made. */
@@ -122,12 +124,15 @@ export const themes: ThemeEntry[] = [
     ],
     accent: papilioPalette.crimson.toUpperCase(),
     published: true,
+    listed: false,
     disclaimer: {
       pt: 'Projeto de fã, sem vínculo com a HoYoverse. Inspirado na paleta da Hu Tao (Genshin Impact); todas as marcas pertencem aos seus donos.',
       en: 'A fan-made project, unaffiliated with HoYoverse. Inspired by Hu Tao’s palette (Genshin Impact); all trademarks belong to their owners.',
     },
   },
 ];
+
+export const listedThemes = themes.filter((theme) => theme.listed !== false);
 
 export function themeBySlug(slug: string): ThemeEntry | undefined {
   return themes.find((t) => t.slug === slug);
