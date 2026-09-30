@@ -199,6 +199,14 @@ const nav = [
   }
   html[data-studio] body::before { opacity: .028; mix-blend-mode: screen; }
   html[data-studio] .site-head { padding-block: 1.3rem; border-bottom-color: var(--selection); }
+  html[data-studio] .site-head::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    background: linear-gradient(90deg, var(--carmine), var(--wisteria), var(--champagne));
+    opacity: .9;
+  }
   html[data-studio] .site-head::after {
     content: 'PLAY  ▸  MUOWL / SIDE A';
     position: absolute; right: clamp(1rem, 4vw, 2.5rem); bottom: -.8rem;
@@ -207,12 +215,19 @@ const nav = [
   }
   html[data-studio] .brand { font-family: var(--font-body); font-weight: 600; letter-spacing: -.06em; font-size: 1.55rem; }
   html[data-studio] .brand-name:hover { text-shadow: -1px 0 var(--wisteria), 1px 0 var(--carmine); }
-  html[data-studio] .btn { border-radius: 3px; box-shadow: none; padding: .85rem 1.3rem; font-size: .88rem; }
+  html[data-studio] .btn { border-radius: 0; box-shadow: none; padding: .85rem 1.3rem; font: .72rem var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
+  html[data-studio] .btn-primary { color: var(--champagne); background: transparent; border: 1px solid var(--carmine); }
+  html[data-studio] .btn-primary:hover { color: var(--crypt); background: var(--carmine); transform: none; }
   html[data-studio] .section-num { font-family: var(--font-mono); font-style: normal; font-size: .75rem; }
   html[data-studio] .section-subtitle { font-family: var(--font-body); font-size: .9rem; font-style: normal; }
   html[data-studio] .section-title { text-wrap: balance; }
-  html[data-studio] .lang-switch { border-radius: 3px; }
-  html[data-studio] .lang-switch a { border-radius: 2px; }
+  html[data-studio] .lang-switch { border-radius: 0; }
+  html[data-studio] .lang-switch a { border-radius: 0; font-family: var(--font-mono); }
+  html[data-studio] .site-nav a,
+  html[data-studio] .foot-meta,
+  html[data-studio] .lang-switch a { font-family: var(--font-mono); text-transform: uppercase; }
+  html[data-studio] .site-nav a { font-size: .7rem; letter-spacing: .04em; }
+  html[data-studio] .site-nav a[aria-current='page'] { text-shadow: -1px 0 var(--wisteria), 1px 0 var(--carmine); }
   html[data-studio] ::selection { background: var(--selection); color: var(--pearl); }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
