@@ -60,7 +60,7 @@ const CARDS = [
   {
     file: 'default',
     name: 'muowl',
-    tagline: 'tools with an identity, not a preset',
+    tagline: 'Software and editor themes.',
     bg: carmilla.colors.crypt,
     surface: carmilla.colors.boudoir,
     text: carmilla.colors.pearl,

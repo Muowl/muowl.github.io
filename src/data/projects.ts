@@ -15,10 +15,20 @@ export interface ProjectEntry {
 
 export const projects: ProjectEntry[] = [
   {
+    name: 'vesperveil',
+    summary: {
+      pt: 'Tema para VS Code e esquema de cores para Windows Terminal. A paleta fica em JSON e também é usada neste site.',
+      en: 'A VS Code theme and a Windows Terminal colour scheme. Its palette is stored in JSON and also used by this site.',
+    },
+    url: 'https://github.com/Muowl/vesperveil',
+    stack: ['Design tokens', 'JSON', 'VS Code'],
+    year: 2026,
+  },
+  {
     name: 'cinder',
     summary: {
-      pt: 'Um estudo de como levar uma paleta para uma ferramenta de desenvolvimento: tokens separados por função, port para VS Code e checagens automáticas de contraste.',
-      en: 'An exploration of bringing a palette into a developer tool: tokens organized by role, a VS Code port and automated contrast checks.',
+      pt: 'Tema para VS Code com cores organizadas por função em arquivos JSON e checagens automáticas de contraste.',
+      en: 'A VS Code theme with colours organized by role in JSON files and automated contrast checks.',
     },
     url: 'https://github.com/Muowl/cinder',
     stack: ['Design tokens', 'JSON', 'VS Code'], year: 2026,
@@ -26,8 +36,8 @@ export const projects: ProjectEntry[] = [
   {
     name: 'carmilla',
     summary: {
-      pt: 'Um tema e tudo que precisa para mantê-lo: a paleta em TOML como fonte única, versões para editores e dois flavors com identidades próprias.',
-      en: 'A theme and the pieces needed to maintain it: a TOML palette as the single source, editor ports and two flavours with their own identities.',
+      pt: 'Tema com duas variantes, Carmilla e Amethyst. As versões para editores são geradas a partir da mesma paleta em TOML.',
+      en: 'A theme with two variants, Carmilla and Amethyst. The editor ports are generated from a shared TOML palette.',
     },
     url: 'https://github.com/Muowl/carmilla',
     stack: ['TOML', 'JSON', 'VS Code'],

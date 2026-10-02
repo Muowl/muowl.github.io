@@ -195,7 +195,7 @@ const papilioThemeColors =
     display: inline-block;
     margin-left: 0.8rem;
     padding: 0.15rem 0.6rem;
-    border-radius: 999px;
+    border-radius: var(--radius-control);
     background: rgba(var(--carmine-rgb), 0.15);
     border: 1px solid rgba(var(--carmine-rgb), 0.4);
     color: var(--carmine);
@@ -214,10 +214,10 @@ const papilioThemeColors =
     margin: 4rem auto 0;
     max-width: 70ch;
     padding: 1rem 1.3rem;
-    border-radius: 0.8rem;
+    border-radius: var(--radius-panel);
     background: rgba(var(--velvet-rgb), 0.5);
     border: 1px solid rgba(var(--carmine-rgb), 0.18);
-    font-size: 0.82rem;
+    font-size: var(--text-small);
     line-height: 1.6;
     color: var(--ash-mauve);
   }
@@ -231,6 +231,9 @@ const papilioThemeColors =
     text-align: center;
   }
   .back a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     color: var(--ash-mauve);
     text-decoration: none;
     font-size: 0.9rem;

@@ -41,38 +41,41 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
         )
       }
     </div>
+    <span class="card-link">{t('themes.view')} <span aria-hidden="true">↗</span></span>
   </div>
 </a>
 
 <style>
   .theme-card {
-    display: block;
+    display: flex;
+    flex-direction: column;
     text-decoration: none;
     color: inherit;
     background: var(--velvet);
-    border: 1px solid rgba(var(--carmine-rgb), 0.12);
-    border-radius: 0;
+    border: var(--border-panel);
+    border-radius: var(--radius-panel);
     overflow: hidden;
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   }
   .theme-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(var(--carmine-rgb), 0.45);
-    box-shadow: 0 20px 40px -20px rgba(var(--crypt-rgb), 0.9), -1px 0 rgba(var(--wisteria-rgb), .3), 1px 0 rgba(var(--carmine-rgb), .35);
+    transform: translateY(-3px);
+    border-color: var(--card-accent);
+    box-shadow: 0 12px 28px -20px rgba(var(--crypt-rgb), .8);
   }
 
   .strip {
     display: flex;
-    height: 110px;
+    height: 80px;
+    flex-shrink: 0;
+    border-bottom: var(--border-panel);
   }
   .strip span {
     flex: 1;
-    transition: flex .3s ease;
   }
-  .theme-card:hover .strip span:nth-last-child(3) { flex: 2; }
-  .theme-card:hover { border-color: var(--card-accent); }
-
   .body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     padding: 1.3rem 1.5rem 1.5rem;
   }
 
@@ -94,7 +97,7 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
 
   .version {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: var(--text-caption);
     color: var(--ash-mauve);
     white-space: normal;
   }
@@ -114,7 +117,7 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
 
   .tagline {
     font-family: var(--font-body);
-    font-size: 0.9375rem;
+    font-size: var(--text-small);
     line-height: 1.55;
     text-wrap: pretty;
     color: var(--wisteria);
@@ -122,7 +125,7 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
   }
 
   .summary {
-    font-size: 0.9375rem;
+    font-size: 1rem;
     line-height: 1.75;
     color: rgba(var(--pearl-rgb), 0.84);
     text-wrap: pretty;
@@ -132,13 +135,34 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
   .facts {
     display: flex;
     gap: 0.5rem;
-    margin-top: 1.1rem;
+    flex-wrap: wrap;
+    margin-top: auto;
+    padding-top: 1.25rem;
     font-family: var(--font-mono);
-    font-size: 0.74rem;
+    font-size: var(--text-caption);
     color: var(--ash-mauve);
   }
-  .theme-card:focus-visible { outline: 1px dashed var(--champagne); outline-offset: 4px; }
+  .card-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+    margin-top: 1rem;
+    padding-top: .75rem;
+    border-top: var(--border-panel);
+    font: 500 var(--text-caption)/1.5 var(--font-mono);
+    color: var(--pearl);
+  }
+  .theme-card:hover .card-link { color: var(--card-accent); }
   .facts .dot {
     opacity: 0.6;
+  }
+  @media (min-width: 681px) and (max-width: 980px) {
+    .theme-card { display: grid; grid-template-columns: 5rem minmax(0, 1fr); }
+    .strip { flex-direction: column; height: auto; border-bottom: 0; border-right: var(--border-panel); }
+  }
+  @media (max-width: 680px) {
+    .strip { height: 64px; }
+    .body { padding: 1.25rem; }
   }
 </style>

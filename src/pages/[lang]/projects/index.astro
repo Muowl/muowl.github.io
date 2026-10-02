@@ -13,7 +13,7 @@ const ordered = [...listedProjects].sort((a, b) => b.year - a.year);
 
 <Base title={`${t('projects.title')} — muowl`} description={t('projects.lead')}>
   <div class="wrap">
-    <div class="section-head" style="margin-top:2rem">
+    <div class="section-head">
       <h1 class="section-title">{t('projects.title')}</h1>
     </div>
     <p class="section-subtitle">{t('projects.subtitle')}</p>
@@ -34,6 +34,7 @@ const ordered = [...listedProjects].sort((a, b) => b.year - a.year);
                   <span>{s}</span>
                 ))}
               </div>
+              <span class="project-action">{t('projects.visit')} <span aria-hidden="true">↗</span></span>
             </a>
           </li>
         ))
@@ -43,14 +44,12 @@ const ordered = [...listedProjects].sort((a, b) => b.year - a.year);
 </Base>
 
 <style>
-  .section-head {
-    margin-left: 66px;
-  }
-
   .project-list {
     list-style: none;
     display: grid;
     gap: 1rem;
+    margin-top: 2.5rem;
+    max-width: 960px;
   }
 
   .project-list a {
@@ -58,15 +57,15 @@ const ordered = [...listedProjects].sort((a, b) => b.year - a.year);
     text-decoration: none;
     color: inherit;
     background: var(--velvet);
-    border: 1px solid rgba(var(--carmine-rgb), 0.12);
-    border-radius: 1.2rem;
-    padding: 1.4rem 1.6rem 1.5rem;
+    border: var(--border-panel);
+    border-radius: var(--radius-panel);
+    padding: clamp(1.25rem, 3vw, 2rem);
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   }
   .project-list a:hover {
     transform: translateY(-3px);
     border-color: rgba(var(--carmine-rgb), 0.45);
-    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 12px 28px -20px rgba(var(--crypt-rgb), .8);
   }
 
   .row {
@@ -78,21 +77,21 @@ const ordered = [...listedProjects].sort((a, b) => b.year - a.year);
 
   h2 {
     font-family: var(--font-mono);
-    font-size: 1.15rem;
+    font-size: 1.375rem;
     font-weight: 500;
-    color: var(--carmine);
+    color: var(--pearl);
   }
 
   .year {
     font-family: var(--font-mono);
-    font-size: 0.74rem;
+    font-size: var(--text-caption);
     color: var(--ash-mauve);
   }
 
   p {
-    font-size: 0.92rem;
-    line-height: 1.65;
-    color: rgba(var(--pearl-rgb), 0.75);
+    font-size: 1rem;
+    line-height: 1.75;
+    color: rgba(var(--pearl-rgb), .84);
     margin-top: 0.6rem;
     max-width: 70ch;
   }
@@ -105,16 +104,20 @@ const ordered = [...listedProjects].sort((a, b) => b.year - a.year);
   }
   .stack span {
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: var(--text-caption);
     color: var(--ash-mauve);
     border: 1px solid rgba(var(--carmine-rgb), 0.18);
-    border-radius: 999px;
+    border-radius: var(--radius-control);
     padding: 0.2rem 0.6rem;
   }
 
-  @media (max-width: 680px) {
-    .section-head {
-      margin-left: 0;
-    }
+  .project-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 44px;
+    margin-top: 1rem;
+    font: 500 var(--text-caption)/1.5 var(--font-mono);
+    color: var(--champagne);
   }
 </style>

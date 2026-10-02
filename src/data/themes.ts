@@ -62,8 +62,8 @@ export const themes: ThemeEntry[] = [
     slug: 'cinder', name: 'Cinder', version: '0.3.1',
     tagline: { pt: 'carvão, brasa e espaço para pensar', en: 'charcoal, embers and room to think' },
     summary: {
-      pt: 'Carvão quente, coral e ouro antigo. Uma linguagem visual para código, com variáveis neutras e cores que dão estrutura à leitura.',
-      en: 'Warm charcoal, coral and antique gold. A design language for code, with neutral variables and colours that give structure to reading.',
+      pt: 'Tema escuro para VS Code com fundo carvão e variáveis em tons neutros. Coral nas palavras-chave, ouro nas funções e verde-pátina nas strings.',
+      en: 'A dark VS Code theme with charcoal backgrounds and neutral variables. Coral keywords, golden functions and patina-green strings.',
     },
     repo: 'https://github.com/Muowl/cinder',
     marketplace: 'https://marketplace.visualstudio.com/items?itemName=muowl.cinder-warm-theme',
@@ -82,8 +82,8 @@ export const themes: ThemeEntry[] = [
       en: 'crypt warmth for nights of code',
     },
     summary: {
-      pt: 'Treze cores destiladas em torno de um fundo rosado-vinho. Accents quentes — carmim, lavanda, mint absinto, pêssego veludo, champagne — sobre um boudoir escuro.',
-      en: 'Thirteen colours distilled around a rosé-wine background. Warm accents — carmine, wisteria, absinthe mint, peach velvet, champagne — over a dark boudoir.',
+      pt: 'Tema escuro com treze cores e fundo vinho rosado. Carmim nas palavras-chave, verde nas funções e champagne nas strings. A variante Amethyst troca o carmim por ametista e usa fundos mais violetas.',
+      en: 'A dark theme with thirteen colours and rosé-wine backgrounds. Carmine keywords, green functions and champagne strings. The Amethyst variant replaces carmine with amethyst and uses more violet backgrounds.',
     },
     repo: 'https://github.com/Muowl/carmilla',
     marketplace: 'https://marketplace.visualstudio.com/items?itemName=muowl.carmilla',

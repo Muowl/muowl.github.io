@@ -97,17 +97,17 @@ const nav = [
       /* Aplica o flavor salvo antes da primeira pintura, para não piscar.
          Numa página que troca de paleta o flavor do Carmilla não se aplica. */
       isShowcase && !paletteOverride && (
-        <script is:inline>
-          {`(function () {
+        <script is:inline define:vars={{ amethystCrypt: themeColor('amethyst') }}>
+          (function () {
           try {
             var f = localStorage.getItem('carmilla-flavor');
             if (f === 'amethyst') {
               document.documentElement.dataset.flavor = f;
               var m = document.querySelector('meta[name="theme-color"]');
-              if (m) m.setAttribute('content', '${themeColor('amethyst')}');
+              if (m) m.setAttribute('content', amethystCrypt);
             }
           } catch (e) {}
-        })();`}
+          })();
         </script>
       )
     }
@@ -165,6 +165,7 @@ const nav = [
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 8rem;
   }
 
   body {
@@ -183,22 +184,29 @@ const nav = [
     --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
     --font-body: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
     --font-mono: 'IBM Plex Mono', 'Fira Code', 'SF Mono', monospace;
+    --page-width: 1240px;
+    --page-gutter: clamp(1.25rem, 4vw, 2.5rem);
+    --radius-panel: .25rem;
+    --radius-control: .25rem;
+    --text-caption: .8125rem;
+    --text-small: .9375rem;
+    --border-panel: 1px solid rgba(var(--pearl-rgb), .16);
   }
 
   /* Grão sutil — atmosfera de filme antigo */
   .brand-owl { width: 32px; height: 32px; align-self: center; }
   .footer-signature { display: inline-flex; align-items: center; gap: .8rem; font: 500 3rem var(--font-display); text-decoration: none; margin-bottom: 1rem; }
   .footer-owl { width: 48px; height: 48px; }
-  :focus-visible { outline: 2px solid var(--carmine); outline-offset: 5px; }
+  :focus-visible { outline: 2px solid var(--champagne); outline-offset: 4px; }
   html[data-studio] { color-scheme: dark; }
   html:not([data-studio]) { color-scheme: dark; }
   html[data-studio] body::after {
     z-index: 99;
-    opacity: .5;
+    opacity: .28;
     background: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(var(--pearl-rgb), .018) 4px);
   }
-  html[data-studio] body::before { opacity: .028; mix-blend-mode: screen; }
-  html[data-studio] .site-head { padding-block: 1.3rem; border-bottom-color: var(--selection); }
+  html[data-studio] body::before { opacity: .018; mix-blend-mode: screen; }
+  html[data-studio] .site-head { border-bottom-color: var(--selection); }
   html[data-studio] .site-head::before {
     content: '';
     position: absolute;
@@ -211,23 +219,24 @@ const nav = [
     content: 'PLAY  ▸  MUOWL / SIDE A';
     position: absolute; right: clamp(1rem, 4vw, 2.5rem); bottom: -.8rem;
     padding: .1rem .5rem; background: var(--crypt); color: var(--champagne);
-    font: .62rem var(--font-mono); letter-spacing: .07em;
+    font: .6875rem var(--font-mono); letter-spacing: .07em;
   }
   html[data-studio] .brand { font-family: var(--font-body); font-weight: 600; letter-spacing: -.06em; font-size: 1.55rem; }
   html[data-studio] .brand-name:hover { text-shadow: -1px 0 var(--wisteria), 1px 0 var(--carmine); }
-  html[data-studio] .btn { border-radius: 0; box-shadow: none; padding: .85rem 1.3rem; font: .72rem var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
-  html[data-studio] .btn-primary { color: var(--champagne); background: transparent; border: 1px solid var(--carmine); }
-  html[data-studio] .btn-primary:hover { color: var(--crypt); background: var(--carmine); transform: none; }
+  html[data-studio] .btn { box-shadow: none; font: 500 var(--text-caption)/1.5 var(--font-mono); letter-spacing: .025em; }
+  html[data-studio] .btn-primary { color: var(--crypt); background: var(--champagne); border-color: var(--champagne); }
+  html[data-studio] .btn-primary:hover { color: var(--crypt); background: var(--pearl); border-color: var(--pearl); }
   html[data-studio] .section-num { font-family: var(--font-mono); font-style: normal; font-size: .75rem; }
-  html[data-studio] .section-subtitle { font-family: var(--font-body); font-size: .9rem; font-style: normal; }
-  html[data-studio] .section-title { text-wrap: balance; }
-  html[data-studio] .lang-switch { border-radius: 0; }
-  html[data-studio] .lang-switch a { border-radius: 0; font-family: var(--font-mono); }
+  html[data-studio] .section-subtitle { font-family: var(--font-body); font-size: 1rem; font-style: normal; }
+  html[data-studio] .section-title { font-size: clamp(3rem, 6vw, 4.5rem); line-height: 1.08; text-wrap: balance; }
+  html[data-studio] .lang-switch a { font-family: var(--font-mono); }
   html[data-studio] .site-nav a,
   html[data-studio] .foot-meta,
   html[data-studio] .lang-switch a { font-family: var(--font-mono); text-transform: uppercase; }
-  html[data-studio] .site-nav a { font-size: .7rem; letter-spacing: .04em; }
-  html[data-studio] .site-nav a[aria-current='page'] { text-shadow: -1px 0 var(--wisteria), 1px 0 var(--carmine); }
+  html[data-studio] .site-nav a { font-size: var(--text-caption); letter-spacing: .025em; }
+  html[data-studio] .section-subtitle,
+  html[data-studio] .lead-text { margin-left: 0; }
+  html[data-studio] .wrap > .section-head { margin-bottom: 1rem; }
   html[data-studio] ::selection { background: var(--selection); color: var(--pearl); }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -269,7 +278,7 @@ const nav = [
     background: var(--carmine);
     color: var(--crypt);
     padding: 0.7rem 1.2rem;
-    border-radius: 0 0 0.6rem 0;
+    border-radius: 0 0 var(--radius-control) 0;
     font-weight: 600;
     text-decoration: none;
   }
@@ -284,16 +293,17 @@ const nav = [
     z-index: 200;
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    padding: 0.9rem clamp(1rem, 4vw, 2.5rem);
-    background: rgba(var(--crypt-rgb), 0.78);
+    gap: 1.25rem;
+    padding: .75rem max(var(--page-gutter), calc((100vw - var(--page-width)) / 2 + var(--page-gutter)));
+    background: rgba(var(--crypt-rgb), .94);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid rgba(var(--carmine-rgb), 0.14);
   }
 
   .brand {
     display: inline-flex;
-    align-items: baseline;
+    align-items: center;
+    min-height: 44px;
     gap: 0.5rem;
     text-decoration: none;
     font-family: var(--font-display);
@@ -315,43 +325,54 @@ const nav = [
 
   .site-nav {
     display: flex;
-    gap: 1.4rem;
+    gap: .35rem;
     margin-left: auto;
-    flex-wrap: wrap;
   }
   .site-nav a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
     text-decoration: none;
     font-size: 0.88rem;
     font-weight: 500;
     color: var(--ash-mauve);
-    padding: 0.2rem 0;
-    border-bottom: 1px solid transparent;
-    transition: color 0.2s, border-color 0.2s;
+    padding: .5rem .85rem;
+    border-radius: var(--radius-control);
+    border-bottom: 2px solid transparent;
+    transition: color .2s, border-color .2s, background .2s;
   }
   .site-nav a:hover {
     color: var(--pearl);
+    background: rgba(var(--velvet-rgb), .65);
   }
   .site-nav a[aria-current='page'] {
     color: var(--pearl);
     border-bottom-color: var(--carmine);
+    background: rgba(var(--velvet-rgb), .65);
   }
 
   .lang-switch {
     display: flex;
     gap: 0.15rem;
-    padding: 0.2rem;
-    border-radius: 999px;
+    padding: .15rem;
+    border-radius: var(--radius-control);
     background: rgba(var(--velvet-rgb), 0.72);
     border: 1px solid rgba(var(--carmine-rgb), 0.18);
   }
   .lang-switch a {
-    font-size: 0.7rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    font-size: var(--text-caption);
     font-weight: 600;
     letter-spacing: 0.08em;
     color: var(--ash-mauve);
     text-decoration: none;
-    padding: 0.3rem 0.65rem;
-    border-radius: 999px;
+    padding: .4rem .65rem;
+    border-radius: var(--radius-control);
     transition: color 0.2s, background 0.2s;
   }
   .lang-switch a:hover {
@@ -368,9 +389,9 @@ const nav = [
   }
 
   .wrap {
-    max-width: 1200px;
+    max-width: var(--page-width);
     margin: 0 auto;
-    padding: 3rem 1.5rem 6rem;
+    padding: clamp(3rem, 6vw, 5rem) var(--page-gutter) 5rem;
   }
 
   .ornament {
@@ -392,7 +413,7 @@ const nav = [
   }
 
   section {
-    margin-top: 6rem;
+    margin-top: clamp(3.5rem, 7vw, 6rem);
   }
 
   .section-head {
@@ -431,8 +452,8 @@ const nav = [
   .lead-text {
     margin-left: 66px;
     max-width: 760px;
-    color: rgba(var(--pearl-rgb), 0.75);
-    font-size: 0.98rem;
+    color: rgba(var(--pearl-rgb), .84);
+    font-size: 1.0625rem;
     line-height: 1.7;
     margin-bottom: 2rem;
   }
@@ -443,8 +464,10 @@ const nav = [
     font-size: 1rem;
     font-weight: 600;
     letter-spacing: 0.01em;
-    padding: 0.95rem 1.9rem;
-    border-radius: 999px;
+    min-height: 48px;
+    padding: .8rem 1.35rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-control);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -460,7 +483,6 @@ const nav = [
   }
   .btn-primary:hover {
     background: var(--carmine-hover);
-    transform: translateY(-2px);
     box-shadow: 0 12px 38px -8px rgba(var(--carmine-rgb), 0.65);
   }
 
@@ -472,25 +494,18 @@ const nav = [
   .btn-ghost:hover {
     border-color: var(--carmine);
     background: rgba(var(--velvet-rgb), 0.7);
-    transform: translateY(-2px);
-  }
-
-  @media (min-width: 1500px) {
-    .btn {
-      font-size: 1.12rem;
-      padding: 1.05rem 2.3rem;
-    }
   }
 
   /* ============== FOOTER ============== */
   .site-foot {
-    padding: 2rem 1.5rem 3rem;
+    padding: 2.5rem var(--page-gutter);
     text-align: center;
     border-top: 1px solid rgba(var(--carmine-rgb), 0.15);
   }
   .foot-meta {
     color: var(--ash-mauve);
-    font-size: 0.85rem;
+    font-size: var(--text-caption);
+    line-height: 1.9;
   }
   .foot-meta a {
     color: var(--carmine);
@@ -500,19 +515,30 @@ const nav = [
     text-decoration: underline;
   }
 
-  @media (max-width: 680px) {
+  @media (max-width: 760px) {
     .site-head {
-      flex-wrap: wrap;
-      gap: 0.8rem 1rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: .5rem 1rem;
+      padding-block: .65rem;
     }
+    .lang-switch { justify-self: end; }
     .site-nav {
-      order: 3;
+      grid-column: 1 / -1;
+      grid-row: 2;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       width: 100%;
       margin-left: 0;
-      gap: 1rem;
+      gap: .25rem;
     }
+    .site-nav a { padding-inline: .25rem; }
+    html { scroll-padding-top: 10rem; }
+  }
+
+  @media (max-width: 680px) {
     .wrap {
-      padding: 2rem 1rem 4rem;
+      padding-block: 2.75rem 3.5rem;
     }
     section {
       margin-top: 4rem;

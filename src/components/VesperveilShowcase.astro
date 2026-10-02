@@ -1,16 +1,17 @@
 ---
 import { vesperveil, vesperveilSwatches } from '../lib/vesperveil';
 import { contrastRatio, formatRatio } from '../lib/contrast';
-import { getLangFromUrl } from '../i18n/ui';
+import { getLangFromUrl, useTranslations } from '../i18n/ui';
 const lang = getLangFromUrl(Astro.url);
 const pt = lang === 'pt';
+const t = useTranslations(lang);
 ---
 <section class="intro">
   <img class="icon" src="/themes/vesperveil/icon.png" width="512" height="512" alt={pt ? 'Ícone do Vesperveil: olho carmim com íris dourada entrelaçada' : 'Vesperveil icon: a carmine eye with an interwoven golden iris'} />
   <div>
     <span class="kicker">01 / {pt ? 'NO EDITOR' : 'IN THE EDITOR'}</span>
-    <h2>{pt ? 'Um fundo quieto. Cor para ler.' : 'A quiet background. Colour for reading.'}</h2>
-    <p>{pt ? 'Rosa nas palavras-chave, dourado nas funções, lavanda nos tipos e verde nas strings. Variáveis em marfim mantêm o texto estável; só os comentários usam itálico.' : 'Rose keywords, golden functions, lavender types and green strings. Ivory variables keep the text steady; only comments use italics.'}</p>
+    <h2>{t('theme.vesperveil.editor.title')}</h2>
+    <p>{t('theme.vesperveil.editor.lead')}</p>
     <p>{pt ? 'Capturas reais do VS Code com TypeScript e Python. Fontes, ícones de arquivos e algumas decorações dependem das configurações e extensões do editor.' : 'Real VS Code captures with TypeScript and Python. Fonts, file icons and some decorations depend on editor settings and extensions.'}</p>
   </div>
 </section>
@@ -20,7 +21,7 @@ const pt = lang === 'pt';
       <a href={`/themes/vesperveil/vesperveil-${language}.png`} aria-label={`${pt ? 'Abrir captura completa' : 'Open full screenshot'} — ${language === 'typescript' ? 'TypeScript' : 'Python'}`}>
         <img src={`/themes/vesperveil/vesperveil-${language}.png`} width="1600" height="900" loading="lazy" alt={`${language === 'typescript' ? 'TypeScript' : 'Python'} — Vesperveil Dark ${pt ? 'no VS Code' : 'in VS Code'}`} />
       </a>
-      <figcaption>{language === 'typescript' ? 'TypeScript' : 'Python'} · VS Code</figcaption>
+      <figcaption><span>{language === 'typescript' ? 'TypeScript' : 'Python'} · VS Code</span><a class="screenshot-open" href={`/themes/vesperveil/vesperveil-${language}.png`}>{t('screenshot.open')} <span aria-hidden="true">↗</span></a></figcaption>
     </figure>
   ))}
 </div>
@@ -32,7 +33,7 @@ const pt = lang === 'pt';
 <section class="notes">
   <div>
     <span class="kicker">03 / {pt ? 'LEITURA' : 'READABILITY'}</span>
-    <h2>{pt ? 'Contraste medido na paleta.' : 'Contrast measured from the palette.'}</h2>
+    <h2>{t('theme.contrast.title')}</h2>
     <p>{pt ? 'Razões calculadas sobre o fundo do editor. A revisão cobre estados selecionados do VS Code; não é uma certificação de acessibilidade. Cursor e uma revisão completa das interações ainda estão pendentes.' : 'Ratios calculated against the editor background. The review covers selected VS Code states; it is not an accessibility certification. Cursor and a full interaction review are still pending.'}</p>
   </div>
   <dl>
@@ -54,10 +55,13 @@ const pt = lang === 'pt';
   .icon { width: 100%; height: auto; border-radius: 16px; }
   .screenshots { display: grid; gap: 2rem; margin-top: 3rem; }
   figure { margin: 0; min-width: 0; }
-  figure img { display: block; width: 100%; height: auto; border: 1px solid var(--selection); border-radius: 8px; }
-  figcaption { margin-top: .8rem; color: var(--ash-mauve); font: .8rem var(--font-mono); }
+  figure a { display: block; border-radius: var(--radius-panel); }
+  figure img { display: block; width: 100%; height: auto; border: var(--border-panel); border-radius: var(--radius-panel); }
+  figcaption { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem 1rem; margin-top: .8rem; color: var(--ash-mauve); font: var(--text-caption)/1.6 var(--font-mono); }
+  .screenshot-open { display: inline-flex; align-items: center; gap: .75rem; min-height: 44px; color: var(--pearl); text-underline-offset: .3rem; }
+  .screenshot-open:hover { color: var(--champagne); }
   .swatches { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1rem; margin-top: 2rem; }
-  .swatch { border: 1px solid var(--selection); border-radius: 6px; overflow: hidden; padding-bottom: 1rem; }
+  .swatch { border: var(--border-panel); border-radius: var(--radius-panel); overflow: hidden; padding-bottom: 1rem; }
   .swatch span { display: block; height: 90px; margin-bottom: .8rem; }
   .swatch strong, .swatch code { display: block; margin: .3rem .8rem; font-size: .9375rem; line-height: 1.5; }
   .swatch strong { font-weight: 500; }

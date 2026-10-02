@@ -6,7 +6,7 @@
  * cards saem de `lib/palette`, que lê o TOML. Os textos vêm do idioma da rota,
  * em vez de ficarem os dois na página escondidos por CSS.
  */
-import { tokens, flavors, themeColor, type FlavorId } from '../lib/palette';
+import { tokens, flavors, themeColor } from '../lib/palette';
 import { getLangFromUrl, useTranslations, type Lang } from '../i18n/ui';
 
 const lang: Lang = getLangFromUrl(Astro.url);
@@ -27,8 +27,8 @@ const rows = base.map((tk, i) => ({
 const tx =
   lang === 'pt'
     ? {
-        c1: '// Carmilla — paleta autoral, accents quentes sobre vinho',
-        c2: '// Comentários em ash-mauve dialogam com o boudoir do fundo.',
+        c1: '// Carmilla: palavras-chave em carmim, funções em verde.',
+        c2: '// Comentários em Ash Mauve sobre o fundo Boudoir.',
         whisper: '} sussurra ao ouvido de ${',
         era1: '"🕯️ Antiga das antigas"',
         era2: '"🌙 Imortal madura"',
@@ -36,8 +36,8 @@ const tx =
         coffin: '"❌ ainda repousa no caixão"',
       }
     : {
-        c1: '// Carmilla — an original palette, warm accents over wine',
-        c2: '// Comments in ash-mauve converse with the boudoir background.',
+        c1: '// Carmilla: carmine keywords, green functions.',
+        c2: '// Ash Mauve comments on the Boudoir background.',
         whisper: '} whispers to ${',
         era1: '"🕯️ Ancient of ancients"',
         era2: '"🌙 A mature immortal"',
@@ -87,10 +87,6 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
   return { n, cls };
 });
 
-const flavorsLead =
-  lang === 'pt'
-    ? 'Um flavor troca o accent de assinatura e re-temperatura os fundos neutros; as cores de conteúdo — Pearl, os tons de sintaxe, os comentários em Ash Mauve — permanecem intocadas. O <strong>Amethyst</strong> nasceu de uma inspiração orquídea <code>#7A4186</code>: o matiz foi mantido exato (OKLCH ≈ 320°) e elevado até a legibilidade — ≈ 5.2:1 (AA) sobre seu Boudoir — enquanto os fundos vinho giram de 303° para 286° com saturação e luminosidade idênticas. Escolha um flavor abaixo e veja a página inteira mudar de luz.'
-    : 'A flavor swaps the signature accent and re-temperatures the neutral backgrounds; the content colours — Pearl, the syntax hues, the Ash-Mauve comments — stay untouched. <strong>Amethyst</strong> was born from an orchid inspiration, <code>#7A4186</code>: its hue was kept exact (OKLCH ≈ 320°) and lifted into legibility — ≈ 5.2:1 (AA) on its Boudoir — while the wine backgrounds rotate from 303° to 286° at identical saturation and lightness. Pick a flavor below and watch the whole page change its light.';
 ---
 
 <!-- ============== PALETA ============== -->
@@ -261,7 +257,7 @@ const flavorsLead =
   </div>
   <p class="section-subtitle">{t('theme.flavors.subtitle')}</p>
 
-  <p class="lead-text" set:html={flavorsLead} />
+  <p class="lead-text">{t('theme.flavors.lead')}</p>
 
   <div class="flavors-grid">
     {
@@ -288,15 +284,15 @@ const flavorsLead =
   </div>
 </section>
 
-<script define:vars={{ baseCrypt: themeColor('base'), amethystCrypt: themeColor('amethyst') }}>
+<script is:inline define:vars={{ baseCrypt: themeColor('base'), amethystCrypt: themeColor('amethyst') }}>
   // Troca o flavor da página inteira e guarda a escolha. O Base.astro reaplica
   // antes da primeira pintura nas próximas navegações.
   const root = document.documentElement;
-  const buttons = document.querySelectorAll<HTMLElement>('[data-set-flavor]');
+  const buttons = document.querySelectorAll('[data-set-flavor]');
   const themeMeta = document.querySelector('meta[name="theme-color"]');
-  const CRYPT: Record<string, string> = { base: baseCrypt, amethyst: amethystCrypt };
+  const CRYPT = { base: baseCrypt, amethyst: amethystCrypt };
 
-  function applyFlavor(flavor: string) {
+  function applyFlavor(flavor) {
     root.dataset.flavor = flavor;
     try {
       localStorage.setItem('carmilla-flavor', flavor);
@@ -334,9 +330,9 @@ const flavorsLead =
 
   .swatch {
     background: var(--velvet);
-    border-radius: 1.2rem;
+    border-radius: var(--radius-panel);
     overflow: hidden;
-    border: 1px solid rgba(var(--carmine-rgb), 0.12);
+    border: var(--border-panel);
     transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     position: relative;
   }
@@ -344,7 +340,7 @@ const flavorsLead =
   .swatch:hover {
     transform: translateY(-4px);
     border-color: rgba(var(--carmine-rgb), 0.45);
-    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(var(--carmine-rgb), 0.15);
+    box-shadow: 0 12px 28px -20px rgba(var(--crypt-rgb), .8);
   }
 
   .swatch-color {
@@ -357,10 +353,10 @@ const flavorsLead =
 
   .swatch-hex {
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: var(--text-caption);
     font-weight: 500;
     padding: 0.35rem 0.7rem;
-    border-radius: 999px;
+    border-radius: var(--radius-control);
     backdrop-filter: blur(8px);
     background: rgba(var(--crypt-rgb), 0.55);
     color: var(--pearl);
@@ -398,7 +394,7 @@ const flavorsLead =
   /* ============== EDITOR ============== */
   .editor {
     background: var(--boudoir);
-    border-radius: 14px;
+    border-radius: var(--radius-panel);
     overflow: hidden;
     box-shadow:
       0 50px 100px -20px rgba(0, 0, 0, 0.7),
@@ -603,20 +599,20 @@ const flavorsLead =
   /* ============== TOKEN MAP ============== */
   .token-map {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
     gap: 0.6rem;
     background: var(--velvet);
     padding: 1.5rem;
-    border-radius: 1.2rem;
-    border: 1px solid rgba(var(--carmine-rgb), 0.1);
+    border-radius: var(--radius-panel);
+    border: var(--border-panel);
   }
   .token-row {
     display: grid;
-    grid-template-columns: 14px 110px 1fr;
+    grid-template-columns: 14px minmax(0, 110px) minmax(0, 1fr);
     gap: 0.8rem;
     align-items: center;
     padding: 0.5rem 0.7rem;
-    border-radius: 0.5rem;
+    border-radius: var(--radius-control);
     font-family: var(--font-mono);
     font-size: 0.8rem;
     transition: background 0.2s;
@@ -634,6 +630,7 @@ const flavorsLead =
   }
   .token-sample {
     color: var(--pearl);
+    overflow-x: auto;
   }
 
   /* ============== FLAVOR CARDS ============== */
@@ -646,8 +643,8 @@ const flavorsLead =
     text-align: left;
     cursor: pointer;
     background: var(--velvet);
-    border: 1px solid rgba(var(--carmine-rgb), 0.12);
-    border-radius: 1.2rem;
+    border: var(--border-panel);
+    border-radius: var(--radius-panel);
     padding: 1.4rem 1.5rem 1.3rem;
     font-family: var(--font-body);
     color: var(--pearl);
@@ -656,11 +653,11 @@ const flavorsLead =
   .flavor-card:hover {
     transform: translateY(-4px);
     border-color: rgba(var(--carmine-rgb), 0.45);
-    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 12px 28px -20px rgba(var(--crypt-rgb), .8);
   }
   .flavor-card.active {
     border-color: rgba(var(--carmine-rgb), 0.65);
-    box-shadow: 0 0 0 1px rgba(var(--carmine-rgb), 0.35), 0 20px 40px -20px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 0 1px rgba(var(--carmine-rgb), .35);
   }
   .flavor-card .flavor-top {
     display: flex;
@@ -676,7 +673,7 @@ const flavorsLead =
     letter-spacing: -0.01em;
   }
   .flavor-card .flavor-state {
-    font-size: 0.68rem;
+    font-size: var(--text-caption);
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -691,7 +688,7 @@ const flavorsLead =
   .flavor-card .strip {
     display: flex;
     height: 36px;
-    border-radius: 9px;
+    border-radius: var(--radius-control);
     overflow: hidden;
     margin: 0.95rem 0 0.8rem;
     border: 1px solid rgba(var(--pearl-rgb), 0.1);

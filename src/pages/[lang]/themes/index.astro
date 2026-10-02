@@ -13,8 +13,7 @@ const t = useTranslations(lang);
 
 <Base title={`${t('themes.title')} — muowl`} description={t('themes.lead')}>
   <div class="wrap">
-    <div class="section-head" style="margin-top:2rem">
-      <div class="section-num">❦</div>
+    <div class="section-head">
       <h1 class="section-title">{t('themes.title')}</h1>
     </div>
     <p class="section-subtitle">{t('themes.subtitle')}</p>
@@ -31,5 +30,7 @@ const t = useTranslations(lang);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
     gap: 1.2rem;
+    margin-top: 2.5rem;
   }
+  @media (max-width: 980px) { .card-grid { grid-template-columns: 1fr; } }
 </style>

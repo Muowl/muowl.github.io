@@ -196,8 +196,8 @@ const TOKEN_ROLES: Record<string, { pt: string; en: string }> = {
     en: 'errors, deletions, alerts',
   },
   'ash-mauve': {
-    pt: 'comentários — mauve quente que dialoga com o fundo',
-    en: 'comments — a warm mauve that converses with the background',
+    pt: 'comentários',
+    en: 'comments',
   },
   pearl: {
     pt: 'texto principal, foreground',
@@ -235,12 +235,12 @@ export interface FlavorView {
 
 const FLAVOR_MOODS: Record<FlavorId, { pt: string; en: string }> = {
   base: {
-    pt: 'O boudoir à luz de velas — vinho rosado, accent carmim',
-    en: 'The boudoir by candlelight — rosé wine, carmine accent',
+    pt: 'Fundos vinho rosado e destaque carmim',
+    en: 'Rosé-wine backgrounds and a carmine accent',
   },
   amethyst: {
-    pt: 'O mesmo boudoir ao crepúsculo — violeta, accent ametista',
-    en: 'The same boudoir at dusk — violet, amethyst accent',
+    pt: 'Fundos violetas e destaque ametista',
+    en: 'Violet backgrounds and an amethyst accent',
   },
 };
 
@@ -264,6 +264,9 @@ function varsFor(id: FlavorId): string {
   const f = flavorSpec(id);
   const pairs: [string, string][] = [
     ['crypt', c.crypt],
+    ['crypt-rgb', rgbTriplet(c.crypt)],
+    ['boudoir-rgb', rgbTriplet(c.boudoir)],
+    ['absinthe-rgb', rgbTriplet(c.absinthe)],
     ['crypt-rgb', rgbTriplet(c.crypt)],
     ['tabstrip', TABSTRIP[id]],
     ['boudoir', c.boudoir],

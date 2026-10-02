@@ -12,14 +12,14 @@ const t = useTranslations(lang);
 const bio =
   lang === 'pt'
     ? [
-        'Sou <strong>Felipe Lazzarini</strong>, desenvolvedor full stack. Trabalho com software para negócios desde 2020 e sigo estudando como construir sistemas que sejam úteis, claros e fáceis de manter.',
-        'Tenho me interessado cada vez mais por engenharia de software e design: como organizar um sistema, justificar escolhas e fazer uma interface que não atrapalhe quem precisa usá-la. Criar temas de editor virou um jeito prático de estudar isso — cada cor, estado e contraste aparece na tela o tempo todo.',
-        'Também estou estudando LLMs. Quero entender melhor como funcionam e experimentar aplicações concretas, sem tratar a ferramenta como mágica nem a resposta como certa por padrão. Este site reúne alguns desses estudos; nos repositórios ficam o código e as decisões pelo caminho.',
+        'Sou <strong>Felipe Lazzarini</strong>, desenvolvedor full stack. Trabalho com software para negócios desde 2020, no frontend e no backend.',
+        'Nos projetos pessoais, estudo engenharia de software e design de interfaces. Crio temas de editor para trabalhar com paletas, cores de sintaxe e contraste. Vesperveil, Cinder e Carmilla estão reunidos neste site, com links para os repositórios.',
+        'Também estou estudando LLMs. Quero entender como funcionam e experimentar seu uso em tarefas de desenvolvimento de software.',
       ]
     : [
-        "I'm <strong>Felipe Lazzarini</strong>, a full stack developer. I've been building software for businesses since 2020, and I keep studying how to make systems useful, clear and easier to maintain.",
-        'I’ve grown especially interested in software engineering and design: how to structure a system, explain its choices and make an interface that stays out of the way. Making editor themes became a practical way to study that — every colour, state and contrast is right there on screen.',
-        'I’m also studying LLMs. I want to understand how they work and try them on concrete problems, without treating the tool as magic or its answers as automatically correct. This site gathers some of those studies; the repositories show the code and decisions along the way.',
+        'I’m <strong>Felipe Lazzarini</strong>, a full stack developer. I’ve been building software for businesses since 2020, working on both frontend and backend.',
+        'In my personal projects, I study software engineering and interface design. I create editor themes to work with palettes, syntax colours and contrast. This site brings together Vesperveil, Cinder and Carmilla, with links to their repositories.',
+        'I’m also studying LLMs. I want to understand how they work and try using them for software development tasks.',
       ];
 
 const stack = {
@@ -63,54 +63,61 @@ const openTo = lang === 'pt' ? 'Aberto a oportunidades' : 'Open to opportunities
   description={bio[0].replace(/<[^>]+>/g, '')}
 >
   <div class="wrap">
-    <div class="section-head" style="margin-top:2rem">
-      <div class="section-num">❦</div>
+    <div class="section-head">
       <h1 class="section-title">{t('about.title')}</h1>
     </div>
     <p class="section-subtitle">{t('about.subtitle')}</p>
 
-    <div class="prose">
-      {bio.map((para) => <p set:html={para} />)}
-      <p class="open-to"><span class="pip" aria-hidden="true"></span>{openTo}</p>
-    </div>
+    <div class="about-grid">
+      <div class="prose">
+        {bio.map((para) => <p set:html={para} />)}
+        <p class="open-to"><span class="pip" aria-hidden="true"></span>{openTo}</p>
+      </div>
 
-    <h2 class="block-title">Stack</h2>
-    <div class="stack">
-      {
-        Object.entries(stack).map(([key, items]) => (
-          <div class="stack-row">
-            <span class="stack-label">{stackLabels[key][lang]}</span>
-            <div class="chips">
-              {items.map((i) => (
-                <span>{i}</span>
-              ))}
-            </div>
-          </div>
-        ))
-      }
-    </div>
+      <div class="details">
+        <h2 class="block-title">Stack</h2>
+        <div class="stack">
+          {
+            Object.entries(stack).map(([key, items]) => (
+              <div class="stack-row">
+                <span class="stack-label">{stackLabels[key][lang]}</span>
+                <div class="chips">
+                  {items.map((i) => <span>{i}</span>)}
+                </div>
+              </div>
+            ))
+          }
+        </div>
 
-    <h2 class="block-title">{t('about.contact')}</h2>
-    <ul class="links">
-      {
-        links.map((l) => (
-          <li>
-            <span class="label">{l.label}</span>
-            <a href={l.href}>{l.text}</a>
-          </li>
-        ))
-      }
-    </ul>
+        <h2 class="block-title">{t('about.contact')}</h2>
+        <ul class="links">
+          {
+            links.map((l) => (
+              <li>
+                <span class="label">{l.label}</span>
+                <a href={l.href}>{l.text}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
   </div>
 </Base>
 
 <style>
+  .about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    margin-top: 2.5rem;
+  }
+  .details { border-left: var(--border-panel); padding-left: 2rem; }
   .prose {
-    margin-left: 66px;
     max-width: 68ch;
   }
   .prose p {
-    font-size: 1rem;
+    font-size: 1.0625rem;
     line-height: 1.8;
     color: rgba(var(--pearl-rgb), 0.82);
     margin-bottom: 1.2rem;
@@ -124,11 +131,11 @@ const openTo = lang === 'pt' ? 'Aberto a oportunidades' : 'Open to opportunities
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
-    font-size: 0.82rem !important;
+    font-size: var(--text-small) !important;
     color: var(--absinthe) !important;
     border: 1px solid rgba(var(--carmine-rgb), 0.22);
     background: rgba(var(--velvet-rgb), 0.45);
-    border-radius: 999px;
+    border-radius: var(--radius-control);
     padding: 0.35rem 0.95rem;
     margin-top: 0.4rem;
   }
@@ -137,34 +144,32 @@ const openTo = lang === 'pt' ? 'Aberto a oportunidades' : 'Open to opportunities
     height: 7px;
     border-radius: 50%;
     background: var(--absinthe);
-    box-shadow: 0 0 0 3px rgba(122, 224, 166, 0.18);
+    box-shadow: 0 0 0 3px rgba(var(--absinthe-rgb), .18);
   }
 
   .block-title {
-    margin: 3.5rem 0 1.2rem 66px;
+    margin: 2.5rem 0 1.2rem;
     font-family: var(--font-display);
-    font-size: 1.6rem;
+    font-size: 2.25rem;
     font-weight: 500;
   }
+  .block-title:first-child { margin-top: 0; }
 
   .stack {
-    margin-left: 66px;
     display: grid;
     gap: 0.9rem;
     max-width: 720px;
   }
   .stack-row {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 5rem minmax(0, 1fr);
+    align-items: start;
+    gap: .75rem;
   }
   .stack-label {
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-size: var(--text-caption);
     color: var(--ash-mauve);
-    min-width: 6rem;
+    padding-top: .25rem;
   }
   .chips {
     display: flex;
@@ -173,58 +178,48 @@ const openTo = lang === 'pt' ? 'Aberto a oportunidades' : 'Open to opportunities
   }
   .chips span {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: var(--text-caption);
     color: rgba(var(--pearl-rgb), 0.8);
     border: 1px solid rgba(var(--carmine-rgb), 0.18);
-    border-radius: 999px;
+    border-radius: var(--radius-control);
     padding: 0.22rem 0.65rem;
   }
 
   .links {
     list-style: none;
-    margin-left: 66px;
     display: grid;
     gap: 0.7rem;
     max-width: 620px;
   }
   .links li {
     display: flex;
-    align-items: baseline;
-    gap: 1rem;
+    flex-direction: column;
+    align-items: start;
+    gap: .15rem;
     padding-bottom: 0.7rem;
     border-bottom: 1px solid rgba(var(--carmine-rgb), 0.12);
   }
   .links .label {
-    font-size: 0.75rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-size: var(--text-caption);
     color: var(--ash-mauve);
     min-width: 11rem;
   }
   .links a {
     font-family: var(--font-mono);
-    font-size: 0.9rem;
-    color: var(--carmine);
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: var(--text-small);
+    color: var(--pearl);
     text-decoration: none;
-    word-break: break-all;
+    overflow-wrap: anywhere;
   }
   .links a:hover {
     text-decoration: underline;
   }
 
-  @media (max-width: 680px) {
-    .prose,
-    .links,
-    .stack,
-    .block-title {
-      margin-left: 0;
-    }
-    .links li {
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-    .stack-label {
-      min-width: auto;
-    }
+  @media (max-width: 900px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .details { border-left: 0; border-top: var(--border-panel); padding: 2rem 0 0; }
   }
 </style>
