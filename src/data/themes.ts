@@ -15,13 +15,15 @@ import {
 export interface ThemeEntry {
   slug: string;
   name: string;
-  /** Versão publicada — espelha ports/vscode/package.json no repo do tema. */
+  /** Versão em destaque — espelha o manifesto do pacote no repo do tema. */
   version: string;
   tagline: { pt: string; en: string };
   summary: { pt: string; en: string };
   repo: string;
   marketplace?: string;
   openVsx?: string;
+  /** Pacote disponível para instalação manual a partir da página do tema. */
+  download?: string;
   tokenCount: number;
   tokenLabel?: { pt: string; en: string };
   flavorCount: number;
@@ -40,15 +42,16 @@ export interface ThemeEntry {
 
 export const themes: ThemeEntry[] = [
   {
-    slug: 'vesperveil', name: 'Vesperveil', version: '0.1.0',
+    slug: 'vesperveil', name: 'Vesperveil', version: '0.2.0',
     tagline: { pt: 'vinho, marfim e um véu de carmim', en: 'wine, ivory and a veil of carmine' },
     summary: {
-      pt: 'Fundos vinho quase pretos, texto marfim e acentos suaves. Um tema escuro para VS Code, com comentários em itálico e cores contidas para a sintaxe.',
-      en: 'Near-black wine backgrounds, ivory text and soft accents. A dark VS Code theme with italic comments and restrained syntax colours.',
+      pt: 'Fundos vinho quase pretos, texto marfim e cores de sintaxe mais vivas. Rosa nas palavras-chave, dourado quente nas funções, lavanda nos tipos e verde nas strings, com comentários em itálico.',
+      en: 'Near-black wine backgrounds, ivory text and richer syntax colours. Rose keywords, warm golden functions, lavender types and green strings, with italic comments.',
     },
     repo: 'https://github.com/Muowl/vesperveil',
     marketplace: 'https://marketplace.visualstudio.com/items?itemName=muowl.vesperveil',
     openVsx: 'https://open-vsx.org/extension/muowl/vesperveil',
+    download: '/themes/vesperveil/vesperveil-0.2.0.vsix',
     tokenCount: vesperveilSwatches.length, flavorCount: 1,
     tokenLabel: { pt: 'cores em destaque', en: 'featured colours' },
     strip: [vesperveil.deep, vesperveil.background, vesperveil.accent, vesperveil.function, vesperveil.type, vesperveil.string],
