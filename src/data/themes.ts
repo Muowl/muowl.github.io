@@ -24,6 +24,8 @@ export interface ThemeEntry {
   openVsx?: string;
   /** Pacote disponível para instalação manual a partir da página do tema. */
   download?: string;
+  /** Ícone da família, quando o tema fornece um arquivo próprio. */
+  icon?: string;
   tokenCount: number;
   tokenLabel?: { pt: string; en: string };
   flavorCount: number;
@@ -79,16 +81,18 @@ export const themes: ThemeEntry[] = [
   {
     slug: 'carmilla',
     name: 'Carmilla',
-    version: '1.6.0',
+    version: '1.7.0',
     tagline: {
       pt: 'calor de cripta para noites de código',
       en: 'crypt warmth for nights of code',
     },
     summary: {
-      pt: 'Tema escuro com treze cores e fundo vinho rosado. Carmim nas palavras-chave, verde nas funções e champagne nas strings. A variante Amethyst troca o carmim por ametista e usa fundos mais violetas.',
-      en: 'A dark theme with thirteen colours and rosé-wine backgrounds. Carmine keywords, green functions and champagne strings. The Amethyst variant replaces carmine with amethyst and uses more violet backgrounds.',
+      pt: 'Três variantes para VS Code: vinho rosado, violeta e azul-ardósia. Texto creme, comentários malva e cores distintas para tipos, funções e strings. Escolha Carmilla, Amethyst ou Moonstone e compare a paleta no exemplo abaixo.',
+      en: 'Three VS Code variants: rosé wine, violet and slate blue. Cream text, mauve comments and distinct colours for types, functions and strings. Choose Carmilla, Amethyst or Moonstone and compare the palette in the example below.',
     },
     repo: 'https://github.com/Muowl/carmilla',
+    icon: '/themes/carmilla/icon.png',
+    download: '/themes/carmilla/carmilla-1.7.0.vsix',
     marketplace: 'https://marketplace.visualstudio.com/items?itemName=muowl.carmilla',
     openVsx: 'https://open-vsx.org/extension/muowl/carmilla',
     tokenCount: tokens('base').length,

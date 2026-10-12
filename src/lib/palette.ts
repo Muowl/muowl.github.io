@@ -32,6 +32,7 @@ interface PaletteFile {
     'palette-version': string;
   };
   colors: Record<string, string>;
+  ui: { sidebar: string; mauve: string; 'accent-hover': string };
   terminal: {
     background: string;
     foreground: string;
@@ -46,8 +47,8 @@ const file = parse(rawToml) as unknown as PaletteFile;
 export const meta = file.meta;
 export const terminal = file.terminal;
 
-export type FlavorId = 'base' | 'amethyst';
-export const FLAVOR_IDS: FlavorId[] = ['base', 'amethyst'];
+export type FlavorId = 'base' | 'amethyst' | 'moonstone';
+export const FLAVOR_IDS: FlavorId[] = ['base', 'amethyst', 'moonstone'];
 
 /** `#FF5FA2` → `255, 95, 162` — para uso em `rgba(var(--x-rgb), .5)`. */
 export function rgbTriplet(hex: string): string {
@@ -56,30 +57,21 @@ export function rgbTriplet(hex: string): string {
 }
 
 /**
- * Cromo do mockup de editor — não faz parte dos 13 tokens da paleta, então não
- * vive no TOML. É a faixa de abas, um degrau acima do crypt.
- */
-const TABSTRIP: Record<FlavorId, string> = {
-  base: '#1F141E',
-  amethyst: '#1C141F',
-};
-
-/**
  * O flavor `base` não aparece em `[flavors]` do TOML — ele é o próprio `[colors]`.
- * O hover do accent base é o magenta bright do terminal, por convenção da família.
+ * Os tokens de UI também vêm da fonte, incluindo sidebar e hover do accent.
  */
 function flavorSpec(id: FlavorId): FlavorSpec {
   if (id === 'base') {
     return {
       name: file.meta.name,
       accent: file.colors.carmine,
-      'accent-hover': file.terminal.bright.magenta,
+      'accent-hover': file.ui['accent-hover'],
       crypt: file.colors.crypt,
       boudoir: file.colors.boudoir,
       velvet: file.colors.velvet,
       selection: file.colors.selection,
-      sidebar: '#231522',
-      mauve: '#6B4F6A',
+      sidebar: file.ui.sidebar,
+      mauve: file.ui.mauve,
     };
   }
   return file.flavors[id];
@@ -145,9 +137,10 @@ const TOKEN_NAMES: Record<string, string> = {
   pearl: 'Pearl',
 };
 
-/** Sob Amethyst o token de assinatura muda de nome junto com o hex. */
+/** Nas variantes o token de assinatura muda de nome junto com o hex. */
 const TOKEN_NAMES_BY_FLAVOR: Partial<Record<FlavorId, Record<string, string>>> = {
   amethyst: { carmine: 'Amethyst' },
+  moonstone: { carmine: 'Moonstone' },
 };
 
 const TOKEN_ROLES: Record<string, { pt: string; en: string }> = {
@@ -242,6 +235,10 @@ const FLAVOR_MOODS: Record<FlavorId, { pt: string; en: string }> = {
     pt: 'Fundos violetas e destaque ametista',
     en: 'Violet backgrounds and an amethyst accent',
   },
+  moonstone: {
+    pt: 'Fundos azul-ardósia e destaque azul-céu',
+    en: 'Slate-blue backgrounds and a sky-blue accent',
+  },
 };
 
 export function flavors(): FlavorView[] {
@@ -267,8 +264,7 @@ function varsFor(id: FlavorId): string {
     ['crypt-rgb', rgbTriplet(c.crypt)],
     ['boudoir-rgb', rgbTriplet(c.boudoir)],
     ['absinthe-rgb', rgbTriplet(c.absinthe)],
-    ['crypt-rgb', rgbTriplet(c.crypt)],
-    ['tabstrip', TABSTRIP[id]],
+    ['tabstrip', f.sidebar],
     ['boudoir', c.boudoir],
     ['velvet', c.velvet],
     ['velvet-rgb', rgbTriplet(c.velvet)],

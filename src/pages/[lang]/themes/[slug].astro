@@ -1,6 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import CarmillaShowcase from '../../../components/CarmillaShowcase.astro';
+import CarmillaFlavorSwitch from '../../../components/CarmillaFlavorSwitch.astro';
 import PapilioShowcase from '../../../components/PapilioShowcase.astro';
 import CinderShowcase from '../../../components/CinderShowcase.astro';
 import VesperveilShowcase from '../../../components/VesperveilShowcase.astro';
@@ -76,9 +77,11 @@ const papilioThemeColors =
         }
         {!theme.published && <span class="wip">{theme.pendingLabel?.[lang] ?? t('theme.wip')}</span>}
       </div>
+      {theme.icon && <img class="theme-icon" src={theme.icon} alt="" width="96" height="96" />}
       <h1>{theme.name}</h1>
       <div class="subtitle">{theme.tagline[lang]}</div>
       <p class="lead">{theme.summary[lang]}</p>
+      {slug === 'carmilla' && <CarmillaFlavorSwitch />}
       <div class="cta">
         {
           theme.published && theme.marketplace && (
@@ -113,6 +116,7 @@ const papilioThemeColors =
       </div>
 
       {theme.download && <p class="download-hint">{t('theme.download.hint')}</p>}
+      {slug === 'carmilla' && <p class="download-hint">{t('theme.carmilla.release')}</p>}
 
       {!theme.published && <p class="wip-note">{theme.pendingNote?.[lang] ?? t('theme.wip.note')}</p>}
     </header>
@@ -137,6 +141,7 @@ const papilioThemeColors =
 </Base>
 
 <style>
+  .theme-icon { display: block; margin: 0 auto 1rem; border-radius: var(--radius-panel); }
   .download-hint { margin-top: 1rem; color: var(--ash-mauve); font-size: var(--text-small); }
   .theme-hero {
     text-align: center;

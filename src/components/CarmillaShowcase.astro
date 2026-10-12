@@ -1,91 +1,23 @@
 ---
-/**
- * Showcase do Carmilla, portado de docs/index.html do repo do tema.
- *
- * Diferença estrutural: nenhum hex é escrito aqui. Swatches, token map e flavor
- * cards saem de `lib/palette`, que lê o TOML. Os textos vêm do idioma da rota,
- * em vez de ficarem os dois na página escondidos por CSS.
- */
-import { tokens, flavors, themeColor } from '../lib/palette';
+/** As cores vêm do TOML; a prévia usa os tokens TextMate exportados pelo tema. */
+import { tokens, flavors, themeColor, FLAVOR_IDS } from '../lib/palette';
+import previewTokens from '../data/carmilla.preview.tokens.json';
 import { getLangFromUrl, useTranslations, type Lang } from '../i18n/ui';
 
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-
-const base = tokens('base');
-const amethyst = tokens('amethyst');
 const flavorList = flavors();
-
-/** Junta os dois flavors por token para saber o que muda de hex e de nome. */
-const rows = base.map((tk, i) => ({
-  ...tk,
-  altHex: amethyst[i].hex,
-  altName: amethyst[i].name,
-  changes: amethyst[i].hex !== tk.hex,
+const flavorTokens = FLAVOR_IDS.map(id => ({ id, tokens: tokens(id) }));
+const rows = tokens('base').map((token, index) => ({
+  ...token,
+  variants: flavorTokens.map(flavor => ({ id: flavor.id, ...flavor.tokens[index] })),
 }));
-
-const tx =
-  lang === 'pt'
-    ? {
-        c1: '// Carmilla: palavras-chave em carmim, funções em verde.',
-        c2: '// Comentários em Ash Mauve sobre o fundo Boudoir.',
-        whisper: '} sussurra ao ouvido de ${',
-        era1: '"🕯️ Antiga das antigas"',
-        era2: '"🌙 Imortal madura"',
-        era3: '"🩸 Recém-virada"',
-        coffin: '"❌ ainda repousa no caixão"',
-      }
-    : {
-        c1: '// Carmilla: carmine keywords, green functions.',
-        c2: '// Ash Mauve comments on the Boudoir background.',
-        whisper: '} whispers to ${',
-        era1: '"🕯️ Ancient of ancients"',
-        era2: '"🌙 A mature immortal"',
-        era3: '"🩸 Newly turned"',
-        coffin: '"❌ still resting in the coffin"',
-      };
-
-const code = `<span class="c">${tx.c1}</span>
-<span class="c">${tx.c2}</span>
-
-<span class="k">import</span> { <span class="t">Slayer</span> } <span class="k">from</span> <span class="s">"./hunters"</span><span class="punc">;</span>
-
-<span class="k">class</span> <span class="t">Countess</span> <span class="k">extends</span> <span class="t">Immortal</span> <span class="punc">{</span>
-    <span class="k">private readonly</span> <span class="p">name</span><span class="punc">:</span> <span class="t">string</span><span class="punc">;</span>
-    <span class="k">private</span> <span class="p">centuriesLived</span><span class="punc">:</span> <span class="t">number</span><span class="punc">;</span>
-
-    <span class="f">constructor</span><span class="punc">(</span><span class="p">name</span><span class="punc">:</span> <span class="t">string</span><span class="punc">,</span> <span class="p">age</span><span class="punc">:</span> <span class="t">number</span><span class="punc">)</span> <span class="punc">{</span>
-        <span class="k">super</span><span class="punc">()</span><span class="punc">;</span>
-        <span class="i">this</span><span class="punc">.</span><span class="p">name</span> <span class="punc">=</span> <span class="p">name</span><span class="punc">;</span>
-        <span class="i">this</span><span class="punc">.</span><span class="p">centuriesLived</span> <span class="punc">=</span> <span class="p">age</span><span class="punc">;</span>
-    <span class="punc">}</span>
-
-    <span class="f">whisper</span><span class="punc">(</span><span class="p">guest</span><span class="punc">:</span> <span class="t">string</span><span class="punc">)</span><span class="punc">:</span> <span class="t">string</span> <span class="punc">{</span>
-        <span class="i">this</span><span class="punc">.</span><span class="p">centuriesLived</span> <span class="punc">+=</span> <span class="n">0.01</span><span class="punc">;</span>
-        <span class="k">return</span> <span class="s">\`🥀 \${</span><span class="i">this</span><span class="punc">.</span><span class="p">name</span><span class="s">${tx.whisper}</span><span class="p">guest</span><span class="s">}\`</span><span class="punc">;</span>
-    <span class="punc">}</span>
-
-    <span class="f">getEra</span><span class="punc">()</span><span class="punc">:</span> <span class="t">string</span> <span class="punc">{</span><div class="current-line">        <span class="k">if</span> <span class="punc">(</span><span class="i">this</span><span class="punc">.</span><span class="p">centuriesLived</span> <span class="punc">&gt;</span> <span class="n">5</span><span class="punc">)</span> <span class="k">return</span> <span class="s">${tx.era1}</span><span class="punc">;</span></div>        <span class="k">if</span> <span class="punc">(</span><span class="i">this</span><span class="punc">.</span><span class="p">centuriesLived</span> <span class="punc">&gt;</span> <span class="n">1</span><span class="punc">)</span> <span class="k">return</span> <span class="s">${tx.era2}</span><span class="punc">;</span>
-        <span class="k">return</span> <span class="s">${tx.era3}</span><span class="punc">;</span>
-    <span class="punc">}</span>
-<span class="punc">}</span>
-
-<span class="k">const</span> <span class="p">carmilla</span> <span class="punc">=</span> <span class="k">new</span> <span class="t">Countess</span><span class="punc">(</span><span class="s">"Mircalla Karnstein"</span><span class="punc">,</span> <span class="n">3</span><span class="punc">)</span><span class="punc">;</span>
-<span class="k">const</span> <span class="p">awake</span><span class="punc">:</span> <span class="t">boolean</span> <span class="punc">=</span> <span class="n">true</span><span class="punc">;</span>
-<span class="k">if</span> <span class="punc">(</span><span class="p">awake</span><span class="punc">)</span> <span class="p">console</span><span class="punc">.</span><span class="f">log</span><span class="punc">(</span><span class="p">carmilla</span><span class="punc">.</span><span class="f">getEra</span><span class="punc">()</span><span class="punc">)</span><span class="punc">;</span>
-<span class="k">else</span> <span class="p">console</span><span class="punc">.</span><span class="err">error</span><span class="punc">(</span><span class="s">${tx.coffin}</span><span class="punc">)</span><span class="punc">;</span>`;
-
-const gutter = Array.from({ length: 29 }, (_, i) => {
-  const n = i + 1;
-  const cls = [5, 6].includes(n)
-    ? 'modified'
-    : n === 21
-      ? 'active'
-      : n >= 25
-        ? 'added'
-        : '';
-  return { n, cls };
-});
+const themeColors = Object.fromEntries(FLAVOR_IDS.map(id => [id, themeColor(id)]));
+const escape = (text: string) => text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+const code = previewTokens.map(line => line.map(token =>
+  `<span style="color:var(--${token.role})${token.italic ? ';font-style:italic' : ''}">${escape(token.text)}</span>`
+).join('')).join('\n');
+const gutter = previewTokens.map((_, i) => ({ n: i + 1 }));
 
 ---
 
@@ -103,30 +35,12 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
         <div class="swatch">
           <div class="swatch-color" style={`background: var(--${tk.key})`}>
             <span class="swatch-hex" class:list={[{ scrim: !tk.dark }]}>
-              {
-                tk.changes ? (
-                  <>
-                    <span class="fl-base">{tk.hex}</span>
-                    <span class="fl-amethyst">{tk.altHex}</span>
-                  </>
-                ) : (
-                  tk.hex
-                )
-              }
+              {tk.variants.map(variant => <span class={`fl-${variant.id}`}>{variant.hex}</span>)}
             </span>
           </div>
           <div class="swatch-meta">
-            <div class="swatch-name" style={tk.surface ? undefined : `color: var(--${tk.key})`}>
-              {
-                tk.name !== tk.altName ? (
-                  <>
-                    <span class="fl-base">{tk.name}</span>
-                    <span class="fl-amethyst">{tk.altName}</span>
-                  </>
-                ) : (
-                  tk.name
-                )
-              }
+            <div class="swatch-name">
+              {tk.variants.map(variant => <span class={`fl-${variant.id}`}>{variant.name}</span>)}
             </div>
             <div class="swatch-role" set:html={tk.role[lang]} />
           </div>
@@ -157,17 +71,17 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
       <div class="editor-tab">README.md</div>
     </div>
     <div class="editor-body">
-      <div class="gutter">
-        {gutter.map((g) => <div class:list={['ln', g.cls]}>{g.n}</div>)}
+      <div class="gutter" aria-hidden="true">
+        {gutter.map((g) => <div class="ln">{g.n}</div>)}
       </div>
-      <div class="code-area">
-        <pre set:html={code} />
+      <div class="code-area" tabindex="0" aria-label={lang === 'pt' ? 'Prévia TypeScript' : 'TypeScript preview'}>
+        <pre><code set:html={code} /></pre>
       </div>
     </div>
     <div class="editor-statusbar">
       <span class="branch">⎇ main</span>
       <span>↑ 2 ↓ 0</span>
-      <span style="color:var(--pomegranate);">● 0 errors</span>
+      <span><span style="color:var(--pomegranate);" aria-hidden="true">●</span> 0 errors</span>
       <span style="color:var(--peach-velvet);">▲ 1 warning</span>
       <div class="right">
         <span>Ln <strong>21</strong>, Col <strong>9</strong></span>
@@ -175,9 +89,7 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
         <span>UTF-8</span>
         <span><strong>TypeScript</strong></span>
         <span
-          >🥀 <strong style="color:var(--carmine);"
-            >Carmilla<span class="fl-amethyst"> Amethyst</span></strong
-          ></span
+          ><strong style="color:var(--carmine);">{flavorList.map(flavor => <span class={`fl-${flavor.id}`}>{flavor.name}</span>)}</strong></span
         >
       </div>
     </div>
@@ -196,11 +108,7 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
     <div class="token-row">
       <span class="token-dot" style="background:var(--carmine)"></span>
       <span class="token-name">keyword</span>
-      <span class="token-sample"
-        ><span style="color:var(--carmine)">const</span> x <span style="color:var(--carmine)"
-          >=</span
-        > <span style="color:var(--champagne)">"…"</span></span
-      >
+      <span class="token-sample"><span style="color:var(--carmine)">const</span> x = <span style="color:var(--champagne)">"…"</span></span>
     </div>
     <div class="token-row">
       <span class="token-dot" style="background:var(--wisteria)"></span>
@@ -284,41 +192,36 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
   </div>
 </section>
 
-<script is:inline define:vars={{ baseCrypt: themeColor('base'), amethystCrypt: themeColor('amethyst') }}>
-  // Troca o flavor da página inteira e guarda a escolha. O Base.astro reaplica
-  // antes da primeira pintura nas próximas navegações.
+<script is:inline define:vars={{ themeColors }}>
+  // O mesmo controle atende ao seletor do topo e aos cards de variantes.
   const root = document.documentElement;
   const buttons = document.querySelectorAll('[data-set-flavor]');
   const themeMeta = document.querySelector('meta[name="theme-color"]');
-  const CRYPT = { base: baseCrypt, amethyst: amethystCrypt };
 
-  function applyFlavor(flavor) {
+  function applyFlavor(value) {
+    const flavor = Object.hasOwn(themeColors, value) ? value : 'base';
     root.dataset.flavor = flavor;
-    try {
-      localStorage.setItem('carmilla-flavor', flavor);
-    } catch {}
-    if (themeMeta) themeMeta.setAttribute('content', CRYPT[flavor] ?? CRYPT.base);
-    buttons.forEach((b) => {
-      const on = b.dataset.setFlavor === flavor;
-      b.classList.toggle('active', on);
-      b.setAttribute('aria-pressed', String(on));
+    try { localStorage.setItem('carmilla-flavor', flavor); } catch {}
+    if (themeMeta) themeMeta.setAttribute('content', themeColors[flavor]);
+    buttons.forEach(button => {
+      const active = button.dataset.setFlavor === flavor;
+      button.classList.toggle('active', active);
+      button.setAttribute('aria-pressed', String(active));
     });
   }
-
-  buttons.forEach((b) =>
-    b.addEventListener('click', () => applyFlavor(b.dataset.setFlavor ?? 'base')),
-  );
-
-  applyFlavor(root.dataset.flavor ?? 'base');
+  buttons.forEach(button => button.addEventListener('click', () => applyFlavor(button.dataset.setFlavor)));
+  applyFlavor(root.dataset.flavor);
 </script>
 
 <style>
-  /* Conteúdo alternado por flavor */
-  :global([data-flavor='base']) .fl-amethyst {
-    display: none;
-  }
-  :global([data-flavor='amethyst']) .fl-base {
-    display: none;
+  /* Só o texto da variante ativa aparece nos swatches e na barra do editor. */
+  .fl-base, .fl-amethyst, .fl-moonstone { display: none; }
+  :global([data-flavor='base']) .fl-base,
+  :global([data-flavor='amethyst']) .fl-amethyst,
+  :global([data-flavor='moonstone']) .fl-moonstone { display: inline; }
+  .flavor-card:focus-visible, .code-area:focus-visible {
+    outline: 2px solid var(--carmine);
+    outline-offset: 3px;
   }
 
   /* ============== PALETA ============== */
@@ -382,7 +285,7 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
 
   .swatch-role {
     font-size: 0.875rem;
-    color: var(--ash-mauve);
+    color: var(--pearl);
     line-height: 1.65;
   }
   .swatch-role :global(code) {
@@ -402,6 +305,7 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
       0 0 0 1px rgba(var(--carmine-rgb), 0.18),
       inset 0 1px 0 rgba(var(--pearl-rgb), 0.04);
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto 1fr auto;
     margin-top: 1rem;
   }
@@ -445,6 +349,7 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
   .editor-tabs {
     background: var(--tabstrip);
     display: flex;
+    flex-wrap: wrap;
     border-bottom: 1px solid rgba(var(--carmine-rgb), 0.08);
     padding-left: 0.5rem;
   }
@@ -476,7 +381,8 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
 
   .editor-body {
     display: grid;
-    grid-template-columns: 50px 1fr;
+    min-width: 0;
+    grid-template-columns: 50px minmax(0, 1fr);
     min-height: 480px;
   }
 
@@ -486,7 +392,7 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
     text-align: right;
     font-family: var(--font-mono);
     font-size: 0.78rem;
-    color: rgba(var(--ash-mauve-rgb), 0.5);
+    color: var(--ash-mauve);
     user-select: none;
     line-height: 1.65;
   }
@@ -516,6 +422,7 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
 
   .code-area {
     padding: 1.2rem 1.2rem 1.2rem 0.5rem;
+    min-width: 0;
     overflow-x: auto;
     position: relative;
   }
@@ -568,7 +475,7 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
     color: var(--pearl);
   }
   pre :global(.punc) {
-    color: rgba(var(--pearl-rgb), 0.65);
+    color: var(--pearl);
   }
 
   .editor-statusbar {
@@ -589,7 +496,7 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
     margin-left: auto;
     display: flex;
     gap: 1.2rem;
-    color: var(--ash-mauve);
+    color: var(--pearl);
   }
   .editor-statusbar .right span strong {
     color: var(--pearl);
@@ -626,11 +533,14 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
     border-radius: 4px;
   }
   .token-name {
-    color: var(--ash-mauve);
+    color: var(--pearl);
   }
   .token-sample {
     color: var(--pearl);
-    overflow-x: auto;
+    overflow-wrap: anywhere;
+    background: var(--crypt);
+    border-radius: var(--radius-control);
+    padding: .2rem .3rem;
   }
 
   /* ============== FLAVOR CARDS ============== */
@@ -662,6 +572,7 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
   .flavor-card .flavor-top {
     display: flex;
     align-items: baseline;
+    flex-wrap: wrap;
     justify-content: space-between;
     gap: 0.8rem;
   }
@@ -679,11 +590,10 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
     text-transform: uppercase;
     color: var(--carmine);
     white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.2s;
+    display: none;
   }
   .flavor-card.active .flavor-state {
-    opacity: 1;
+    display: inline;
   }
   .flavor-card .strip {
     display: flex;
@@ -698,24 +608,27 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
   }
   .flavor-card .flavor-mood {
     font-size: 0.9375rem;
-    color: var(--ash-mauve);
+    color: var(--pearl);
     line-height: 1.7;
   }
   .flavor-card .flavor-hex {
     font-family: var(--font-mono);
     font-size: 0.78rem;
+    background: var(--crypt);
+    border-radius: var(--radius-control);
+    padding: .2rem .3rem;
   }
 
   @media (max-width: 680px) {
     .palette {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0.8rem;
     }
     .swatch-color {
       height: 100px;
     }
     .editor-body {
-      grid-template-columns: 32px 1fr;
+      grid-template-columns: 32px minmax(0, 1fr);
     }
     .gutter .ln {
       padding: 0 0.4rem;
@@ -728,6 +641,11 @@ const gutter = Array.from({ length: 29 }, (_, i) => {
       flex-wrap: wrap;
       gap: 0.6rem;
       font-size: 0.65rem;
+    }
+    .editor-statusbar .right {
+      margin-left: 0;
+      flex-wrap: wrap;
+      gap: .6rem;
     }
   }
 </style>

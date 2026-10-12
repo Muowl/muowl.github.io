@@ -1,5 +1,5 @@
 ---
-import { paletteCss, themeColor } from '../lib/palette';
+import { paletteCss, themeColor, FLAVOR_IDS } from '../lib/palette';
 import { studio, studioCss } from '../lib/studio';
 import Owl from '../components/Owl.astro';
 import Favicons from '../components/Favicons.astro';
@@ -79,7 +79,7 @@ const nav = [
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogUrl.href} />
 
-    <Favicons />
+    <Favicons carmilla={bare === '/themes/carmilla/'} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -97,14 +97,14 @@ const nav = [
       /* Aplica o flavor salvo antes da primeira pintura, para não piscar.
          Numa página que troca de paleta o flavor do Carmilla não se aplica. */
       isShowcase && !paletteOverride && (
-        <script is:inline define:vars={{ amethystCrypt: themeColor('amethyst') }}>
+        <script is:inline define:vars={{ carmillaThemeColors: Object.fromEntries(FLAVOR_IDS.map(id => [id, themeColor(id)])) }}>
           (function () {
           try {
             var f = localStorage.getItem('carmilla-flavor');
-            if (f === 'amethyst') {
+            if (f && Object.hasOwn(carmillaThemeColors, f)) {
               document.documentElement.dataset.flavor = f;
               var m = document.querySelector('meta[name="theme-color"]');
-              if (m) m.setAttribute('content', amethystCrypt);
+              if (m) m.setAttribute('content', carmillaThemeColors[f]);
             }
           } catch (e) {}
           })();
@@ -509,7 +509,8 @@ const nav = [
   }
   .foot-meta a {
     color: var(--carmine);
-    text-decoration: none;
+    text-decoration: underline;
+    text-underline-offset: .2em;
   }
   .foot-meta a:hover {
     text-decoration: underline;

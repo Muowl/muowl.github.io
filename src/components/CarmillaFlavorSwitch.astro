@@ -1,0 +1,38 @@
+---
+import { flavors } from '../lib/palette';
+import { getLangFromUrl, useTranslations } from '../i18n/ui';
+const t = useTranslations(getLangFromUrl(Astro.url));
+---
+
+<div class="flavor-switch" role="group" aria-label={t('flavor.label')}>
+  {flavors().map((flavor) => (
+    <button type="button" data-set-flavor={flavor.id} aria-pressed={flavor.id === 'base'}>
+      {flavor.id === 'base' ? 'Carmilla' : flavor.id === 'amethyst' ? 'Amethyst' : 'Moonstone'}
+    </button>
+  ))}
+</div>
+
+<style>
+  .flavor-switch {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .6rem;
+    margin: 1.8rem auto 0;
+  }
+  button {
+    min-height: 44px;
+    padding: .6rem 1.1rem;
+    border: 1px solid var(--ash-mauve);
+    border-radius: var(--radius-control);
+    background: var(--crypt);
+    color: var(--pearl);
+    font: 500 .85rem/1.5 var(--font-mono);
+    cursor: pointer;
+  }
+  button:hover, button[aria-pressed='true'] {
+    border-color: var(--carmine);
+    color: var(--carmine);
+  }
+  button:focus-visible { outline: 2px solid var(--carmine); outline-offset: 3px; }
+</style>

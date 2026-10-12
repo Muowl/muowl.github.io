@@ -1,5 +1,18 @@
+---
+interface Props { carmilla?: boolean; }
+const { carmilla = false } = Astro.props;
+---
+{carmilla ? (
+  <>
+    <link rel="icon" href="/themes/carmilla/favicon-32.png?v=1.7.0" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/themes/carmilla/icon.png?v=1.7.0" sizes="256x256" />
+  </>
+) : (
+<>
 <!-- Nome novo para renovar o cache do ícone anterior. -->
 <link rel="icon" href="/owl.svg?v=2" type="image/svg+xml" sizes="any" />
 <link rel="icon" href="/owl-32.png?v=2" type="image/png" sizes="32x32" />
 <link rel="shortcut icon" href="/favicon.ico?v=2" />
 <link rel="apple-touch-icon" href="/owl-180.png?v=2" sizes="180x180" />
+</>
+)}

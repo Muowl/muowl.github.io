@@ -47,9 +47,11 @@ than emitting a link to a 404.
 WCAG relative luminance; the Papilio page measures every token against its own
 background at build time. If a palette changes, the published ratios follow.
 
-Two colour values are deliberately *not* in the TOML, and are documented where
-they live in `src/lib/palette.ts`: `TABSTRIP` (chrome of the editor mockup, not a
-palette token) and the base accent hover (taken from `terminal.bright.magenta`).
+The Carmilla editor chrome and accent hover also come from the TOML's UI tokens.
+`src/data/carmilla.source.json` pins the theme revision used by the showcase;
+palette sync reads that revision while the theme is in PR. Update the revision
+and version together when adopting a newer release, including its generated
+`docs/preview.tokens.json` sample, icons and VSIX in `public/themes/carmilla/`.
 
 ## i18n
 The portfolio uses Vesperveil as its base palette, mapped by `src/lib/studio.ts`

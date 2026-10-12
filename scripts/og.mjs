@@ -17,12 +17,15 @@ const root = new URL('../', import.meta.url);
 const read = (p) => readFile(fileURLToPath(new URL(p, root)), 'utf8');
 
 const carmilla = parseToml(await read('src/data/carmilla.palette.toml'));
+const carmillaIcon = (await readFile(new URL('public/themes/carmilla/icon.png', root))).toString('base64');
+const onlyTheme = process.argv.find(arg => arg.startsWith('--theme='))?.slice('--theme='.length);
 const papilio = parseYaml(await read('src/data/papilio.palette.yaml'));
 
 /** Um card por tema — e o `default`, usado pelas páginas sem card próprio. */
 const CARDS = [
   {
     file: 'carmilla',
+    icon: carmillaIcon,
     name: 'Carmilla',
     tagline: 'crypt warmth for nights of code',
     bg: carmilla.colors.crypt,
@@ -106,6 +109,7 @@ const html = (c) => `<!doctype html>
     background:linear-gradient(180deg, ${c.text} 0%, ${c.accent} 78%);
     -webkit-background-clip:text; background-clip:text; color:transparent;
   }
+  .theme-icon { width:96px; height:96px; position:absolute; right:96px; top:96px; border-radius:16px; }
   .tagline {
     font-family:'Cormorant Garamond',Georgia,serif; font-style:italic;
     font-size:38px; color:${c.muted}; margin-top:14px;
@@ -132,8 +136,9 @@ await mkdir(outDir, { recursive: true });
 const browser = await chromium.launch({ channel: 'chrome' });
 const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
 
-for (const card of CARDS) {
-  await page.setContent(html(card), { waitUntil: 'networkidle' });
+for (const card of CARDS.filter(card => !onlyTheme || card.file === onlyTheme)) {
+  const markup = html(card).replace('<body>', `<body>${card.icon ? `<img class="theme-icon" alt="" src="data:image/png;base64,${card.icon}">` : ''}`);
+  await page.setContent(markup, { waitUntil: 'networkidle' });
   await page.evaluate(() => document.fonts.ready);
   const buf = await page.screenshot({ type: 'png' });
   await writeFile(new URL(`public/og/${card.file}.png`, root), buf);
@@ -142,5 +147,7 @@ for (const card of CARDS) {
 
 await browser.close();
 // Identidade editorial e Cinder usam o gerador vetorial compartilhado.
-await import('./studio-assets.mjs');
-await import('./vesperveil-assets.mjs');
+if (!onlyTheme) {
+  await import('./studio-assets.mjs');
+  await import('./vesperveil-assets.mjs');
+}

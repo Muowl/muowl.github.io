@@ -12,6 +12,9 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
+// O Carmilla pode estar em PR: a vitrine acompanha uma revisão concreta.
+const carmillaSource = JSON.parse(await readFile(new URL('../src/data/carmilla.source.json', import.meta.url), 'utf8'));
+
 /** Uma entrada por tema. O formato do arquivo é escolha de cada repo. */
 const SOURCES = [
   {
@@ -26,8 +29,13 @@ const SOURCES = [
   })),
   {
     theme: 'carmilla',
-    url: 'https://raw.githubusercontent.com/Muowl/carmilla/main/palette/carmilla.toml',
+    url: `https://raw.githubusercontent.com/Muowl/carmilla/${carmillaSource.revision}/palette/carmilla.toml`,
     target: '../src/data/carmilla.palette.toml',
+  },
+  {
+    theme: 'carmilla-preview',
+    url: `https://raw.githubusercontent.com/Muowl/carmilla/${carmillaSource.revision}/docs/preview.tokens.json`,
+    target: '../src/data/carmilla.preview.tokens.json',
   },
   {
     theme: 'papilio',
@@ -43,10 +51,11 @@ const SOURCES = [
 ];
 
 const checkOnly = process.argv.includes('--check');
+const onlyTheme = process.argv.find(arg => arg.startsWith('--theme='))?.slice('--theme='.length);
 let stale = 0;
 let failed = 0;
 
-for (const { theme, url, target } of SOURCES) {
+for (const { theme, url, target } of SOURCES.filter(source => !onlyTheme || source.theme === onlyTheme || source.theme.startsWith(`${onlyTheme}-`))) {
   const path = fileURLToPath(new URL(target, import.meta.url));
 
   let upstream;
@@ -67,7 +76,7 @@ for (const { theme, url, target } of SOURCES) {
     // primeira execução — segue e escreve
   }
 
-  if (current === upstream) {
+  if (current.replaceAll('\r\n', '\n') === upstream.replaceAll('\r\n', '\n')) {
     console.log(`✓ ${theme}: em dia`);
     continue;
   }
