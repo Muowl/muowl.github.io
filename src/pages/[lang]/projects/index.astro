@@ -1,7 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import { langPaths } from '../../../i18n/paths';
-import { useTranslations, getLangFromUrl, type Lang } from '../../../i18n/ui';
+import { useTranslations, getLangFromUrl, localePath, type Lang } from '../../../i18n/ui';
 import { listedProjects } from '../../../data/projects';
 
 export const getStaticPaths = langPaths;
@@ -19,105 +19,37 @@ const ordered = [...listedProjects].sort((a, b) => b.year - a.year);
     <p class="section-subtitle">{t('projects.subtitle')}</p>
     <p class="lead-text">{t('projects.lead')}</p>
 
-    <ul class="project-list">
-      {
-        ordered.map((p) => (
-          <li>
-            <a href={p.url}>
-              <div class="row">
-                <h2>{p.name}</h2>
-                <span class="year">{p.year}</span>
-              </div>
-              <p>{p.summary[lang]}</p>
-              <div class="stack">
-                {p.stack.map((s) => (
-                  <span>{s}</span>
-                ))}
-              </div>
-              <span class="project-action">{t('projects.visit')} <span aria-hidden="true">↗</span></span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+    <div class="project-list">
+      {ordered.map(p => <article id={p.name}>
+        <div class="row"><h2>{p.name}</h2><span class="year">{p.year}</span></div>
+        <p class="summary">{p.summary[lang]}</p>
+        <div class="stack">{p.stack.map(item => <span>{item}</span>)}</div>
+        {p.caseStudy && <dl class="case-study">
+          <div><dt>{t('projects.challenge')}</dt><dd>{p.caseStudy.challenge[lang]}</dd></div>
+          <div><dt>{t('projects.approach')}</dt><dd>{p.caseStudy.approach[lang]}</dd></div>
+          <div><dt>{t('projects.result')}</dt><dd>{p.caseStudy.result[lang]}</dd></div>
+        </dl>}
+        <div class="project-actions"><a href={p.url}>{t('projects.visit')}</a>{p.themeSlug && <a href={localePath(lang, `/themes/${p.themeSlug}/`)}>{t('themes.view')}</a>}</div>
+      </article>)}
+    </div>
   </div>
 </Base>
 
 <style>
-  .project-list {
-    list-style: none;
-    display: grid;
-    gap: 1rem;
-    margin-top: 2.5rem;
-    max-width: 960px;
-  }
-
-  .project-list a {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    background: var(--velvet);
-    border: var(--border-panel);
-    border-radius: var(--radius-panel);
-    padding: clamp(1.25rem, 3vw, 2rem);
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-  }
-  .project-list a:hover {
-    transform: translateY(-3px);
-    border-color: rgba(var(--carmine-rgb), 0.45);
-    box-shadow: 0 12px 28px -20px rgba(var(--crypt-rgb), .8);
-  }
-
-  .row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
-  h2 {
-    font-family: var(--font-mono);
-    font-size: 1.375rem;
-    font-weight: 500;
-    color: var(--pearl);
-  }
-
-  .year {
-    font-family: var(--font-mono);
-    font-size: var(--text-caption);
-    color: var(--ash-mauve);
-  }
-
-  p {
-    font-size: 1rem;
-    line-height: 1.75;
-    color: rgba(var(--pearl-rgb), .84);
-    margin-top: 0.6rem;
-    max-width: 70ch;
-  }
-
-  .stack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 1.1rem;
-  }
-  .stack span {
-    font-family: var(--font-mono);
-    font-size: var(--text-caption);
-    color: var(--ash-mauve);
-    border: 1px solid rgba(var(--carmine-rgb), 0.18);
-    border-radius: var(--radius-control);
-    padding: 0.2rem 0.6rem;
-  }
-
-  .project-action {
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-    min-height: 44px;
-    margin-top: 1rem;
-    font: 500 var(--text-caption)/1.5 var(--font-mono);
-    color: var(--champagne);
-  }
+  .project-list { display: grid; gap: 3rem; margin-top: 2.5rem; max-width: 960px; }
+  article { padding-top: 2rem; border-top: var(--border-panel); scroll-margin-top: 2rem; }
+  .row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+  h2 { font: 500 clamp(1.5rem, 3vw, 2rem)/1.3 var(--font-mono); color: var(--pearl); }
+  .year { font: var(--text-caption)/1.6 var(--font-mono); color: var(--ash-mauve); }
+  .summary, dd { font-size: 1rem; line-height: 1.75; color: rgba(var(--pearl-rgb), .84); max-width: 68ch; }
+  .summary { margin-top: .8rem; }
+  .stack { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-top: 1rem; color: var(--ash-mauve); font: var(--text-caption)/1.6 var(--font-mono); }
+  .case-study { display: grid; gap: 1.25rem; margin-top: 1.75rem; }
+  .case-study > div { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 1.25rem; }
+  dt { color: var(--champagne); font-size: var(--text-small); font-weight: 500; padding-top: .2rem; }
+  dd { margin: 0; }
+  .project-actions { display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; margin-top: 1.25rem; }
+  .project-actions a { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--text-small); text-underline-offset: .3em; }
+  .project-actions a:hover { color: var(--champagne); }
+  @media (max-width: 680px) { .case-study > div { grid-template-columns: 1fr; gap: .35rem; } }
 </style>

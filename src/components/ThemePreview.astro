@@ -1,0 +1,39 @@
+---
+import { previewStyle, type PreviewTheme } from '../lib/theme-preview';
+import type { Lang } from '../i18n/ui';
+interface Props { theme: PreviewTheme; name: string; lang: Lang; compact?: boolean; decorative?: boolean }
+const { theme, name, lang, compact = false, decorative = false } = Astro.props;
+const pt = lang === 'pt';
+---
+<figure class:list={['preview', { compact }]} style={previewStyle(theme)} aria-hidden={decorative ? 'true' : undefined}>
+  <div class="preview-bar"><span>{name}</span><span>studio.ts</span></div>
+  <div class="preview-code" tabindex={decorative ? undefined : '0'} role={decorative ? undefined : 'region'} aria-label={decorative ? undefined : `${pt ? 'Prévia TypeScript' : 'TypeScript preview'} — ${name}`}>
+    <pre><code><span class="comment">// {pt ? 'O mesmo código, outras cores.' : 'Same code, different colours.'}</span>
+<span class="keyword">type</span> <span class="type">Studio</span> = {'{'}
+  name: <span class="type">string</span>;
+  colors: <span class="type">number</span>;
+{'}'};
+
+<span class="keyword">export function</span> <span class="fn">createStudio</span>(): <span class="type">Studio</span> {'{'}
+  <span class="keyword">return</span> {'{'} name: <span class="string">'muowl'</span>, colors: <span class="number">13</span> {'}'};
+{'}'}</code></pre>
+  </div>
+  {!compact && <figcaption>{pt ? 'Prévia ilustrativa da paleta · TypeScript' : 'Illustrative palette preview · TypeScript'}</figcaption>}
+</figure>
+<style>
+  .preview { margin: 0; min-width: 0; overflow: hidden; border: 1px solid var(--preview-border); border-radius: var(--radius-panel); background: var(--preview-background); color: var(--preview-text); }
+  .preview-bar { display: flex; justify-content: space-between; gap: 1rem; padding: .85rem 1.25rem; background: var(--preview-surface); border-bottom: 1px solid var(--preview-border); font: var(--text-caption)/1.5 var(--font-mono); }
+  .preview-bar > :last-child { color: var(--preview-muted); }
+  .preview-code { padding: 1.4rem 1.25rem; overflow-x: auto; }
+  .preview-code:focus-visible { outline-offset: -3px; }
+  pre { margin: 0; font: .875rem/1.85 var(--font-mono); tab-size: 2; }
+  .comment { color: var(--preview-muted); font-style: italic; }
+  .keyword { color: var(--preview-keyword); } .type { color: var(--preview-type); }
+  .fn { color: var(--preview-fn); } .string { color: var(--preview-string); } .number { color: var(--preview-number); }
+  figcaption { padding: .75rem 1.25rem; border-top: 1px solid var(--preview-border); color: var(--preview-muted); font: .75rem/1.6 var(--font-body); }
+  .compact { border: 0; border-radius: 0; }
+  .compact .preview-bar { padding: .7rem 1rem; font-size: .75rem; }
+  .compact .preview-code { padding: 1rem; }
+  .compact pre { font-size: .6875rem; line-height: 1.8; }
+  @media (max-width: 480px) { .preview-code { padding: 1rem .85rem; } pre { font-size: .6875rem; } .compact pre { font-size: .625rem; } .preview-bar, figcaption { padding-inline: .85rem; } }
+</style>

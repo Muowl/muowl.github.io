@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import ThemeInstallation from '../../../components/ThemeInstallation.astro';
 import CarmillaShowcase from '../../../components/CarmillaShowcase.astro';
 import CarmillaFlavorSwitch from '../../../components/CarmillaFlavorSwitch.astro';
 import PapilioShowcase from '../../../components/PapilioShowcase.astro';
@@ -69,62 +70,19 @@ const papilioThemeColors =
   }
   <div class="wrap theme-detail">
     <header class="theme-hero">
-      <div class="eyebrow">
-        {
-          lang === 'pt'
-            ? `Tema escuro · Paleta autoral · v${theme.version}`
-            : `Dark theme · Original palette · v${theme.version}`
-        }
-        {!theme.published && <span class="wip">{theme.pendingLabel?.[lang] ?? t('theme.wip')}</span>}
-      </div>
+      <p class="theme-meta">VS Code · v{theme.version}</p>
       {theme.icon && <img class="theme-icon" src={theme.icon} alt="" width="96" height="96" />}
       <h1>{theme.name}</h1>
       <div class="subtitle">{theme.tagline[lang]}</div>
       <p class="lead">{theme.summary[lang]}</p>
       {slug === 'carmilla' && <CarmillaFlavorSwitch />}
-      <div class="cta">
-        {
-          theme.published && theme.marketplace && (
-            <a class="btn btn-primary" href={theme.marketplace}>
-              <svg
-                viewBox="0 0 24 24"
-                width="19"
-                height="19"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M12 3v10m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
-              </svg>
-              {t('theme.install')}
-            </a>
-          )
-        }
-        {theme.published && theme.openVsx && <a class="btn btn-ghost" href={theme.openVsx}>{t('theme.openvsx')}</a>}
-        {theme.download && <a class="btn btn-ghost" href={theme.download} download>{t('theme.download')} · v{theme.version}</a>}
-        <a class="btn btn-ghost" href={theme.repo}>
-          <svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true"
-            ><path
-              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
-            ></path></svg
-          >
-          {t('theme.github')}
-        </a>
-      </div>
-
-      {theme.download && <p class="download-hint">{t('theme.download.hint')}</p>}
-      {slug === 'carmilla' && <p class="download-hint">{t('theme.carmilla.release')}</p>}
-
-      {!theme.published && <p class="wip-note">{theme.pendingNote?.[lang] ?? t('theme.wip.note')}</p>}
+      <div class="hero-actions"><a href="#editor">{t('theme.preview')}</a><a href="#install">{t('theme.install.cta')}</a></div>
     </header>
 
-    {slug === 'carmilla' && <CarmillaShowcase />}
-    {slug === 'papilio' && <PapilioShowcase />}
-    {slug === 'cinder' && <CinderShowcase />}
-    {slug === 'vesperveil' && <VesperveilShowcase />}
+    {slug === 'carmilla' && <CarmillaShowcase><ThemeInstallation slot="installation" theme={theme} lang={lang} /></CarmillaShowcase>}
+    {slug === 'papilio' && <><ThemeInstallation theme={theme} lang={lang} /><PapilioShowcase /></>}
+    {slug === 'cinder' && <CinderShowcase><ThemeInstallation slot="installation" theme={theme} lang={lang} /></CinderShowcase>}
+    {slug === 'vesperveil' && <VesperveilShowcase><ThemeInstallation slot="installation" theme={theme} lang={lang} /></VesperveilShowcase>}
 
     {
       theme.disclaimer && (
@@ -141,83 +99,15 @@ const papilioThemeColors =
 </Base>
 
 <style>
-  .theme-icon { display: block; margin: 0 auto 1rem; border-radius: var(--radius-panel); }
-  .download-hint { margin-top: 1rem; color: var(--ash-mauve); font-size: var(--text-small); }
-  .theme-hero {
-    text-align: center;
-    padding: clamp(2rem, 6vw, 5rem) 0 3rem;
-  }
-
-  .theme-hero .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    line-height: 1.8;
-    text-transform: uppercase;
-    color: var(--ash-mauve);
-    margin-bottom: 1.5rem;
-  }
-
-  .theme-hero h1 {
-    font-family: var(--font-display);
-    font-size: clamp(4.5rem, 13vw, 10rem);
-    font-weight: 600;
-    line-height: 1.02;
-    letter-spacing: -0.045em;
-    color: var(--pearl);
-    margin-bottom: 1.2rem;
-    text-wrap: balance;
-  }
-
-  .theme-hero .subtitle {
-    font-family: var(--font-body);
-    font-size: clamp(1.05rem, 2.1vw, 1.4rem);
-    font-weight: 400;
-    line-height: 1.5;
-    letter-spacing: -0.015em;
-    text-wrap: balance;
-    color: var(--wisteria);
-    margin: 0 auto 1.5rem;
-    max-width: 40ch;
-  }
-
-  .theme-hero .lead {
-    font-size: clamp(1rem, 1.5vw, 1.125rem);
-    max-width: 58ch;
-    margin: 0 auto;
-    color: rgba(var(--pearl-rgb), 0.86);
-    line-height: 1.8;
-    text-wrap: pretty;
-  }
-
-  .theme-hero .cta {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1.2rem;
-    margin-top: 2.5rem;
-  }
-
-  .wip {
-    display: inline-block;
-    margin-left: 0.8rem;
-    padding: 0.15rem 0.6rem;
-    border-radius: var(--radius-control);
-    background: rgba(var(--carmine-rgb), 0.15);
-    border: 1px solid rgba(var(--carmine-rgb), 0.4);
-    color: var(--carmine);
-    letter-spacing: 0.14em;
-  }
-
-  .wip-note {
-    margin: 1.6rem auto 0;
-    max-width: 46ch;
-    font-size: 0.85rem;
-    line-height: 1.6;
-    color: var(--ash-mauve);
-  }
+  .theme-icon { display: block; width: 48px; height: 48px; margin: 0 auto 1rem; border-radius: var(--radius-panel); }
+  .theme-hero { text-align: center; padding: 0 0 2rem; }
+  .theme-meta { font: var(--text-caption)/1.6 var(--font-mono); color: var(--ash-mauve); margin-bottom: 1rem; }
+  .theme-hero h1 { font: 600 clamp(3.5rem, 8vw, 6.5rem)/1.05 var(--font-display); letter-spacing: -.035em; color: var(--pearl); margin-bottom: .8rem; overflow-wrap: anywhere; }
+  .theme-hero .subtitle { font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.5; color: var(--wisteria); margin: 0 auto 1rem; max-width: 40ch; text-wrap: balance; }
+  .theme-hero .lead { font-size: 1rem; max-width: 58ch; margin: 0 auto; color: rgba(var(--pearl-rgb), .86); line-height: 1.75; text-wrap: pretty; }
+  .hero-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: .5rem 1.5rem; margin-top: 1rem; }
+  .hero-actions a { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: .3em; font-size: var(--text-small); }
+  .hero-actions a:hover { color: var(--champagne); }
 
   .disclaimer {
     margin: 4rem auto 0;
@@ -267,10 +157,12 @@ const papilioThemeColors =
   .theme-detail :global(.section-subtitle) {
     font: 400 1rem/1.65 var(--font-body);
     margin-top: 0;
+    margin-left: 0;
     margin-bottom: 1.5rem;
     text-wrap: pretty;
   }
   .theme-detail :global(.lead-text) {
+    margin-left: 0;
     font-size: 1.0625rem;
     line-height: 1.8;
     max-width: 65ch;

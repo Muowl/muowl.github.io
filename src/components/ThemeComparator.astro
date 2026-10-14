@@ -1,0 +1,42 @@
+---
+import ThemePreview from './ThemePreview.astro';
+import { listedThemes } from '../data/themes';
+import { localePath, useTranslations, type Lang } from '../i18n/ui';
+import type { PreviewTheme } from '../lib/theme-preview';
+interface Props { lang: Lang; id: string }
+const { lang, id } = Astro.props;
+const t = useTranslations(lang);
+const themes = listedThemes.filter(theme => ['vesperveil', 'cinder', 'carmilla'].includes(theme.slug));
+---
+<fieldset class="comparator">
+  <legend>{t('compare.label')}</legend>
+  {themes.map((theme, index) => <>
+    <input type="radio" id={`${id}-${theme.slug}`} name={id} value={theme.slug} checked={index === 0} aria-controls={`${id}-panel-${theme.slug}`} />
+    <label for={`${id}-${theme.slug}`}>{theme.name}</label>
+  </>)}
+  <div class="panels">
+    {themes.map(theme => <div id={`${id}-panel-${theme.slug}`} class={`theme-panel panel-${theme.slug}`}>
+      <ThemePreview theme={theme.slug as PreviewTheme} name={theme.name} lang={lang} />
+      <div class="panel-foot"><p>{theme.tagline[lang]}</p><a href={localePath(lang, `/themes/${theme.slug}/`)}>{t('themes.view')} {theme.name}</a></div>
+    </div>)}
+  </div>
+</fieldset>
+<style>
+  .comparator { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; min-width: 0; margin: 0; padding: 0; border: 0; }
+  legend { padding: 0; margin-bottom: .8rem; color: var(--ash-mauve); font-size: var(--text-small); }
+  input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  label { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: .6rem .25rem; border: var(--border-panel); border-radius: var(--radius-control); cursor: pointer; color: var(--ash-mauve); font: 500 var(--text-caption)/1.5 var(--font-mono); }
+  label:hover { color: var(--pearl); border-color: var(--ash-mauve); }
+  input:checked + label { border-color: var(--champagne); color: var(--champagne); background: var(--velvet); }
+  input:focus-visible + label { outline: 2px solid var(--champagne); outline-offset: 3px; }
+  .panels { grid-column: 1 / -1; min-width: 0; margin-top: .35rem; }
+  .theme-panel { display: none; }
+  input[value='vesperveil']:checked ~ .panels .panel-vesperveil,
+  input[value='cinder']:checked ~ .panels .panel-cinder,
+  input[value='carmilla']:checked ~ .panels .panel-carmilla { display: block; }
+  .panel-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .25rem 1rem; padding-top: .65rem; font-size: var(--text-caption); }
+  .panel-foot p { color: var(--ash-mauve); }
+  .panel-foot a { display: inline-flex; align-items: center; min-height: 44px; text-underline-offset: .3em; }
+  .panel-foot a:hover { color: var(--champagne); }
+  @media (max-width: 400px) { label { font-size: .75rem; } }
+</style>

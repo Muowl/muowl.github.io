@@ -84,7 +84,7 @@ const nav = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -142,12 +142,13 @@ const nav = [
       </div>
     </header>
 
-    <main id="content">
+    <main id="content" tabindex="-1">
       <slot />
     </main>
 
     <footer class="site-foot">
       <a class="footer-signature" href={localePath(lang, '/')} aria-label="muowl"><Owl class="footer-owl" /><span>muowl.</span></a>
+      <div class="footer-links"><a href="mailto:felipe.cunha@archbyte.com.br">{t('contact.cta')}</a><a href={localePath(lang, '/about/')}>{t('nav.about')}</a></div>
       <p class="foot-meta">
         {t('footer.built')} ·
         <a href="https://github.com/Muowl">github.com/Muowl</a>
@@ -215,12 +216,6 @@ const nav = [
     background: linear-gradient(90deg, var(--carmine), var(--wisteria), var(--champagne));
     opacity: .9;
   }
-  html[data-studio] .site-head::after {
-    content: 'PLAY  ▸  MUOWL / SIDE A';
-    position: absolute; right: clamp(1rem, 4vw, 2.5rem); bottom: -.8rem;
-    padding: .1rem .5rem; background: var(--crypt); color: var(--champagne);
-    font: .6875rem var(--font-mono); letter-spacing: .07em;
-  }
   html[data-studio] .brand { font-family: var(--font-body); font-weight: 600; letter-spacing: -.06em; font-size: 1.55rem; }
   html[data-studio] .brand-name:hover { text-shadow: -1px 0 var(--wisteria), 1px 0 var(--carmine); }
   html[data-studio] .btn { box-shadow: none; font: 500 var(--text-caption)/1.5 var(--font-mono); letter-spacing: .025em; }
@@ -230,10 +225,6 @@ const nav = [
   html[data-studio] .section-subtitle { font-family: var(--font-body); font-size: 1rem; font-style: normal; }
   html[data-studio] .section-title { font-size: clamp(3rem, 6vw, 4.5rem); line-height: 1.08; text-wrap: balance; }
   html[data-studio] .lang-switch a { font-family: var(--font-mono); }
-  html[data-studio] .site-nav a,
-  html[data-studio] .foot-meta,
-  html[data-studio] .lang-switch a { font-family: var(--font-mono); text-transform: uppercase; }
-  html[data-studio] .site-nav a { font-size: var(--text-caption); letter-spacing: .025em; }
   html[data-studio] .section-subtitle,
   html[data-studio] .lead-text { margin-left: 0; }
   html[data-studio] .wrap > .section-head { margin-bottom: 1rem; }
@@ -502,6 +493,9 @@ const nav = [
     text-align: center;
     border-top: 1px solid rgba(var(--carmine-rgb), 0.15);
   }
+  .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: .25rem 1.5rem; margin-bottom: .75rem; }
+  .footer-links a { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--text-small); text-underline-offset: .3em; }
+  .footer-links a:hover { color: var(--champagne); }
   .foot-meta {
     color: var(--ash-mauve);
     font-size: var(--text-caption);
@@ -520,7 +514,7 @@ const nav = [
     .site-head {
       display: grid;
       grid-template-columns: 1fr auto;
-      gap: .5rem 1rem;
+      gap: .25rem 1rem;
       padding-block: .65rem;
     }
     .lang-switch { justify-self: end; }

@@ -53,6 +53,16 @@ src/
 Adicionar um tema é uma entrada em `src/data/themes.ts`; um projeto, uma entrada
 em `src/data/projects.ts`. Nenhuma rota nova precisa ser criada.
 
+A home compara Vesperveil, Cinder e Carmilla com a mesma amostra TypeScript.
+O seletor usa radios nativos e CSS, funciona sem JavaScript e aceita navegação
+por teclado. `src/lib/theme-preview.ts` mapeia as paletas existentes para os
+papéis dessa amostra; nenhum componente define cores próprias. Os cards usam
+a mesma prévia e uma descrição curta em `cardSummary`.
+
+As vitrines mostram primeiro o editor e depois a instalação, usando o slot
+`installation`. A página de projetos pode apresentar desafio, implementação
+e resultado por meio de `caseStudy`, com traduções junto aos dados.
+
 ## Licença
 
 MIT.

@@ -21,10 +21,56 @@ const gutter = previewTokens.map((_, i) => ({ n: i + 1 }));
 
 ---
 
+<!-- ============== EDITOR ============== -->
+<section class="editor-section" id="editor">
+  <div class="section-head">
+    <h2 class="section-title">{t('theme.editor.title')}</h2>
+  </div>
+  <p class="section-subtitle">{t('theme.editor.subtitle')}</p>
+
+  <div class="editor">
+    <div class="editor-titlebar">
+      <span class="traffic r" aria-hidden="true"></span>
+      <span class="traffic y" aria-hidden="true"></span>
+      <span class="traffic g" aria-hidden="true"></span>
+      <span class="file">carmilla / <strong>countess.ts</strong></span>
+    </div>
+    <div class="editor-tabs">
+      <div class="editor-tab active"><span class="dot"></span> countess.ts</div>
+      <div class="editor-tab">palette.css</div>
+      <div class="editor-tab">README.md</div>
+    </div>
+    <div class="editor-body">
+      <div class="gutter" aria-hidden="true">
+        {gutter.map((g) => <div class="ln">{g.n}</div>)}
+      </div>
+      <div class="code-area" tabindex="0" role="region" aria-label={lang === 'pt' ? 'Prévia TypeScript' : 'TypeScript preview'}>
+        <pre><code set:html={code} /></pre>
+      </div>
+    </div>
+    <div class="editor-statusbar">
+      <span class="branch">⎇ main</span>
+      <span>↑ 2 ↓ 0</span>
+      <span><span style="color:var(--pomegranate);" aria-hidden="true">●</span> 0 errors</span>
+      <span style="color:var(--peach-velvet);">▲ 1 warning</span>
+      <div class="right">
+        <span>Ln <strong>21</strong>, Col <strong>9</strong></span>
+        <span>Spaces: <strong>4</strong></span>
+        <span>UTF-8</span>
+        <span><strong>TypeScript</strong></span>
+        <span
+          ><strong style="color:var(--carmine);">{flavorList.map(flavor => <span class={`fl-${flavor.id}`}>{flavor.name}</span>)}</strong></span
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+<slot name="installation" />
+
 <!-- ============== PALETA ============== -->
 <section>
   <div class="section-head">
-    <div class="section-num">I.</div>
     <h2 class="section-title">{t('theme.palette.title')}</h2>
   </div>
   <p class="section-subtitle">{t('theme.palette.subtitle')}</p>
@@ -50,56 +96,9 @@ const gutter = previewTokens.map((_, i) => ({ n: i + 1 }));
   </div>
 </section>
 
-<!-- ============== EDITOR ============== -->
-<section>
-  <div class="section-head">
-    <div class="section-num">II.</div>
-    <h2 class="section-title">{t('theme.editor.title')}</h2>
-  </div>
-  <p class="section-subtitle">{t('theme.editor.subtitle')}</p>
-
-  <div class="editor">
-    <div class="editor-titlebar">
-      <span class="traffic r" aria-hidden="true"></span>
-      <span class="traffic y" aria-hidden="true"></span>
-      <span class="traffic g" aria-hidden="true"></span>
-      <span class="file">carmilla / <strong>countess.ts</strong></span>
-    </div>
-    <div class="editor-tabs">
-      <div class="editor-tab active"><span class="dot"></span> countess.ts</div>
-      <div class="editor-tab">palette.css</div>
-      <div class="editor-tab">README.md</div>
-    </div>
-    <div class="editor-body">
-      <div class="gutter" aria-hidden="true">
-        {gutter.map((g) => <div class="ln">{g.n}</div>)}
-      </div>
-      <div class="code-area" tabindex="0" aria-label={lang === 'pt' ? 'Prévia TypeScript' : 'TypeScript preview'}>
-        <pre><code set:html={code} /></pre>
-      </div>
-    </div>
-    <div class="editor-statusbar">
-      <span class="branch">⎇ main</span>
-      <span>↑ 2 ↓ 0</span>
-      <span><span style="color:var(--pomegranate);" aria-hidden="true">●</span> 0 errors</span>
-      <span style="color:var(--peach-velvet);">▲ 1 warning</span>
-      <div class="right">
-        <span>Ln <strong>21</strong>, Col <strong>9</strong></span>
-        <span>Spaces: <strong>4</strong></span>
-        <span>UTF-8</span>
-        <span><strong>TypeScript</strong></span>
-        <span
-          ><strong style="color:var(--carmine);">{flavorList.map(flavor => <span class={`fl-${flavor.id}`}>{flavor.name}</span>)}</strong></span
-        >
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ============== ANATOMIA ============== -->
 <section>
   <div class="section-head">
-    <div class="section-num">III.</div>
     <h2 class="section-title">{t('theme.anatomy.title')}</h2>
   </div>
   <p class="section-subtitle">{t('theme.anatomy.subtitle')}</p>
@@ -160,7 +159,6 @@ const gutter = previewTokens.map((_, i) => ({ n: i + 1 }));
 <!-- ============== FLAVORS ============== -->
 <section>
   <div class="section-head">
-    <div class="section-num">IV.</div>
     <h2 class="section-title">{t('theme.flavors.title')}</h2>
   </div>
   <p class="section-subtitle">{t('theme.flavors.subtitle')}</p>
@@ -214,6 +212,7 @@ const gutter = previewTokens.map((_, i) => ({ n: i + 1 }));
 </script>
 
 <style>
+  .editor-section { margin-top: 0; }
   /* Só o texto da variante ativa aparece nos swatches e na barra do editor. */
   .fl-base, .fl-amethyst, .fl-moonstone { display: none; }
   :global([data-flavor='base']) .fl-base,
@@ -429,7 +428,7 @@ const gutter = previewTokens.map((_, i) => ({ n: i + 1 }));
 
   pre {
     font-family: var(--font-mono);
-    font-size: 0.88rem;
+    font-size: 0.78rem;
     line-height: 1.65;
     color: var(--pearl);
     tab-size: 4;

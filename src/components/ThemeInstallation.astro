@@ -1,0 +1,28 @@
+---
+import type { ThemeEntry } from '../data/themes';
+import { useTranslations, type Lang } from '../i18n/ui';
+interface Props { theme: ThemeEntry; lang: Lang }
+const { theme, lang } = Astro.props;
+const t = useTranslations(lang);
+---
+<section class="installation" id="install" aria-labelledby="install-title">
+  <h2 id="install-title">{t('theme.install.title')} {theme.name}</h2>
+  <p class="steps">{t('theme.install.steps')}</p>
+  <div class="cta">
+    {theme.published && theme.marketplace && <a class="btn btn-primary" href={theme.marketplace}>{t('theme.install')}</a>}
+    {theme.published && theme.openVsx && <a class="btn btn-ghost" href={theme.openVsx}>{t('theme.openvsx')}</a>}
+    {theme.download && <a class="btn btn-ghost" href={theme.download} download>{t('theme.download')} · v{theme.version}</a>}
+    <a class="btn btn-ghost" href={theme.repo}>{t('theme.github')}</a>
+  </div>
+  {theme.download && <p class="hint">{t('theme.download.hint')}</p>}
+  {theme.slug === 'carmilla' && <p class="hint">{t('theme.carmilla.release')}</p>}
+  {!theme.published && <p class="hint">{theme.pendingNote?.[lang] ?? t('theme.wip.note')}</p>}
+</section>
+<style>
+  .installation { padding: clamp(1.5rem, 4vw, 2.5rem); border: var(--border-panel); border-radius: var(--radius-panel); background: var(--velvet); }
+  h2 { font: 500 clamp(2rem, 4vw, 2.75rem)/1.15 var(--font-display); letter-spacing: -.02em; }
+  .steps { margin-top: 1rem; max-width: 65ch; color: var(--pearl); line-height: 1.75; }
+  .cta { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
+  .hint { margin-top: 1rem; max-width: 75ch; color: var(--pearl); font-size: var(--text-small); line-height: 1.75; }
+  @media (max-width: 480px) { .cta { flex-direction: column; align-items: stretch; } .cta a { justify-content: center; text-align: center; padding-inline: .75rem; } }
+</style>

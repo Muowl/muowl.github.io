@@ -19,6 +19,7 @@ export interface ThemeEntry {
   version: string;
   tagline: { pt: string; en: string };
   summary: { pt: string; en: string };
+  cardSummary?: { pt: string; en: string };
   repo: string;
   marketplace?: string;
   openVsx?: string;
@@ -50,6 +51,7 @@ export const themes: ThemeEntry[] = [
       pt: 'Fundos vinho quase pretos, texto marfim e cores de sintaxe mais vivas. Rosa nas palavras-chave, dourado quente nas funções, lavanda nos tipos e verde nas strings, com comentários em itálico.',
       en: 'Near-black wine backgrounds, ivory text and richer syntax colours. Rose keywords, warm golden functions, lavender types and green strings, with italic comments.',
     },
+    cardSummary: { pt: 'Fundos vinho e texto marfim. Rosa nas palavras-chave, dourado nas funções e lavanda nos tipos.', en: 'Wine backgrounds and ivory text. Rose keywords, golden functions and lavender types.' },
     repo: 'https://github.com/Muowl/vesperveil',
     marketplace: 'https://marketplace.visualstudio.com/items?itemName=muowl.vesperveil',
     openVsx: 'https://open-vsx.org/extension/muowl/vesperveil',
@@ -70,6 +72,7 @@ export const themes: ThemeEntry[] = [
       pt: 'Tema escuro para VS Code com fundo carvão e variáveis em tons neutros. Coral nas palavras-chave, ouro nas funções e verde-pátina nas strings.',
       en: 'A dark VS Code theme with charcoal backgrounds and neutral variables. Coral keywords, golden functions and patina-green strings.',
     },
+    cardSummary: { pt: 'Carvão quente com variáveis neutras, palavras-chave em coral e strings verde-pátina.', en: 'Warm charcoal with neutral variables, coral keywords and patina-green strings.' },
     repo: 'https://github.com/Muowl/cinder',
     marketplace: 'https://marketplace.visualstudio.com/items?itemName=muowl.cinder-warm-theme',
     openVsx: 'https://open-vsx.org/extension/muowl/cinder-warm-theme',
@@ -87,9 +90,10 @@ export const themes: ThemeEntry[] = [
       en: 'crypt warmth for nights of code',
     },
     summary: {
-      pt: 'Três variantes para VS Code: vinho rosado, violeta e azul-ardósia. Texto creme, comentários malva e cores distintas para tipos, funções e strings. Escolha Carmilla, Amethyst ou Moonstone e compare a paleta no exemplo abaixo.',
-      en: 'Three VS Code variants: rosé wine, violet and slate blue. Cream text, mauve comments and distinct colours for types, functions and strings. Choose Carmilla, Amethyst or Moonstone and compare the palette in the example below.',
+      pt: 'Três variantes para VS Code: vinho rosado, violeta e azul-ardósia. Texto creme, comentários malva e cores distintas para tipos, funções e strings. Compare Carmilla, Amethyst e Moonstone no exemplo de código.',
+      en: 'Three VS Code variants: rosé wine, violet and slate blue. Cream text, mauve comments and distinct colours for types, functions and strings. Compare Carmilla, Amethyst and Moonstone in the code sample.',
     },
+    cardSummary: { pt: 'Texto creme e três variantes: vinho rosado, violeta e azul-ardósia. Compare as cores no editor.', en: 'Cream text and three variants: rosé wine, violet and slate blue. Compare their editor colours.' },
     repo: 'https://github.com/Muowl/carmilla',
     icon: '/themes/carmilla/icon.png',
     download: '/themes/carmilla/carmilla-1.7.0.vsix',

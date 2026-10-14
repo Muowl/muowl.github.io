@@ -1,5 +1,7 @@
 ---
 import type { ThemeEntry } from '../data/themes';
+import ThemePreview from './ThemePreview.astro';
+import type { PreviewTheme } from '../lib/theme-preview';
 import { localePath, useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -13,9 +15,7 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
 ---
 
 <a class="theme-card" href={href} style={`--card-accent:${theme.accent}`}>
-  <div class="strip" aria-hidden="true">
-    {theme.strip.map((hex) => <span style={`background:${hex}`} />)}
-  </div>
+  {['vesperveil', 'cinder', 'carmilla'].includes(theme.slug) ? <ThemePreview theme={theme.slug as PreviewTheme} name={theme.name} lang={lang} compact decorative /> : <div class="strip" aria-hidden="true">{theme.strip.map(hex => <span style={`background:${hex}`} />)}</div>}
   <div class="body">
     <div class="top">
       <h3>{theme.name}</h3>
@@ -24,8 +24,7 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
         v{theme.version}
       </span>
     </div>
-    <p class="tagline">{theme.tagline[lang]}</p>
-    <p class="summary">{theme.summary[lang]}</p>
+    <p class="summary">{(theme.cardSummary ?? theme.summary)[lang]}</p>
     <div class="facts">
       <span>{theme.tokenCount} {theme.tokenLabel?.[lang] ?? t('themes.tokens')}</span>
       {
@@ -41,7 +40,7 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
         )
       }
     </div>
-    <span class="card-link">{t('themes.view')} <span aria-hidden="true">↗</span></span>
+    <span class="card-link">{t('themes.view')}</span>
   </div>
 </a>
 
@@ -55,12 +54,10 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
     border: var(--border-panel);
     border-radius: var(--radius-panel);
     overflow: hidden;
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    transition: border-color .2s ease;
   }
   .theme-card:hover {
-    transform: translateY(-3px);
     border-color: var(--card-accent);
-    box-shadow: 0 12px 28px -20px rgba(var(--crypt-rgb), .8);
   }
 
   .strip {
@@ -115,15 +112,6 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
     text-transform: uppercase;
   }
 
-  .tagline {
-    font-family: var(--font-body);
-    font-size: var(--text-small);
-    line-height: 1.55;
-    text-wrap: pretty;
-    color: var(--wisteria);
-    margin-top: 0.55rem;
-  }
-
   .summary {
     font-size: 1rem;
     line-height: 1.75;
@@ -158,7 +146,7 @@ const href = localePath(lang, `/themes/${theme.slug}/`);
     opacity: 0.6;
   }
   @media (min-width: 681px) and (max-width: 980px) {
-    .theme-card { display: grid; grid-template-columns: 5rem minmax(0, 1fr); }
+    .theme-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
     .strip { flex-direction: column; height: auto; border-bottom: 0; border-right: var(--border-panel); }
   }
   @media (max-width: 680px) {
